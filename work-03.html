@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>情報記憶媒体の持込み持出し許可証 | Yumi Takaki</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DENSO グループ会社間の情報記憶媒体 持込み・持出し許可証アプリのケーススタディ。申請業務プロセスの電子化と運用改善の事例。">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* ---------- work-03 scoped additions ---------- */
+  .issue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-m);
+  }
+  @media (max-width: 720px) { .issue-grid { grid-template-columns: 1fr; } }
+  .issue-card {
+    background: var(--color-background);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-m);
+    padding: var(--sp-m) var(--sp-l);
+    display: flex;
+    align-items: center;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+  }
+  .issue-card b { color: var(--color-text-secondary); font-weight: 600; }
+  .issue-label {
+    font-family: var(--font-jp);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--sp-s);
+  }
+  .issue-block + .issue-block { margin-top: var(--sp-l); }
+
+  .constraint-box {
+    background: var(--color-backgray);
+    border-radius: var(--radius-s);
+    padding: var(--sp-l);
+  }
+  .constraint-box h3 {
+    font-family: var(--font-jp);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--color-text-blueblack);
+    margin-bottom: var(--sp-s);
+  }
+  .constraint-box ul { display: flex; flex-direction: column; gap: var(--sp-xs); }
+  .constraint-box li {
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+    padding-left: 1.1em;
+    position: relative;
+  }
+  .constraint-box li::before {
+    content: '';
+    position: absolute;
+    left: 0.2em;
+    top: 0.7em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-text-blueblack);
+  }
+
+  .screen-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-l);
+  }
+  @media (max-width: 720px) { .screen-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; } }
+  .screen-item { text-align: center; }
+  .screen-item img { border-radius: var(--radius-s); width: 100%; margin-bottom: var(--sp-s); }
+  .screen-item h4 {
+    font-family: var(--font-jp);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    margin-bottom: 4px;
+  }
+  .screen-item p { font-size: var(--fs-caption); color: var(--color-text-secondary); }
+
+  .tools-note {
+    font-family: var(--font-ui);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    background: var(--color-backgray);
+    border-radius: var(--radius-s);
+    padding: var(--sp-m) var(--sp-l);
+    width: fit-content;
+  }
+  .disclaimer {
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    background: var(--color-backgray);
+    border-radius: var(--radius-s);
+    padding: var(--sp-m) var(--sp-l);
+  }
+</style>
+
+</head>
+<body data-page="works">
+
+  <header class="site-header">
+    <a href="index.html" class="brand">
+      <span class="icon"><img src="images/icons/avatar.png" alt="Yumi Takaki"></span>
+      <span class="name num-ui">Yumi Takaki</span>
+    </a>
+    <nav class="site-nav">
+      <a href="works.html" data-page="works">Work</a>
+      <a href="about.html" data-page="about">About</a>
+    </nav>
+    <div class="updated num-ui">Last updated: 2026.8</div>
+    <div class="sp-menu-wrap">
+      <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="sp-menu-popup" id="sp-menu-popup" hidden>
+        <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
+          <span></span><span></span>
+        </button>
+        <nav class="site-nav">
+          <a href="works.html" data-page="works">Work</a>
+          <a href="about.html" data-page="about">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="work-hero">
+      <h1>情報記憶媒体の持込み持出し許可証</h1>
+      <p class="info num-ui">
+        <span class="tag">UI/UX</span><span class="tag">DENSO</span><span class="tag">2021</span><span class="tag">Shipped</span>
+      </p>
+      <p class="note num-ui">個人プロジェクト</p>
+      <p class="note">
+        デンソー社員がトヨタ自動車グループ間で情報記憶媒体を会社構内に持込み・持出しする際に使用するアプリ。グループ間の連携を深め、時間がかかっていた申請手続きを簡易にする。
+      </p>
+      <p class="disclaimer">※機密事項を含まないよう、変更を加えて再現しています。実際の製品やサイトは掲載していません。</p>
+      <div class="work-hero-img">
+        <img src="images/work-03/hero.png" alt="情報機器持込み許可証アプリのスクリーンショット(2画面)">
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>背景</h2>
+      <p>
+        デンソーでは、情報記憶媒体の持出し・持込み申請は紙の帳票を使用しており、複数の承認ステップや入門チェックなど、許可までに多大な時間がかかっていた。コロナ禍のテレワーク拡大で処理件数が増大し、スピーディーに対応できる簡易制度の考案が急務となっていた。当時一人で社内の帳票の処理、40万台以上のPCのセキュリティ監視、3つのヘルプデスクの窓口の担当など業務過多の状態に、メキシコ拠点とドイツ拠点でのセキュリティ事故も重なり多忙を極めていた。そんな中、親会社であるトヨタ自動車より、グループ間で相互に簡易持込みができる「ルール統一制度」への参加要請を受けた。少しでも効率化するため、アプリ開発し省人化することにした。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>課題</h2>
+
+      <div class="issue-block">
+        <p class="issue-label">ユーザー体験の課題</p>
+        <div class="issue-grid">
+          <div class="issue-card">現状の申請手続きのような混乱を無くす。</div>
+          <div class="issue-card">事前の複雑な申請フローを、シンプルで手軽な動線にする。</div>
+          <div class="issue-card">出張者や出向者が、現場で「迷わず」「スムーズに入門できる」UI。</div>
+        </div>
+      </div>
+
+      <div class="issue-block">
+        <p class="issue-label">運営側の課題</p>
+        <div class="issue-grid">
+          <div class="issue-card"><b>グループ間相互の持込み手続きの共通化・効率化：</b>トヨタグループ全体での出張・出向・転籍に伴う入門時のタイムロスを削減。</div>
+          <div class="issue-card"><b>グループ各社の足並み揃え：</b>各社で異なる運用の共通化と、スピーディーに処理できる簡易制度への落とし込み。</div>
+          <div class="issue-card"><b>セキュリティと利便性の両立：</b>グループ全体のセキュリティ基準を満たしつつ、従来の煩雑な承認ステップをどれだけ簡素化できるかの調整。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>プロセス</h2>
+      <p>
+        定期的に行われるトヨタ自動車各社とのグループ会議に上司の室長と2人でデンソー代表者として参加。各社と運用のすり合わせ、ルール共通化の最低ラインを決めた。すでに運用しているデンソー社内の申請の体験がよくないため、同じ道を辿らないよう現状の問題点を洗い出し、体験改善の足がかりとすることにした。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>制約</h2>
+      <div class="constraint-box">
+        <h3>トヨタ自動車側の求める共通条件</h3>
+        <ul>
+          <li>許可証は紙で指定の業者に発注(まとめて1ヶ月に一度だけ発注可能)</li>
+          <li>申請には、必要な教育を受講すること</li>
+          <li>年に一度更新を確認し、不要となったカードは回収すること</li>
+          <li>セキュリティ要件を担保すること</li>
+          <li>トヨタ自動車より支給されたExcelの帳票は使用してもしなくても良い(カスタマイズ可)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>問題抽出</h2>
+      <p>
+        特性要因図を使い、自社独自制度のヘルプデスクに届く、ユーザーの要望やクレームを分類した。ユーザー視点と事務局側視点の両方から、下記の観点で問題を洗い出した。<br>
+        ・どこに時間がかかっているか　・何に不満を持っているか
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>現状の体験分析｜共感マップ</h2>
+      <p>ユーザー視点と管理側視点の両方の体験を可視化してみた。現制度の良い体験・改善できそうな体験を洗い出した。</p>
+      <img src="images/work-03/empathy-map.png" alt="事務局担当の共感マップ。Think and Feel、See、Hear、Say and Do、Pain、Gainの各象限に付箋で整理" style="border-radius: var(--radius-m); width: 100%;">
+    </section>
+
+    <section class="work-section">
+      <h2>体験設計｜ユーザーシナリオ</h2>
+      <img src="images/work-03/journey-map.png" alt="Tグループへ出張時の記憶媒体持ち込み体験のユーザージャーニーマップ" style="border-radius: var(--radius-m); width: 100%;">
+    </section>
+
+    <section class="work-section">
+      <h2>改善方針決定</h2>
+      <div class="constraint-box">
+        <ul>
+          <li>各部でのとりまとめをやめて個人申請に</li>
+          <li>受付・登録・更新作業を省人化</li>
+          <li>承認者や受付側がチェックする時点では申請を一覧で確認できるようにする</li>
+          <li>専用の申請アプリと情報発信サイトを構築する</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>フロー＆システム設計</h2>
+      <img src="images/work-03/flow-diagram.png" alt="ユーザー・承認者・事務局・業者間の申請フロー＆システム設計図。Power Automate、Teams、Outlook、SharePoint、Accessを連携" style="border-radius: var(--radius-m); width: 100%;">
+      <p class="tools-note num-ui">使用ツール：Figma・Power Automate・Microsoft Teams・Outlook・Access・SharePoint</p>
+    </section>
+
+    <section class="work-section">
+      <h2>運用設計｜社内イントラ用サイト構築</h2>
+      <img src="images/work-03/intranet-site.png" alt="社内イントラサイトのワイヤーフレーム" style="border-radius: var(--radius-m); width: 100%;">
+      <p>
+        申請に必要な条件をいくつか課している制度のため、冒頭に注意文を記載。マニュアルはスライド形式でサイトトップに埋め込み、画面遷移せずに読めるように変更。シンプルな構成で1ページ内に納め、見た目のボリュームを削減。運用フローはインフォグラフィック化し文字を削減。資料類直下にアプリを埋め込み、制度の理解から申請まで、サイト内で完結できるようにした。セキュリティ事故報告など、関連リンク集を右側にまとめて設置。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>主要画面</h2>
+      <div class="screen-grid">
+        <div class="screen-item">
+          <img src="images/work-03/screen-menu.png" alt="入門時表示画面">
+          <h4>入門時表示画面</h4>
+          <p>運用途中で証明書が紙のカードから電子化することが確定したので画面を追加</p>
+        </div>
+        <div class="screen-item">
+          <img src="images/work-03/screen-form.png" alt="新規登録画面">
+          <h4>新規登録画面</h4>
+          <p>「Office 365 ユーザーコネクタ」登録済み情報は自動で入力</p>
+        </div>
+        <div class="screen-item">
+          <img src="images/work-03/screen-card.png" alt="TOP画面(許可証カード表示)">
+          <h4>TOP画面</h4>
+          <p>M365のアカウントに紐付き、自動でログイン</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>工夫した点・苦労した点</h2>
+      <p>
+        出向や2重籍の方も多いためアカウント切り替え間違いがないよう確認を入れた。教育コンテンツは年に一度教育を受講しないといけないため、新規登録時と年度更新時のみ受講確認のモーダルが出現するようにし、回答結果もDBに蓄積しエビデンスを記録した。
+      </p>
+      <p>
+        社員情報のDBがグループ内で統一されていなかったため上司や部署の情報は自動で入力させることができなかった。そのためコンボボックスで検索途中に選択肢を出し選べるようにした。同姓同名も多く、5〜6人くらいいるので部署名でも確認させるようにした。
+      </p>
+      <p>
+        入力内容に不備があった場合、入力完了直後にエラーメッセージを出し、修正内容がわかるようにした。承認依頼のボタンはエラーがなく必要事項が全て入力された場合にのみ活性化するようにした。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>成果と振り返り</h2>
+      <p>
+        業務量を圧縮できた。他のメイン業務の傍少しづつ進めたので時間がかかってしまった。実装はプログラムに詰まった時は社内のエンジニアコミュニティに相談し助けてもらいながらも、一人でやり切ることができた。トヨタ自動車から途中紙での印刷をやめてアプリ化したいと定例で相談があった際、デンソーはすでにアプリ化していると言うことができて、他社のサンプルになれた。派遣社員だったが、色々な業務を率先して行なっていたため、部長報告や5社会議に代表者で出るなど普通できない体験ができた。個人的には入社時から比べて時給が2.5倍になっていたのが嬉しかった。
+      </p>
+    </section>
+
+    <nav class="work-nav">
+      <a href="works.html">&larr; Work一覧へ戻る</a>
+    </nav>
+
+  </main>
+
+  <footer class="site-footer num-ui">©Yumi Takaki</footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

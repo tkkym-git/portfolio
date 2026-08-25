@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>高齢者講座体験改善 | Yumi Takaki</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="みんチャレ 自治体事業 高齢者講座体験改善ケーススタディ。高齢者専用オンボーディングの設計により、講座時間の短縮と定着率向上を実現。">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* ---------- work-02 scoped additions ---------- */
+  .issue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-m);
+  }
+  .issue-grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 720px) {
+    .issue-grid, .issue-grid.cols-2 { grid-template-columns: 1fr; }
+  }
+  .issue-card {
+    background: var(--color-background);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-m);
+    padding: var(--sp-m) var(--sp-l);
+    display: flex;
+    align-items: center;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+  }
+  .issue-label {
+    font-family: var(--font-jp);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--sp-s);
+  }
+  .issue-block + .issue-block { margin-top: var(--sp-l); }
+
+  .solution-pair {
+    display: flex;
+    align-items: stretch;
+    gap: var(--sp-s);
+  }
+  .solution-pair + .solution-pair { margin-top: var(--sp-m); }
+  .solution-box {
+    flex: 1;
+    border: 2px solid var(--color-text-blueblack);
+    border-radius: var(--radius-s);
+    padding: var(--sp-l) var(--sp-m);
+    display: flex;
+    align-items: center;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+  }
+  .solution-box p + p { margin-top: var(--sp-s); }
+  .solution-arrow {
+    flex-shrink: 0;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-blueblack);
+    font-size: 20px;
+  }
+  @media (max-width: 720px) {
+    .solution-pair { flex-direction: column; }
+    .solution-arrow { transform: rotate(90deg); padding: var(--sp-xs) 0; }
+  }
+
+  .scenario-figure {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-m);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .scenario-figure img { border-radius: var(--radius-s); }
+  .scenario-figure .arrow { flex-shrink: 0; color: var(--color-text-blueblack); font-size: 24px; }
+  .figure-caption {
+    text-align: center;
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    margin-top: var(--sp-s);
+  }
+  @media (max-width: 720px) {
+    .scenario-figure { flex-direction: column; }
+    .scenario-figure .arrow { transform: rotate(90deg); }
+  }
+
+  .source-note {
+    font-family: var(--font-ui);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    margin-top: var(--sp-s);
+  }
+</style>
+
+</head>
+<body data-page="works">
+
+  <header class="site-header">
+    <a href="index.html" class="brand">
+      <span class="icon"><img src="images/icons/avatar.png" alt="Yumi Takaki"></span>
+      <span class="name num-ui">Yumi Takaki</span>
+    </a>
+    <nav class="site-nav">
+      <a href="works.html" data-page="works">Work</a>
+      <a href="about.html" data-page="about">About</a>
+    </nav>
+    <div class="updated num-ui">Last updated: 2026.8</div>
+    <div class="sp-menu-wrap">
+      <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="sp-menu-popup" id="sp-menu-popup" hidden>
+        <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
+          <span></span><span></span>
+        </button>
+        <nav class="site-nav">
+          <a href="works.html" data-page="works">Work</a>
+          <a href="about.html" data-page="about">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="work-hero">
+      <h1>自治体事業 高齢者講座体験改善</h1>
+      <p class="info num-ui">
+        <span class="tag">UI/UX</span><span class="tag">みんチャレ</span><span class="tag">2025</span><span class="tag">Shipped</span>
+      </p>
+      <p class="note num-ui">PJ体制：Designer 1名（自身） / Engineer 2名 / 営業 1名 / CS 1名</p>
+      <p class="note">
+        みんチャレは1つのプロダクトでtoC、toB、toGのユーザーが存在し、年齢は小学生から90代までと幅広い。自治体事業におけるBtoGtoCのモデルにおいては高齢社会向けのフレイル予防講座やスマホ活用講座などを展開しており、特に後期高齢者はスマートフォンの操作に不慣れである。全ユーザー1つのオンボーディングで全てを賄っていたが、高齢者専用のオンボーディングを用意することで、決まった時間内に講座内で全ての設定を完了し、高齢者が「一人でもスマートフォンを使える」と自信が持てる体験を提供したい。
+      </p>
+      <div class="work-hero-img">
+        <img src="images/works/card-02-elderly.png" alt="みんチャレ アプリのオンボーディング画面のスクリーンショット">
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>背景</h2>
+      <p>
+        80~90代のユーザーにとって「アカウント」や「連携」「タップ」「スクロール」といった単語は理解が難しい。長時間の講座は疲れてしまうので、自治体側が設定できる講座時間も1時間、長くて1時間30分が限度である。誤ってアカウントを消してしまうことも多く、バックアップを取るために外部アカウントと連携するなど、講座で最低限設定しないといけない項目があるが、「習慣化アプリとしてのみんチャレ」の説明もまた難しく、オンボーディングは長く設定されている。長いオンボーディングの後に難しい設定をiOS、Androidそれぞれのユーザーに合わせて係員が説明をするのに手間取り時間がたりていない。時間内に終わらせられなかった場合にCSが電話対応を行ってはいるが、高齢ユーザーがうまく使えないと自信喪失につながってしまうことを回避したい。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>課題</h2>
+
+      <div class="issue-block">
+        <p class="issue-label">ユーザー体験の課題</p>
+        <div class="issue-grid">
+          <div class="issue-card">一人でみんチャレ(スマートフォン)が使えると自信が持てる。</div>
+          <div class="issue-card">チームメンバーと繋がりを持ち、孤立不安が解消される。</div>
+          <div class="issue-card">健康を維持するために、たくさん歩けるようになる。モチベーションのアップ。</div>
+        </div>
+      </div>
+
+      <div class="issue-block">
+        <p class="issue-label">運営側の課題</p>
+        <div class="issue-grid cols-2">
+          <div class="issue-card">講座時間の短縮。<br>チームビルディング時間の確保。</div>
+          <div class="issue-card">講座非参加者への電話レクチャーをスムーズにするため、IT用語を避け「次のボタンを押す」といった直感的な文言へマニュアルを改修する必要がある。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>制約</h2>
+      <p>
+        通常オンボーディング自体が長すぎて離脱が多いことは何度か議題に上がっているが、過去のABテストや複数のオンボーディングを試した中で一番オンボ完走後の継続率・課金率が高いものが現状採用されており、POの意思で変更は不可。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>プロセス</h2>
+      <p>
+        ユーザーが何に困っているのか、何に時間がかかっているのかを自分自身で知るため、実際に港区や府中市でフレイル講座に参加し講座全体の様子や、ユーザーの画面操作を観察させていただいた。観察の結果下記のような問題が浮かび上がった。KA法で体験価値を整理し、効果のすぐ出そうなもの・インパクトのありそうなものを優先度高くし、改善することにした。
+      </p>
+      <p>
+        長いオンボーディングを終えた後に、メニューから一個づつ設定をしていたが、アカウント認証やAPI連携で止まってしまうことが多かった。iOSの標準UIであるドラムロールは操作の仕方が分からず戸惑う高齢者が多いことがわかった。らくらくほんユーザーはある程度文字を大きくする方法がわかっているが、その他のユーザーは文字サイズが変えれること自体を知らず、アプリ外のスマホの使い方をある程度マニュアルに盛り込む必要があることがわかった。1つのチームを１つの机で一人の担当者が説明していることがわかったが、近所の方を同じチームに集めていた。その為OSが異なると説明の時間もかかり、また隣り合った同士お互いの画面を見せて「画面が違う」＝「説明と進捗が違っているかも」「操作を間違えたかも」と不安に感じ説明を求めてしまう。ウィジェットを使いこなす80代もいれば、タップがわからない60代もいる。それぞれの知識のばらつきを感じた。
+      </p>
+      <figure>
+        <img src="images/work-02/event-fuchu-hall.jpg" alt="府中市で開催されたみんチャレ大交流会の会場の様子" style="border-radius: var(--radius-m); width: 100%;">
+        <p class="figure-caption">府中市で開催した「みんチャレフレイル予防」大交流会の様子</p>
+      </figure>
+    </section>
+
+    <section class="work-section">
+      <h2>高齢者用オンボーディングシナリオ</h2>
+      <p>実際の講座観察をもとに、通常のオンボーディングフローを見直し、高齢者向けに再設計したシナリオの画面遷移です。</p>
+      <div class="scenario-figure">
+        <img src="images/work-02/onboarding-flow-01.png" alt="高齢者用オンボーディングシナリオ 画面1">
+        <span class="arrow">→</span>
+        <img src="images/work-02/onboarding-flow-02.png" alt="高齢者用オンボーディングシナリオ 画面2">
+      </div>
+      <p class="figure-caption">高齢者用オンボーディングシナリオ</p>
+    </section>
+
+    <section class="work-section">
+      <h2>問題点と解決策</h2>
+
+      <div class="issue-block">
+        <p class="issue-label">01</p>
+        <div class="solution-pair">
+          <div class="solution-box">フレイル予防講座に参加する高齢者は、目標分だけ歩くこと、チャットを使いこなし同じ自治体の高齢者と触れ合えるようになることが目標であり、「習慣化」という概念や「チーム」などの機能を説明すること自体がノイズである。</div>
+          <span class="solution-arrow">→</span>
+          <div class="solution-box">
+            <div>
+              <p>高齢者に対しては習慣化アプリではなくフレイル予防アプリとして取り扱ってもらうことに焦点を絞り、オンボーディングを終えればフレイル講座に必要な設定が全て完了するようにシナリオを組み直した専用オンボーディングを作成することにした。</p>
+              <p>専用の2次元コードから遷移するようにした。</p>
+            </div>
+          </div>
+        </div>
+        <div class="solution-pair">
+          <div class="solution-box">オンボーディングを終えた後は、チーム検索から目的の自治体を探し、チームに入っていた。</div>
+          <span class="solution-arrow">→</span>
+          <div class="solution-box">オンボーディングを終えた後は、目的の自治体画面TOPに直接遷移しチームに入れるようにした。</div>
+        </div>
+      </div>
+
+      <div class="issue-block">
+        <p class="issue-label">02</p>
+        <div class="solution-pair">
+          <div class="solution-box">通常PHR連携はヘルスケアアプリ/Google fitを使用しているが、アプリ側が提供しているダイアログの仕様などが高齢者にとっては連携までの難易度が高く、また連携の不具合も多い。</div>
+          <span class="solution-arrow">→</span>
+          <div class="solution-box">それぞれのOS標準で搭載されている歩数カウント機能を使用することにした。</div>
+        </div>
+        <figure style="margin-top: var(--sp-m);">
+          <img src="images/work-02/retry-scenario.png" alt="OS標準の歩数連携設定とリトライシナリオの画面例" style="border-radius: var(--radius-m); width: 100%;">
+          <p class="figure-caption">左がiOS 右がAndroid／OS標準の歩数連携設定</p>
+        </figure>
+      </div>
+
+      <div class="issue-block">
+        <p class="issue-label">03</p>
+        <div class="solution-pair">
+          <div class="solution-box">
+            <div>
+              <p>アカウント認証で失敗すると、止まってしまう。</p>
+              <p>進めれないとアプリごと落として諦めてしまう。</p>
+            </div>
+          </div>
+          <span class="solution-arrow">→</span>
+          <div class="solution-box">失敗が検知できるものは繰り返し可能な、リトライシナリオを用意した。また失敗してもスキップ可能にすることで、後日CSがフォローすることにした。</div>
+        </div>
+      </div>
+
+      <div class="issue-block">
+        <p class="issue-label">04</p>
+        <div class="solution-pair">
+          <div class="solution-box">ご近所さんでチームを作ってしまうと、一人仲の良い人が辞めた時に連鎖して辞めてしまう人もいることがわかった。</div>
+          <span class="solution-arrow">→</span>
+          <div class="solution-box">
+            <div>
+              <p>端末の種類やOSごとにチーム分けをし、説明担当者の負荷を軽減。</p>
+              <p>初めましてでも関係性が作れるような、自己紹介タイムやアシスタントを話し合って決めるなどの時間を確保しチームビルディングに注力することにした。</p>
+            </div>
+          </div>
+        </div>
+        <div class="solution-pair">
+          <div class="solution-box">全員に同じマニュアルを配布していた。</div>
+          <span class="solution-arrow">→</span>
+          <div class="solution-box">
+            <div>
+              <p>OSごとに内容を変え2種類作成した。</p>
+              <p>文字の大きさの設定変更など役立つ情報も盛り込んだ。講座内では説明をしないが、リテラシーの高いユーザー向けにアプリを使った寄附の仕方なども盛り込んだ。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>成果と振り返り</h2>
+      <p>
+        講座時間が1時間で完結できるようになった。基本設定を30分に収めることができたので、残りの30分をチームメンバーとの交流の時間に当て、ピアサポートを強化できた。オペレーションの負荷も軽減できた。高齢者同士がお互いに撮った写真を見せ合い会話が生まれていた。同じ自治体内の住民なので「どこで撮影したの」「どこに住んでいるの」など新しい関係が生まれていてとても良かった。後日行われた交流会イベントで、写真を撮るために遠くまで歩くようになったというユーザーの声がいくつも聞けた。長い時間を理由に断られた自治体でも、再度営業をかけ受注することができた。高齢者に優しくないUIは今後新機能追加する際にも参考にすることにした。
+      </p>
+      <p class="source-note">内閣府 令和7年度版「高齢社会白書」掲載</p>
+      <figure>
+        <img src="images/work-02/event-fuchu-closeup.jpeg" alt="府中市で行われた大交流会の様子" style="border-radius: var(--radius-m); width: 100%;">
+        <p class="figure-caption">府中市で行われた大交流会に参加し、ユーザーさんの声を直接聞いてきました。</p>
+      </figure>
+    </section>
+
+    <nav class="work-nav">
+      <a href="works.html">&larr; Work一覧へ戻る</a>
+    </nav>
+
+  </main>
+
+  <footer class="site-footer num-ui">©Yumi Takaki</footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>健康管理機能 | Yumi Takaki</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="習慣化アプリ「みんチャレ」健康管理機能のケーススタディ。PHR機能の画面UI設計・体験設計を担当。">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* ---------- work-01 scoped additions ---------- */
+  .issue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-m);
+  }
+  .issue-grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 720px) {
+    .issue-grid, .issue-grid.cols-2 { grid-template-columns: 1fr; }
+  }
+  .issue-card {
+    background: var(--color-background);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-m);
+    padding: var(--sp-m);
+    display: flex;
+    align-items: flex-start;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+  }
+  .issue-label {
+    font-family: var(--font-jp);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--sp-s);
+  }
+  .issue-block + .issue-block { margin-top: var(--sp-l); }
+
+  .solution-pair {
+    display: flex;
+    align-items: stretch;
+    gap: var(--sp-s);
+  }
+  .solution-pair + .solution-pair,
+  .solution-pair + p { margin-top: var(--sp-m); }
+  .solution-box {
+    flex: 1;
+    border: 1px solid var(--color-text-blueblack);
+    border-radius: var(--radius-s);
+    padding: var(--sp-l) var(--sp-m);
+    display: flex;
+    align-items: center;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+  }
+  .solution-box p + p { margin-top: var(--sp-s); }
+  .solution-box ul { padding-left: 1.2em; }
+  .solution-box li { list-style: disc; margin-bottom: var(--sp-xs); }
+  .solution-arrow {
+    flex-shrink: 0;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-blueblack);
+    font-size: 20px;
+  }
+  @media (max-width: 720px) {
+    .solution-pair { flex-direction: column; }
+    .solution-arrow { transform: rotate(90deg); padding: var(--sp-xs) 0; }
+  }
+
+  .note-block {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-s);
+  }
+  .note-block h3 {
+    font-family: var(--font-jp);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+  }
+
+  .disclaimer {
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    background: var(--color-backgray);
+    border-radius: var(--radius-s);
+    padding: var(--sp-m) var(--sp-l);
+  }
+
+  /* recommendation already ends flush against the viewport edge; the shared
+     .site-footer{margin-top} default would add an unwanted gap above it. */
+  .site-footer { margin-top: 0; }
+
+  /* This page's <main> has no width cap of its own (see body), so give the
+     text-content sections their own horizontal safety padding directly. */
+  .work-hero,
+  .work-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .recommendation-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* Figma: every section (hero text block, text sections, image sections)
+     is separated by a single uniform 64px gap — no per-section top+bottom
+     padding stacking. Override the shared component padding to 0 here and
+     apply the gap once, between siblings. */
+  .work-hero { padding-top: 0; }
+  /* Note: the shared .work-section rule sets `margin: 0 auto`, which has
+     higher specificity than a plain `main > section + section` combinator
+     selector and was silently cancelling the margin-top below (that's why
+     the 64px gap wasn't actually rendering). Setting it here, on the same
+     class selector, resolves the tie in this page's favor (loads after the
+     shared stylesheet). */
+  .work-section,
+  .work-img-section {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: var(--sp-xl);
+  }
+  .work-hero-img {
+    margin-top: 0;
+    margin-bottom: var(--sp-xl); /* + .work-hero's own 32px flex gap = 96px total, matching Figma */
+  }
+  .recommendation {
+    margin-top: var(--sp-2xl);
+  }
+
+  /* Dev Mode confirms these "img" sections have no background-color of their
+     own (any gray canvas visible is baked into individual screenshots, e.g.
+     the bp-logic chart) — just a plain, centered content column like
+     .work-section. No 100vw/negative-margin full-bleed needed. */
+  /* This section's own content (chart images, description text) stays at
+     the standard 800px reading width; the figure "card" below is allowed
+     to hug its own content and intentionally break wider than that. */
+  .work-img-section {
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 24px;
+    padding-right: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-m);
+  }
+  .work-img-section > img {
+    width: 100%;
+    max-width: 800px;
+    border-radius: var(--radius-m);
+  }
+
+  /* Figma "figure" component: light gray rounded card wrapping grouped
+     screenshots (confirmed via Dev Mode on every img-section except the
+     single bp-logic chart, which has no card). It's sized to hug its own
+     content (size-full / fit-content in Dev Mode) rather than being capped
+     at the 800px reading width — several instances (renewal-calendar,
+     team-record, fix-screens, phase2-features) are deliberately wider
+     (861–928px) than the surrounding text column. */
+  .img-card {
+    box-sizing: border-box;
+    width: fit-content;
+    max-width: 100%;
+    background: var(--color-backgray);
+    border-radius: var(--radius-m);
+    padding: var(--sp-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-l);
+  }
+  .img-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-end;
+    gap: var(--sp-l);
+    width: 100%;
+  }
+  .img-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-m);
+  }
+  .img-item img {
+    display: block;
+    height: 360px;
+    width: auto;
+    max-width: 100%;
+    border-radius: var(--radius-s);
+  }
+  .img-item .cap {
+    font-size: var(--fs-body);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .img-stack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-s);
+  }
+  .img-stack img { height: 175px; }
+  .img-pair {
+    display: flex;
+    gap: 4px;
+  }
+  .img-pair img { height: 360px; }
+  .img-arrow {
+    flex-shrink: 0;
+    align-self: center;
+    color: var(--color-text-blueblack);
+    font-size: 24px;
+    padding: 0 var(--sp-xs);
+  }
+  .work-img-section p {
+    width: 100%;
+    max-width: 608px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: var(--fs-caption);
+    line-height: 1.6;
+    overflow-wrap: break-word;
+  }
+</style>
+</head>
+<body data-page="works">
+
+  <header class="site-header">
+    <a href="index.html" class="brand">
+      <span class="icon"><img src="images/icons/avatar.png" alt="Yumi Takaki"></span>
+      <span class="name num-ui">Yumi Takaki</span>
+    </a>
+    <nav class="site-nav">
+      <a href="works.html" data-page="works">Work</a>
+      <a href="about.html" data-page="about">About</a>
+    </nav>
+    <div class="updated num-ui">Last updated: 2026.8</div>
+    <div class="sp-menu-wrap">
+      <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
+        <span></span><span></span><span></span>
+      </button>
+
+      <div class="sp-menu-popup" id="sp-menu-popup" hidden>
+        <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
+          <span></span><span></span>
+        </button>
+        <nav class="site-nav">
+          <a href="works.html" data-page="works">Work</a>
+          <a href="about.html" data-page="about">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="work-hero">
+      <div class="work-hero-img">
+        <img src="images/work-01/hero.png" alt="みんチャレ チーム画面と健康データ画面のスクリーンショット">
+      </div>
+      <h1>習慣化アプリ「みんチャレ」健康管理機能</h1>
+      <div class="info num-ui">
+        <span class="item"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>A10lab</span>
+        <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2024.12-2026.2</span>
+        <span class="item"><svg width="14.1" height="16" viewBox="0 0 15 17" fill="none"><path d="M2.51072 0L4.1727 0.00436242L4.16962 1.6892C4.91437 1.70561 5.70909 1.69204 6.45697 1.69215L10.8399 1.69106C10.8219 1.18184 10.8323 0.514125 10.8447 0.00201844L12.4926 0.00303842C12.5048 0.556186 12.498 1.13718 12.4981 1.69154C12.9118 1.69135 13.4723 1.66717 13.858 1.78997C14.2724 1.92487 14.6172 2.22236 14.8163 2.61681C14.957 2.8922 14.9935 3.18042 14.9963 3.48756C15.0015 4.05642 14.9998 4.62533 14.9995 5.19423L14.9995 12.9218C14.9998 13.6945 15.0012 14.4666 14.994 15.2392C14.9872 15.9782 14.679 16.4917 14.0345 16.8326C13.7531 16.9724 13.3387 16.9935 13.0307 16.9956L2.85748 16.9964C2.35755 16.9969 1.80568 17.0192 1.31475 16.9468C1.04309 16.9067 0.693502 16.6912 0.498897 16.4911C0.0144176 15.9932 0.00339418 15.4809 0.00228762 14.8225L0.00243666 4.49856C0.00230898 4.15009 -0.0139701 3.44381 0.0393573 3.11585C0.0935147 2.76543 0.255987 2.44184 0.503111 2.19221C1.07133 1.61519 1.75948 1.69039 2.5064 1.69167L2.51072 0Z" fill="#47536F"/><path d="M1.67959 5.94933L13.3359 5.94911C13.3692 9.0389 13.3371 12.1909 13.337 15.2858L1.6784 15.2836L1.67648 11.3248L1.67959 5.94933Z" fill="#F9F9F8"/><path d="M5.82243 8.50687C5.85037 8.54519 5.8405 10.0139 5.84178 10.1881C6.65246 10.2223 7.48522 10.183 8.29848 10.1978C8.58384 10.203 8.88478 10.2005 9.16889 10.1861L9.17093 8.47711C9.36556 8.72459 10.024 9.36236 10.2779 9.6211L11.1933 10.5518C11.3438 10.7048 11.5224 10.902 11.6785 11.042C10.8466 11.8574 10.0355 12.7334 9.20432 13.5569C9.1957 13.5446 9.18521 13.5296 9.17285 13.512C9.16259 13.0401 9.16951 12.353 9.17119 11.8979L5.84261 11.8972C5.83461 12.3532 5.81984 13.1499 5.84942 13.5841C5.64138 13.4171 5.20229 12.944 4.99488 12.7325L3.3419 11.0447C3.95704 10.4521 4.54387 9.78815 5.1571 9.18913C5.36828 8.98284 5.6374 8.73169 5.82243 8.50687Z" fill="#47536F"/></svg>15ヶ月(デザインは3ヶ月)</span>
+        <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>PM / UIUX Design / Writing</span>
+      </div>
+      <p class="note note-narrow num-ui">PJ体制：PO 1名 / Designer 1名（自身） / Engineer 4名 / 医療職 2名 / CS 2名 / 営業 3名 ※イラストは外部イラストレーターに都度発注</p>
+      <p class="note">
+        BtoBtoCのモデルにおいて、「保険者（健康保険組合等）」の業務効率化・施策効果の可視化と、「被保険者（従業員等）」の健康行動の習慣化・エンゲージメント向上を同時に実現し、保健事業全体の投資対効果を最大化させる。自治体・企業向け（BtoBtoC / BtoG）健康増進事業において、ユーザーが日々の健康数値（血圧・血糖値・歩数など）をストレスなく記録・継続できるPHR機能の画面UI設計・体験設計および前半PM業務を担当。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <img src="images/work-01/about-minchare.png" alt="みんチャレとは。同じ目標を持つ5人でチームを組み、チャットで励まし合いながら楽しく続ける習慣化アプリです。" style="border-radius: var(--radius-m); width: 100%; max-width: 530px; margin: 0 auto;">
+    </section>
+
+    <section class="work-section">
+      <h2>プロセス</h2>
+      <p>
+        エーテンラボは専任のPMがいない。デザインフェーズと実装フェーズでデザイナーとエンジニアがPMを兼任している。上司から次の施策が「保健事業の効果を高める」になり、担当するよう指示があった。a10の施策は具体ではなく抽象で降りてくる。まず施策の起案者である社長にヒアリングをし、保健事業部の収益化改善という目標があることがわかった。また保健事業は禁煙に力を入れていたが、今後重症化予防に注力していくと方針転換が示された。
+      </p>
+      <p>
+        そこから保険プログラムの作成をしている医療職と企画職、CSに話をしにいき、それぞれの行なっていることや、課題に感じていることなどを聞き、全体をFigjamにまとめた。次にカスタマージャーニーマップを作成し、課題の抽出を行なった。しかし問題点の量や要求が膨大だったため、収益改善のインパクトの高いもの・オペレーション負荷の高いものなどを高優先度として位置付け、フェーズ1としてスコープを切った。チームに入らなくてもPHRが貯められる機能、ユーザーが継続にハードルを感じている部分の体験改善、現行機能との整合から着手することにした。定例MTGを設定し、POはじめ関係者と認識のすり合わせをしながらファシリテートを行った。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>背景</h2>
+      <p>
+        健康保険組合や自治体などのBtoBtoC/BtoG事業において、参加者の健康数値（PHR）の改善成果を定量的に証明・追跡することが求められていた。しかし、従来の健康プログラム事業は外部サービスへの依存度が高く、PHR機能も特定の疾患リスクを抱えるユーザー向けのプログラム（保健指導等）に対応しきれていない。これまでtoC向け事業展開に注力していたため、健康プログラム作成とアプリの機能活用がうまく連携できていない。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>課題</h2>
+
+      <div class="issue-block">
+        <p class="issue-label">ユーザー側（被保険者等）</p>
+        <div class="issue-grid">
+          <div class="issue-card">従来のマイデータ画面は編集ができないなど簡易的であり、高リスク層向けには機能が足りていない。歩数を記録するためには「歩く」カテゴリのチームに入り、投稿しないと記録されない仕様。</div>
+          <div class="issue-card">アプリ参加への導線が外部サービス(formやLINEなど)を中継し、それらに依存していたため連携が弱い。各参加者が立てた目標もメールで配信され、アプリ内では確認できない。</div>
+          <div class="issue-card">健康プログラムは3つのチームへ同時参加させることになっていたが、複数チーム参加は心理的ハードルが高く離脱の原因に。(みんチャレは１つのチームで１つの行動変容を促す思想)</div>
+        </div>
+      </div>
+
+      <div class="issue-block">
+        <p class="issue-label">ビジネス・自治体側の課題</p>
+        <div class="issue-grid cols-2">
+          <div class="issue-card">管理画面で、健康投資に対する施策効果（利用率や健康数値改善）が可視化できない。</div>
+          <div class="issue-card">管理画面は英語のみで、複雑な管理UIによる運用負荷が高い。</div>
+        </div>
+        <p class="figure-caption" style="text-align:left; margin-top: var(--sp-s);">※管理画面は社外秘のため、こちらの内容については非公開としています。</p>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>制約</h2>
+      <p>
+        みんチャレはあくまでも習慣化アプリの位置付けであり、新機能はヘルスケア分野に興味のないユーザーにとってノイズとなってはならない。また医療行為を行ってはならない。
+      </p>
+    </section>
+
+    <section class="work-img-section">
+      <div class="img-card">
+        <div class="img-row">
+          <div class="img-item">
+            <img src="images/work-01/renewal-old.png" alt="旧画面(マイデータ)のスクリーンショット">
+            <p class="cap">旧画面(マイデータ)</p>
+          </div>
+          <div class="img-item">
+            <img src="images/work-01/renewal-new.png" alt="リニューアル画面のスクリーンショット">
+            <p class="cap">リニューアル画面</p>
+          </div>
+          <div class="img-item">
+            <img src="images/work-01/renewal-calendar-detail.png" alt="分離&改善したカレンダーのスクリーンショット">
+            <p class="cap">分離&amp;改善したカレンダー</p>
+            <p>タップで詳細に遷移するが、複数チーム参加時でも1週間単位での継続状況を一目でわかるようにしたところ継続状況の数値も上昇した</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>問題点と解決策_01</h2>
+      <div class="solution-pair">
+        <div class="solution-box">
+          <div>
+            <p>チームに入り、チャレンジ投稿するまで数値の入力が出来ず、入力までのクリック数が多い。</p>
+            <p>数値の編集ができない。</p>
+          </div>
+        </div>
+        <span class="solution-arrow">→</span>
+        <div class="solution-box">健康データ画面にPHRの数値全てを集約し、入力と編集を可能にした。タップで即入力&編集ができるようにした。</div>
+      </div>
+      <div class="solution-pair">
+        <div class="solution-box">
+          チーム参加前に外部サービスの中継を挟んでいるため画面遷移が多い。チーム参加までのオンボーディングが長く、且つシームレスにつながっていないので完走率が低い。目標設定がアプリ内で確認できない。
+        </div>
+        <span class="solution-arrow">→</span>
+        <div class="solution-box">外部サービスが担っていた一部流動性の低い部分*をアプリ内に取り込んだ。目標設定をアプリ内で設定することで体調や習慣化の進捗に合わせて、目標の再設定もできるようにした。(＊実証実験結果に伴う変更が多いため、全てをアプリ内に取り込むことはできなかった。)</div>
+      </div>
+      <div class="note-block" style="margin-top: var(--sp-m);">
+        <h3>工夫した点・苦労した点</h3>
+        <p>
+          趣味などの健康とは関係ない習慣のユーザーにとってノイズにならないようチャレンジのカレンダーを分離した。バリュープロポジションキャンバスを作成し、習慣化アプリとしてやらないことを決めた。医療器具認証された医療系アプリでしかできない部分では対抗しても意味がないため、独自性が出せる部分コア機能であるピアサポートが生きる体験設計を目指した。医療系アプリの硬い印象ではなく、遊び心がありやる気が出る感じのビジュアルを打ち出すことにした。入力のしやすさとビジュアルのメリハリのバランス。タップ領域はエンジニアと密に連携し、微調整をした。
+        </p>
+      </div>
+    </section>
+
+    <section class="work-img-section">
+      <img src="images/work-01/bp-logic-chart.png" alt="血圧記録時間区切ロジックのチャート">
+      <p class="cap" style="width:100%; max-width:800px; text-align:right;">血圧記録時間区切ロジック</p>
+      <p>
+        通常のヘルスケア系アプリは0時区切のものが一般的だが、習慣化アプリとして生活習慣に根ざした時間区切と実装難易度のバランスが難しく、エンジニアと協議しながらすすめた。血圧は1日の中でも何度か計測するが、起床後就寝前のタイミングが重要であり、夜勤など多様な生活時間の方に合わせてどの数字を採用するかをロジックで出すことにした。
+      </p>
+    </section>
+
+    <section class="work-img-section">
+      <div class="img-card">
+        <div class="img-row">
+          <div class="img-item">
+            <img src="images/work-01/detail-steps.png" alt="歩数詳細のスクリーンショット">
+            <p class="cap">歩数詳細</p>
+          </div>
+          <div class="img-item">
+            <img src="images/work-01/detail-meal.png" alt="食事詳細&編集のスクリーンショット">
+            <p class="cap">食事詳細&amp;編集</p>
+          </div>
+          <div class="img-item">
+            <img src="images/work-01/detail-bp.png" alt="血圧詳細のスクリーンショット">
+            <p class="cap">血圧詳細</p>
+          </div>
+        </div>
+        <p>血圧は月年の場合折れ線グラフに変化。歩数や体重などは月と年では平均値も表示するようにした。項目・期間ごとに最適なグラフ表現を行なった。</p>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>問題点と解決策＿02</h2>
+      <div class="solution-pair">
+        <div class="solution-box">toBユーザーは会社から保健指導を受けて参加しているためtoCユーザーに比べ、健康習慣に対する動機付けが弱くモチベーションも低い。</div>
+        <span class="solution-arrow">→</span>
+        <div class="solution-box">
+          <ul>
+            <li>数値の変化をわかりやすいグラフにすることでモチベーションアップ。週月年と切り替えることで長期感の変化がわかるようにした。</li>
+            <li>被保険者からのニーズが高かった生活習慣病である高血圧、高血糖に対応した項目を追加した。</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note-block" style="margin-top: var(--sp-m);">
+        <h3>工夫した点・苦労した点</h3>
+        <p>
+          歩数を競うサービスなども別に展開しているため、API連携を切断したり、歩数を編集した場合わかるようにした。血圧の数値は起床後・就寝前という数値が重要だがグラフ化する際に一般的な表現ではなかったため、ステークホルダー数名から見たことがないのでよくわからないと反発が大きかった。しかし、海外の血圧測定アプリなどでは使われている表現であると説得することで、採用することができた。
+        </p>
+      </div>
+    </section>
+
+    <section class="work-img-section">
+      <div class="img-card">
+        <p class="cap">重症化予防プログラム専用画面</p>
+        <div class="img-row">
+          <div class="img-item">
+            <img src="images/work-01/severity-start.png" alt="チーム参加直後の画面">
+            <p>チーム参加直後の画面。「開始する」押下で目標設定画面に遷移。</p>
+          </div>
+          <span class="img-arrow">→</span>
+          <div class="img-item">
+            <img src="images/work-01/severity-goal.png" alt="目標設定画面">
+            <p class="cap">目標設定画面</p>
+          </div>
+          <div class="img-item">
+            <img src="images/work-01/severity-challenge.png" alt="チャレンジ送信画面">
+            <p class="cap">チャレンジ送信画面</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>問題点と解決策＿03</h2>
+      <div class="solution-pair">
+        <div class="solution-box">toBユーザーが3つのチームに入ることは心理的ハードルが高い。</div>
+        <span class="solution-arrow">→</span>
+        <div class="solution-box">健康プログラムユーザーに限り、1つのチーム内で３つの行動目標を設定し、毎日結果を記録出来るようにした。</div>
+      </div>
+      <div class="solution-pair">
+        <div class="solution-box">ユーザーインタビューから個人向けのパーソナライズされたアドバイスのニーズが高いことが分かったが、医療事業者ではないため医学的なアドバイスは法的にできない。</div>
+        <span class="solution-arrow">→</span>
+        <div class="solution-box">医学アドバイスはできないが、ジムのように運動などの行動傾向に関してのアドバイスは可能なため、AIを活用しユーザーに合わせた食事時間や運動の習慣化のコツなどアドバイスを配信するプランを作成した。</div>
+      </div>
+      <div class="note-block" style="margin-top: var(--sp-m);">
+        <h3>工夫した点・苦労した点</h3>
+        <p>
+          健康プログラムは社外の専門家に監修を受けているが、表現を厳密にしようとすると項目数が多すぎたり長文になってしまいユーザー体験を損なってしまう。目標設定画面は項目数が多くスクロールが大変だったので、選択したものを下にも表示し、選び直したい場合や外したい場合にすぐタップできるようにした。週に1回以上〇〇するなどの表現がユーザー目線では直感的ではないため、ユーザーがチェックをする際は1日単位での表現に変更するなど、すり合わせに難航した。血圧や血糖値などは個人情報のためどこまで公開とするかを医療職と相談し決めた。歩数のみを公開し具体的な数値は他ユーザーには見せず、行動結果のみをチームメンバーにも開示するようにした。
+        </p>
+      </div>
+    </section>
+
+    <section class="work-img-section">
+      <div class="img-card">
+        <div class="img-row">
+          <div class="img-item">
+            <img src="images/work-01/team-record-btn.png" alt="チーム内記録ボタンのスクリーンショット">
+            <p class="cap">チーム内記録ボタン</p>
+          </div>
+          <div class="img-item">
+            <img src="images/work-01/team-record-input.png" alt="チーム内入力UIのスクリーンショット">
+            <p class="cap">チーム内入力UI</p>
+          </div>
+          <div class="img-item">
+            <div class="img-pair">
+              <img src="images/work-01/team-record-custom1.png" alt="カスタマイズ機能のスクリーンショット1">
+              <img src="images/work-01/team-record-custom2.png" alt="カスタマイズ機能のスクリーンショット2">
+            </div>
+            <p>入力ハードルを下げるために、必要の無い項目は非表示にカスタマイズできるようにした</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>ユーザー属性による棲み分け</h2>
+      <div class="solution-pair">
+        <div class="solution-box">みんチャレは証拠写真を送信し、チームメンバーがOKボタンを押さないと記録として達成したとみなされない仕様になっている。これはコア機能であるピアサポートを強化するための仕掛けの一つである。ピアサポートの恩恵は課金しないと受けられない設計になっており、保険者が使用料を払うtoBユーザーと他の属性ユーザーとは棲み分けが必要となる。</div>
+        <span class="solution-arrow">→</span>
+        <div class="solution-box">健康データ画面は全ユーザーに共通で公開されており、記録が漏れても後から編集できるようにしている。しかし習慣化に良いとされる「毎日する」「仲間がいる」などの機能はチームに入らないと利用できないようにした。また、行動目標を設定し結果を送信する機能はtoBユーザー限定とした。</div>
+      </div>
+      <div class="note-block" style="margin-top: var(--sp-m);">
+        <h3>工夫した点・苦労した点</h3>
+        <p>
+          みんチャレは1つで2C2B2Gのユーザーが混在しており、課金方法・額も属性ごとに異なるため棲み分けに苦労した。チームに参加しないとコア機能であるピアサポートは受けられない。健康管理機能はチームに参加しなくても使用できるよう整合を取る必要があった。社長と医療職メンバーと3人で2日に1回MTGを行い大量の画面を作成した。
+        </p>
+      </div>
+
+      <div class="note-block" style="margin-top: var(--sp-l);">
+        <h3>アクセシビリティについて</h3>
+        <p>
+          みんチャレのカラースタイルは決められたルールがあったが、スマートフォンアプリ黎明期に作られたアプリだったためWCAGの基準に満たないグレーが使用されていた。健康管理機能ユーザーは高齢、壮年が対象になるため基準に満たないグレーを使用しないように、AAを達成している新しいグレーカラーの追加を行った。別プロジェクトになるがiOSのダイナミックフォント対応を行ったため、フォント崩れする画面が生まれていた。今回追加した画面はそれらの対応を念頭に、あらかじめバリアブルで高齢者文字サイズのモードを設定し、大目に余白を取るなど崩れにくい画面設計を目指した。
+        </p>
+      </div>
+    </section>
+
+    <section class="work-img-section">
+      <div class="img-card">
+        <img src="images/work-01/fix-screens-full.png" alt="本プロジェクトFix画面全体" style="width:100%; border-radius: var(--radius-s);">
+        <p>本プロジェクトFix画面全体。同じUIはコンポーネント化しプロパティ活用で極力省力化した。ここには載せないが、没画面は3倍ほどある。</p>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>成果と振り返り</h2>
+      <p>
+        toBユーザーのオンボーディングでの離脱が減少し、プログラム参加者が増加した。外部ツールで行なっていた人力によるオペレーション工数削減につながった。血圧手帳や他のアプリを併用していたユーザーから、感謝の声をいただいた。血圧と血糖値は新規プログラムのため継続率はまだ測定できていない。リソースの不足により、まだ実装されていない機能がいくつかある。キャッチアップフェーズにおけるプロジェクトだったため、事業目標やステークホルダーの意図を正確に把握する初期ヒアリングに十分な時間を投資した。専門職・開発チーム間において認識の齟齬が起きやすい難易度の高い案件であったため、初期の要件定義とフィードバックの回収・調整に時間をかけた。
+      </p>
+      <div class="note-block" style="margin-top: var(--sp-m);">
+        <h3>副次的な効果</h3>
+        <p>
+          カレンダーを分離したことにより、1週間単位での目標達成状況が可視化された。複数チーム参加のtoCユーザーに「カレンダーを全部写真で埋めたい」という欲求が生まれ、toCユーザーの継続率が向上した。今回の機能を活用した自治体向けの入札に参加できるようになった。未実装だが、AIによるにゃんチャレの性格調教のテストができた。
+        </p>
+      </div>
+    </section>
+
+    <section class="work-img-section">
+      <div class="img-card">
+        <div class="img-row">
+          <img src="images/work-01/phase2-img1.png" alt="フェーズ2以降の機能スクリーンショット1" style="height:360px; width:auto; border-radius: var(--radius-s);">
+          <img src="images/work-01/phase2-img2.png" alt="フェーズ2以降の機能スクリーンショット2" style="height:360px; width:auto; border-radius: var(--radius-s);">
+          <div class="img-stack">
+            <img src="images/work-01/phase2-img3-top.png" alt="フェーズ2以降の機能スクリーンショット3上" style="border-radius: var(--radius-s);">
+            <img src="images/work-01/phase2-img3-bottom.png" alt="フェーズ2以降の機能スクリーンショット3下" style="border-radius: var(--radius-s);">
+          </div>
+          <img src="images/work-01/phase2-img4.png" alt="フェーズ2以降の機能スクリーンショット4" style="height:360px; width:auto; border-radius: var(--radius-s);">
+        </div>
+      </div>
+      <p class="figure-caption">開発工数の制約や優先度からフェーズ2以降に開発することになった機能一部分</p>
+    </section>
+
+    <section class="recommendation">
+      <div class="recommendation-inner">
+        <h2 class="recommendation-title">Next Recommendation</h2>
+        <div class="recommendation-grid">
+          <a class="pickup-card" href="work-02.html">
+            <div class="thumb"><img src="images/home/card-02-elderly.png" alt="高齢者講座体験改善 のスクリーンショット"></div>
+            <div class="body">
+              <h3>高齢者講座体験改善</h3>
+              <p class="meta num-ui">2025.みんチャレ.Shipped</p>
+              <div class="desc">
+                <p class="desc-block"><b>課題：</b> 自治体事業高齢者講座の時間短縮と体験改善</p>
+                <p class="desc-block"><b>施策：</b> 専用オンボーディング追加。マニュアルの整理など講座運用改善</p>
+                <p class="desc-block"><b>成果：</b> 時間短縮と定着率向上</p>
+              </div>
+            </div>
+          </a>
+          <a class="pickup-card" href="work-03.html">
+            <div class="thumb"><img src="images/home/card-03-denso.png" alt="持込み持出し許可証 のスクリーンショット"></div>
+            <div class="body">
+              <h3>持込み持出し許可証</h3>
+              <p class="meta num-ui">2021.DENSO.Shipped</p>
+              <div class="desc">
+                <p class="desc-block"><b>課題：</b> グループ間の連携強化。複雑な業務プロセスの運用改善</p>
+                <p class="desc-block"><b>施策：</b> ルールの共通化。申請の電子化。情報発信の動線構築</p>
+                <p class="desc-block"><b>成果：</b> 入構時間短縮と管理工数の削減</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button type="button" class="page-top-btn" aria-label="ページの先頭に戻る">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="page-top-btn-circle" cx="20" cy="20" r="19.5" fill="white" stroke="#47536F"/>
+      <path class="page-top-btn-arrow" d="M20.005 11V29M12.5 18.7143L20 11L27.5 18.7143" stroke="#47536F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <footer class="site-footer num-ui">©Yumi Takaki</footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
