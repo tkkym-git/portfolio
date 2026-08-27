@@ -94,6 +94,7 @@ body[data-page="404"] .site-footer { flex-shrink: 0; }
   body[data-page="index"] {
     height: auto;
     overflow-y: visible;
+    background-attachment: fixed;
   }
 }
 
