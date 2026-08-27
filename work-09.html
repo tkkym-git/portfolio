@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Snapshot / PRI・TEC | Yumi Takaki</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="PRI・TECでの制作実績集。企業カタログ、広告、パッケージ、展示会ブースなどグラフィックデザイン全般を紹介。">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .gallery-title svg { margin-right: var(--sp-s); vertical-align: -2px; }
+  /* Figma specifies no border-radius on any of this page's gallery images
+     — the shared .gallery-media img rule (css/style.css) rounds them by
+     default; override back to square corners here. */
+  .gallery-media img { border-radius: 0; }
+  .misc-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sp-m);
+    width: 100%;
+  }
+  .misc-grid img {
+    width: 100%;
+    display: block;
+  }
+  /* Figma: the 1st (0007903308-01) and 8th (0346700112 banner) images
+     span both grid columns instead of sitting in a single half-width
+     cell like the rest. */
+  .misc-grid .full { grid-column: 1 / -1; }
+  @media (max-width: 600px) {
+    .misc-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-page="works">
+
+  <header class="site-header">
+    <a href="index.html" class="brand">
+      <span class="icon"><img src="images/icons/avatar.png" alt="Yumi Takaki"></span>
+      <span class="name num-ui">Yumi Takaki</span>
+    </a>
+    <nav class="site-nav">
+      <a href="works.html" data-page="works">Work</a>
+      <a href="about.html" data-page="about">About</a>
+    </nav>
+    <div class="updated num-ui">Last updated: 2026.8</div>
+    <div class="sp-menu-wrap">
+      <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
+        <img class="sp-menu-cat" src="images/icons/sp-menu-cat-blueblack.svg" alt="">
+        <span class="sp-menu-label">menu</span>
+      </button>
+
+      <div class="sp-menu-popup" id="sp-menu-popup" hidden>
+        <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
+          <img class="sp-menu-cat" src="images/icons/sp-menu-cat-white.svg" alt="">
+          <span class="sp-menu-label">close</span>
+          <img class="sp-menu-close-x" src="images/icons/sp-menu-close-x.svg" alt="">
+        </button>
+        <nav class="site-nav">
+          <a href="works.html" data-page="works">Work</a>
+          <a href="about.html" data-page="about">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="hero-color-band" style="background:#cbd6c6;">
+      <div class="work-hero" style="padding:0;">
+        <h1>Snapshot / PRI･TEC</h1>
+        <p class="info num-ui">
+          <span class="item"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>PRI･TEC</span>
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2009.4-2016.7</span>
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Art Direction / Design</span>
+        </p>
+        <p style="color: var(--color-text-secondary); text-align: center;">
+          チームで制作するものは少なく、<br>
+          ここに掲載しているものは一部を除き全て一人で担当しています。<br>
+          自分以外が関わったものはキャプションに記載しています。
+        </p>
+      </div>
+    </div>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-09/nishio-map.png" alt="西尾市役所様 観光客MAP看板"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>西尾市役所様 / 観光客MAP看板(コンペ)</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Direction / Design</p>
+          <div class="gallery-desc">
+          <p>イラストはフリーのイラストレーターさんに外注。市内6箇所に設置。</p>
+          <p>西尾市は観光地や特産品が沢山あるので、初めて訪れた人にも魅力が伝わるように作成。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media pair"><img src="images/work-09/aisin-profile-1.png" alt="アイシンAW株式会社様 会社案内 表紙"><img src="images/work-09/aisin-profile-2.png" alt="アイシンAW株式会社様 会社案内 中面"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>アイシンAW株式会社様 / 会社案内（日英版&amp;英中版）</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Design / Retouch</p>
+          <div class="gallery-desc">
+          <p>コーポレートカラーのグレー&amp;レッドを基調に構成。フォントは癖のないゴシックで統一。</p>
+          <p>落ち着きのある信頼感を与えるデザインを目指しました。</p>
+          <p>英中版の中国語部分は中国人デザイナーに外注。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-09/office-shion-ad.png" alt="オフィスシオン様 新聞広告15段"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>オフィスシオン様 / 新聞広告15段</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Direction / Design</p>
+          <div class="gallery-desc">
+          <p>葬儀の不安を気軽に相談できる空気感を表現。</p>
+          <p>葬儀費用の総額に何が含まれているかを、フロー図にしたり、アイコンにしてわかりやすくしました。</p>
+          <p>広告出稿後、売り上げが3倍になるなど反響が大きく、二度目の受注もいただいた。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media pair"><img src="images/work-09/acton-1.png" alt="美容室アクトン様 新規オープンツール1"><img src="images/work-09/acton-2.png" alt="美容室アクトン様 新規オープンツール2"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>美容室アクトン様 / ロゴなど新規オープンツール一式</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Direction / Design</p>
+          <div class="gallery-desc">
+          <p>イタリアで修行された美容師さんが新規オープンされた美容院。</p>
+          <p>シンプルだけど個性的でこだわりを感じるデザインを目指しました。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media pair"><img src="images/work-09/kanekichi-flyer-1.png" alt="株式会社カネキチ様 大漁亭 B4折込チラシ 表面"><img src="images/work-09/kanekichi-flyer-2.png" alt="株式会社カネキチ様 大漁亭 B4折込チラシ 裏面"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>株式会社カネキチ様 / 大漁亭 / B4折込チラシ</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Design / Retouch</p>
+          <div class="gallery-desc">
+          <p>当時、地域では若干高めの価格帯の回転寿司なので高級感を訴求。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-09/omi-kogyo-booth.png" alt="大見工業株式会社様 ホビーショー用展示会ブース"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>大見工業株式会社様 / ホビーショー用展示会ブース / 什器 / パネル</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Planning / Design</p>
+          <div class="gallery-desc">
+          <p>壁・柱・棚など一式デザイン。ライティングにこだわった。</p>
+          <p>小さいサイズの製品が多いが、品質の良さを製造工程を通して伝わるようにデザインした。</p>
+          <p>カッティングや組み立ては社内のサインディスプレイ部署が担当。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner" style="flex-direction:row; align-items:flex-start; gap: var(--sp-xl); max-width:800px;">
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap: var(--sp-l);">
+          <img src="images/work-09/sugiyasu-catalog.png" alt="株式会社スギヤス様 製品カタログ">
+          <div class="gallery-cap">
+            <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>株式会社スギヤス様 / 製品カタログ</p>
+            <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Design / Retouch</p>
+            <div class="gallery-desc"><p>BtoB向けカタログ。製造業関係者には広く認知されているビシャモンというブランド。スペックをわかりやすく掲載した。表紙は金属が反射するような加工をしステンレス製品のカタログであることが一目でわかるようにした。</p></div>
+          </div>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap: var(--sp-l);">
+          <img src="images/work-09/sakasu-dm.png" alt="株式会社坂角総本舖様 A6DM">
+          <div class="gallery-cap">
+            <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>株式会社坂角総本舖様 / A6DM</p>
+            <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Design</p>
+            <div class="gallery-desc"><p>テキストが多いのでジャンプ率、読みやすさに拘り作成。高級感が出るよう色合いとメリハリを細部まで調整した。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-09/yamahachi-ad.png" alt="山八歯材工業株式会社様 業界紙雑誌広告"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>山八歯材工業株式会社様 / 業界紙雑誌広告</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Direction / Design</p>
+          <div class="gallery-desc">
+          <p>医療系だが黒色指定があった為、清潔感を損なわない様にした。<br>人工歯の世界シェアNo1で業界内では評価の高い会社。硬さが訴求ポイントのため、岩のようなテクスチャと立体で金属風に加工した文字を組み合わせ高機能をアピールした。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <p class="gallery-title">その他クライアントから評価の高かった案件など</p>
+        <div class="misc-grid">
+          <img class="full" src="images/work-09/misc-1.png" alt="その他制作物1">
+          <img src="images/work-09/misc-2.png" alt="その他制作物2">
+          <img src="images/work-09/misc-3.png" alt="その他制作物3">
+          <img src="images/work-09/misc-4.png" alt="その他制作物4">
+          <img src="images/work-09/misc-5.png" alt="その他制作物5">
+          <img src="images/work-09/misc-6.png" alt="その他制作物6">
+          <img src="images/work-09/misc-7.png" alt="その他制作物7">
+          <img class="full" src="images/work-09/misc-8.png" alt="その他制作物8">
+          <img src="images/work-09/misc-9.png" alt="その他制作物9">
+          <img src="images/work-09/misc-10.png" alt="その他制作物10">
+          <img src="images/work-09/misc-11.png" alt="その他制作物11">
+          <img src="images/work-09/misc-12-kaori.png" alt="その他制作物12">
+          <img src="images/work-09/misc-13.png" alt="その他制作物13">
+          <img src="images/work-09/misc-14.png" alt="その他制作物14">
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button type="button" class="page-top-btn" aria-label="ページの先頭に戻る">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="page-top-btn-circle" cx="20" cy="20" r="19.5" fill="white" stroke="#47536F"/>
+      <path class="page-top-btn-arrow" d="M20.005 11V29M12.5 18.7143L20 11L27.5 18.7143" stroke="#47536F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <footer class="site-footer num-ui">©Yumi Takaki</footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

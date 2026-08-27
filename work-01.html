@@ -9,6 +9,10 @@
 
 <style>
   /* ---------- work-01 scoped additions ---------- */
+  /* Forces a 2-line title on mobile only ("習慣化アプリ「みんチャレ」" /
+     "健康管理機能"); on desktop the <br> is suppressed so the h1 stays on
+     one line, matching the two different reading widths at each size. */
+  .sp-only { display: none; }
   .issue-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -175,14 +179,126 @@
     align-items: center;
     gap: var(--sp-l);
   }
+  /* Mobile only: .img-card normally hugs its own (narrower, single-column)
+     content via width:fit-content, while .solution-box fills the full
+     column via flex:1 — at narrow widths that made the gray figure cards
+     visibly narrower/off-center than the bordered cards below them. Force
+     both to the same full-width box below 768px without touching the
+     desktop "hug content" sizing. Also fixes .solution-arrow: in the
+     column layout (.solution-pair goes column at <=720px) a fixed-width
+     flex item can't stretch and falls back to flex-start (left) instead of
+     centering — align-self pins it to the middle regardless. */
+  @media (max-width: 768px) {
+    .img-card {
+      width: 100%;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    /* !important on height/max-height/width is needed to beat the inline
+       style="height:360px; width:auto;" attributes used directly on a few
+       <img> tags (e.g. the phase2 row) — inline styles otherwise win over
+       any external stylesheet rule regardless of specificity. */
+    .img-card img {
+      height: auto !important;
+      max-height: 300px !important;
+      width: auto !important;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+    /* Phase2 row, pinpoint exception to the .img-card img rule above: keep
+       these two pairs (チャット+猫キャラクター / 血糖値グラフ+服薬管理画面)
+       side by side even on mobile instead of falling into the column stack
+       every other multi-image row uses here. Placed after .img-card img so
+       the equal-specificity !important declarations resolve in this rule's
+       favor via source order. */
+    .phase2-pair {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .phase2-pair > img,
+    .phase2-pair > .img-stack {
+      width: calc(50% - 4px) !important;
+      max-width: none !important;
+    }
+    .phase2-pair > img {
+      height: auto !important;
+    }
+    .phase2-pair > .img-stack img {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+    }
+    /* Override the generic 50%-width pairing above for this one pair only:
+       the stack defines the height, and the medication screenshot matches
+       it via height:100% + width:auto instead of a fixed 50% column. */
+    .phase2-pair--match-height > img {
+      width: auto !important;
+      height: 100% !important;
+    }
+    .work-img-section {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    /* Severity row (チーム参加直後の画面 → 目標設定画面 → チャレンジ送信画面):
+       this row already goes flex-direction:column below 960px (see the
+       .img-card .img-row rule further down), so the "→" between the first
+       two items should read as "↓" here, and the stacked gap should match
+       the same tightened spacing used on desktop for this row. */
+    .img-row--tight {
+      gap: 8px;
+    }
+    .img-arrow {
+      transform: rotate(90deg);
+    }
+    .sp-only {
+      display: inline;
+    }
+    .solution-arrow {
+      align-self: center;
+    }
+  }
+  /* Desktop only: tighten the gap in the "重症化予防プログラム専用画面" row
+     (severity-start image → arrow → severity-goal image → severity-challenge
+     image) from the shared .img-row default (32px) down to 8px, per direct
+     visual feedback — kept out of the <=768px block above so mobile (where
+     this row stacks to a single column) is unaffected. */
+  @media (min-width: 769px) {
+    .img-row.img-row--tight {
+      gap: 8px;
+    }
+  }
+  /* This row needs ~630px of raw image width just to lay out its 3 phone
+     screenshots, plus card/section padding — comfortable in a row above
+     ~960px, but cramped (and prone to an awkward "2 up, 1 wrapped below"
+     partial-wrap) anywhere narrower. Rather than let flex-wrap decide that
+     case by case per viewport, switch cleanly between two fixed layouts at
+     a single breakpoint: side-by-side row above it, plain vertical stack
+     below it. flex-wrap stays "wrap" only as a harmless fallback — nowrap
+     would force 3 full-height images to overflow instead of ever stacking. */
   .img-row {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: flex-end;
+    align-items: stretch;
     gap: var(--sp-l);
     width: 100%;
+  }
+  @media (max-width: 960px) {
+    /* The shared .img-card .img-row rule (css/style.css) is two classes
+       (specificity 0,2,0); a plain .img-row here is only one class
+       (0,1,0) and loses to it regardless of media query or source order
+       — same trap as the earlier align-items override. Match the
+       selector shape to actually win. */
+    .img-card .img-row {
+      flex-direction: column;
+      align-items: center;
+    }
   }
   .img-item {
     display: flex;
@@ -197,12 +313,84 @@
     max-width: 100%;
     border-radius: var(--radius-s);
   }
+  @media (max-width: 960px) {
+    .img-item img {
+      height: 260px;
+    }
+  }
+  /* "分離&改善したカレンダー" item has an extra caption+description below it
+     that the other two items in this row don't have, so its natural content
+     height is taller than theirs. Above the 960px breakpoint (row layout),
+     give it a fixed total height equal to a plain item's (measured: 360px
+     image + gap + one caption line ≈ 394px) and let its own image flex to
+     fill whatever space is left after its caption+description — this makes
+     the whole block (image+text) match the other two items' total height,
+     per feedback that "揃える" should include the text block, not just the
+     image. This uses a fixed height rather than flexbox cross-line stretch
+     (stretch depends on sharing a flex line with a taller sibling; at
+     several in-between viewport widths this item wrapped onto its own line
+     before reaching the old mobile breakpoint, where there was nothing to
+     stretch against and the image collapsed to 0 height — a fixed height
+     is unaffected by wrapping). Below 960px the row is a plain vertical
+     stack (no shared-line matching to do), so this item just falls back to
+     the same plain image height as its siblings. */
+  .img-item--fit {
+    height: 394px;
+    justify-content: flex-start;
+  }
+  .img-item--fit img {
+    flex: 1 1 0;
+    min-height: 0;
+    height: auto;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+  .img-item--fit p:not(.cap) {
+    text-align: left;
+  }
+  @media (max-width: 960px) {
+    .img-item--fit {
+      height: auto;
+    }
+    .img-item--fit img {
+      flex: none;
+      height: 260px;
+      min-height: 260px;
+      width: auto;
+    }
+  }
   .img-item .cap {
+    text-align: center;
+    white-space: nowrap;
+  }
+  /* Renewal-calendar row only (旧画面/リニューアル画面/分離&改善したカレンダー):
+     these captions are black/SemiBold/16px per Figma — distinct from the
+     plain gray/normal captions used by every other image row on this page
+     (severity's "目標設定画面" etc.), which already get that lighter
+     treatment from the shared .img-card .cap rule in css/style.css. */
+  .img-card--dark-caps .cap {
     font-size: var(--fs-body);
     font-weight: 600;
     color: var(--color-text-primary);
-    text-align: center;
-    white-space: nowrap;
+  }
+  /* The shared .work-img-section p rule (in css/style.css) forces
+     width:100%; max-width:608px on ANY nested <p>, including these small
+     per-image captions — that made a 3rd caption's flex-basis balloon to
+     608px, so it couldn't fit next to the other two images and wrapped
+     onto its own centered row ("2 up top, 1 down below" instead of all 3
+     side by side). Override back to a width that matches the image
+     column instead of the full figure-caption width. */
+  .img-item p:not(.cap) {
+    width: auto;
+    max-width: 260px;
+    margin: 0;
+    text-align: left;
+    color: var(--color-text-secondary);
+  }
+  .img-item p:not(.cap) b {
+    color: var(--color-text-secondary);
+    font-weight: 600;
   }
   .img-stack {
     display: flex;
@@ -210,6 +398,30 @@
     gap: var(--sp-s);
   }
   .img-stack img { height: 175px; }
+  /* Desktop default: each pair behaves exactly like a plain run of img-row
+     children (same alignment/gap as the row itself) — the grouping wrapper
+     only matters for the mobile override below. */
+  .phase2-pair {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--sp-l);
+  }
+  /* 血糖値/グルコース値グラフ(img-stack) + 服薬画面(img4) pair only: stretch
+     both children to the same height (the stack's own natural height) and
+     let the right-hand image fill that height while keeping its own aspect
+     ratio, instead of each side being sized independently by its own image
+     — applies at every width, not just mobile, since the two were already
+     only matching by coincidence (175*2+gap ≈ the img4 inline height). */
+  .phase2-pair--match-height {
+    align-items: stretch;
+  }
+  .phase2-pair--match-height > img {
+    height: 100% !important;
+    width: auto !important;
+    max-width: none;
+    object-fit: contain;
+  }
   .img-pair {
     display: flex;
     gap: 4px;
@@ -248,12 +460,15 @@
     <div class="updated num-ui">Last updated: 2026.8</div>
     <div class="sp-menu-wrap">
       <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
-        <span></span><span></span><span></span>
+        <img class="sp-menu-cat" src="images/icons/sp-menu-cat-blueblack.svg" alt="">
+        <span class="sp-menu-label">menu</span>
       </button>
 
       <div class="sp-menu-popup" id="sp-menu-popup" hidden>
         <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
-          <span></span><span></span>
+          <img class="sp-menu-cat" src="images/icons/sp-menu-cat-white.svg" alt="">
+          <span class="sp-menu-label">close</span>
+          <img class="sp-menu-close-x" src="images/icons/sp-menu-close-x.svg" alt="">
         </button>
         <nav class="site-nav">
           <a href="works.html" data-page="works">Work</a>
@@ -269,7 +484,7 @@
       <div class="work-hero-img">
         <img src="images/work-01/hero.png" alt="みんチャレ チーム画面と健康データ画面のスクリーンショット">
       </div>
-      <h1>習慣化アプリ「みんチャレ」健康管理機能</h1>
+      <h1>習慣化アプリ「みんチャレ」<br class="sp-only">健康管理機能</h1>
       <div class="info num-ui">
         <span class="item"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>A10lab</span>
         <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2024.12-2026.2</span>
@@ -333,7 +548,7 @@
     </section>
 
     <section class="work-img-section">
-      <div class="img-card">
+      <div class="img-card img-card--dark-caps">
         <div class="img-row">
           <div class="img-item">
             <img src="images/work-01/renewal-old.png" alt="旧画面(マイデータ)のスクリーンショット">
@@ -343,10 +558,10 @@
             <img src="images/work-01/renewal-new.png" alt="リニューアル画面のスクリーンショット">
             <p class="cap">リニューアル画面</p>
           </div>
-          <div class="img-item">
+          <div class="img-item img-item--fit">
             <img src="images/work-01/renewal-calendar-detail.png" alt="分離&改善したカレンダーのスクリーンショット">
             <p class="cap">分離&amp;改善したカレンダー</p>
-            <p>タップで詳細に遷移するが、複数チーム参加時でも1週間単位での継続状況を一目でわかるようにしたところ継続状況の数値も上昇した</p>
+            <p>タップで詳細に遷移するが、複数チーム参加時でも1週間単位での継続状況を一目でわかるようにしたところ<b>継続状況の数値も上昇した</b></p>
           </div>
         </div>
       </div>
@@ -361,34 +576,36 @@
             <p>数値の編集ができない。</p>
           </div>
         </div>
-        <span class="solution-arrow">→</span>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
         <div class="solution-box">健康データ画面にPHRの数値全てを集約し、入力と編集を可能にした。タップで即入力&編集ができるようにした。</div>
       </div>
       <div class="solution-pair">
         <div class="solution-box">
           チーム参加前に外部サービスの中継を挟んでいるため画面遷移が多い。チーム参加までのオンボーディングが長く、且つシームレスにつながっていないので完走率が低い。目標設定がアプリ内で確認できない。
         </div>
-        <span class="solution-arrow">→</span>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
         <div class="solution-box">外部サービスが担っていた一部流動性の低い部分*をアプリ内に取り込んだ。目標設定をアプリ内で設定することで体調や習慣化の進捗に合わせて、目標の再設定もできるようにした。(＊実証実験結果に伴う変更が多いため、全てをアプリ内に取り込むことはできなかった。)</div>
       </div>
       <div class="note-block" style="margin-top: var(--sp-m);">
         <h3>工夫した点・苦労した点</h3>
-        <p>
-          趣味などの健康とは関係ない習慣のユーザーにとってノイズにならないようチャレンジのカレンダーを分離した。バリュープロポジションキャンバスを作成し、習慣化アプリとしてやらないことを決めた。医療器具認証された医療系アプリでしかできない部分では対抗しても意味がないため、独自性が出せる部分コア機能であるピアサポートが生きる体験設計を目指した。医療系アプリの硬い印象ではなく、遊び心がありやる気が出る感じのビジュアルを打ち出すことにした。入力のしやすさとビジュアルのメリハリのバランス。タップ領域はエンジニアと密に連携し、微調整をした。
-        </p>
+        <ul>
+          <li>趣味などの健康とは関係ない習慣のユーザーにとってノイズにならないようチャレンジのカレンダーを分離した。</li>
+          <li>バリュープロポジションキャンバスを作成し、習慣化アプリとしてやらないことを決めた。医療器具認証された医療系アプリでしかできない部分では対抗しても意味がないため、独自性が出せる部分コア機能であるピアサポートが生きる体験設計を目指した。</li>
+          <li>医療系アプリの硬い印象ではなく、遊び心がありやる気が出る感じのビジュアルを打ち出すことにした。入力のしやすさとビジュアルのメリハリのバランス。タップ領域はエンジニアと密に連携し、微調整をした。</li>
+        </ul>
       </div>
     </section>
 
     <section class="work-img-section">
       <img src="images/work-01/bp-logic-chart.png" alt="血圧記録時間区切ロジックのチャート">
-      <p class="cap" style="width:100%; max-width:800px; text-align:right;">血圧記録時間区切ロジック</p>
-      <p>
+      <p class="cap" style="width:100%; max-width:800px; text-align:center; font-weight:600; color: var(--color-text-primary);">血圧記録時間区切ロジック</p>
+      <p style="text-align: left; color: var(--color-text-secondary);">
         通常のヘルスケア系アプリは0時区切のものが一般的だが、習慣化アプリとして生活習慣に根ざした時間区切と実装難易度のバランスが難しく、エンジニアと協議しながらすすめた。血圧は1日の中でも何度か計測するが、起床後就寝前のタイミングが重要であり、夜勤など多様な生活時間の方に合わせてどの数字を採用するかをロジックで出すことにした。
       </p>
     </section>
 
     <section class="work-img-section">
-      <div class="img-card">
+      <div class="img-card img-card--dark-caps">
         <div class="img-row">
           <div class="img-item">
             <img src="images/work-01/detail-steps.png" alt="歩数詳細のスクリーンショット">
@@ -403,7 +620,7 @@
             <p class="cap">血圧詳細</p>
           </div>
         </div>
-        <p>血圧は月年の場合折れ線グラフに変化。歩数や体重などは月と年では平均値も表示するようにした。項目・期間ごとに最適なグラフ表現を行なった。</p>
+        <p style="color: var(--color-text-secondary); max-width: 601px; margin: 0 auto; text-align: left;">血圧は月年の場合折れ線グラフに変化。歩数や体重などは月と年では平均値も表示するようにした。項目・期間ごとに最適なグラフ表現を行なった。</p>
       </div>
     </section>
 
@@ -411,7 +628,7 @@
       <h2>問題点と解決策＿02</h2>
       <div class="solution-pair">
         <div class="solution-box">toBユーザーは会社から保健指導を受けて参加しているためtoCユーザーに比べ、健康習慣に対する動機付けが弱くモチベーションも低い。</div>
-        <span class="solution-arrow">→</span>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
         <div class="solution-box">
           <ul>
             <li>数値の変化をわかりやすいグラフにすることでモチベーションアップ。週月年と切り替えることで長期感の変化がわかるようにした。</li>
@@ -421,19 +638,20 @@
       </div>
       <div class="note-block" style="margin-top: var(--sp-m);">
         <h3>工夫した点・苦労した点</h3>
-        <p>
-          歩数を競うサービスなども別に展開しているため、API連携を切断したり、歩数を編集した場合わかるようにした。血圧の数値は起床後・就寝前という数値が重要だがグラフ化する際に一般的な表現ではなかったため、ステークホルダー数名から見たことがないのでよくわからないと反発が大きかった。しかし、海外の血圧測定アプリなどでは使われている表現であると説得することで、採用することができた。
-        </p>
+        <ul>
+          <li>歩数を競うサービスなども別に展開しているため、API連携を切断したり、歩数を編集した場合わかるようにした。</li>
+          <li>血圧の数値は起床後・就寝前という数値が重要だがグラフ化する際に一般的な表現ではなかったため、ステークホルダー数名から見たことがないのでよくわからないと反発が大きかった。しかし、海外の血圧測定アプリなどでは使われている表現であると説得することで、採用することができた。</li>
+        </ul>
       </div>
     </section>
 
     <section class="work-img-section">
       <div class="img-card">
-        <p class="cap">重症化予防プログラム専用画面</p>
-        <div class="img-row">
+        <p class="cap" style="color: var(--color-text-primary); font-size: 20px; font-weight: 700;">重症化予防プログラム専用画面</p>
+        <div class="img-row img-row--tight">
           <div class="img-item">
             <img src="images/work-01/severity-start.png" alt="チーム参加直後の画面">
-            <p>チーム参加直後の画面。「開始する」押下で目標設定画面に遷移。</p>
+            <p style="max-width: 180px;">チーム参加直後の画面。「開始する」押下で目標設定画面に遷移。</p>
           </div>
           <span class="img-arrow">→</span>
           <div class="img-item">
@@ -452,24 +670,27 @@
       <h2>問題点と解決策＿03</h2>
       <div class="solution-pair">
         <div class="solution-box">toBユーザーが3つのチームに入ることは心理的ハードルが高い。</div>
-        <span class="solution-arrow">→</span>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
         <div class="solution-box">健康プログラムユーザーに限り、1つのチーム内で３つの行動目標を設定し、毎日結果を記録出来るようにした。</div>
       </div>
       <div class="solution-pair">
         <div class="solution-box">ユーザーインタビューから個人向けのパーソナライズされたアドバイスのニーズが高いことが分かったが、医療事業者ではないため医学的なアドバイスは法的にできない。</div>
-        <span class="solution-arrow">→</span>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
         <div class="solution-box">医学アドバイスはできないが、ジムのように運動などの行動傾向に関してのアドバイスは可能なため、AIを活用しユーザーに合わせた食事時間や運動の習慣化のコツなどアドバイスを配信するプランを作成した。</div>
       </div>
       <div class="note-block" style="margin-top: var(--sp-m);">
         <h3>工夫した点・苦労した点</h3>
-        <p>
-          健康プログラムは社外の専門家に監修を受けているが、表現を厳密にしようとすると項目数が多すぎたり長文になってしまいユーザー体験を損なってしまう。目標設定画面は項目数が多くスクロールが大変だったので、選択したものを下にも表示し、選び直したい場合や外したい場合にすぐタップできるようにした。週に1回以上〇〇するなどの表現がユーザー目線では直感的ではないため、ユーザーがチェックをする際は1日単位での表現に変更するなど、すり合わせに難航した。血圧や血糖値などは個人情報のためどこまで公開とするかを医療職と相談し決めた。歩数のみを公開し具体的な数値は他ユーザーには見せず、行動結果のみをチームメンバーにも開示するようにした。
-        </p>
+        <ul>
+          <li>健康プログラムは社外の専門家に監修を受けているが、表現を厳密にしようとすると項目数が多すぎたり長文になってしまいユーザー体験を損なってしまう。</li>
+          <li>目標設定画面は項目数が多くスクロールが大変だったので、選択したものを下にも表示し、選び直したい場合や外したい場合にすぐタップできるようにした。</li>
+          <li>週に1回以上〇〇するなどの表現がユーザー目線では直感的ではないため、ユーザーがチェックをする際は1日単位での表現に変更するなど、すり合わせに難航した。</li>
+          <li>血圧や血糖値などは個人情報のためどこまで公開とするかを医療職と相談し決めた。歩数のみを公開し具体的な数値は他ユーザーには見せず、行動結果のみをチームメンバーにも開示するようにした。</li>
+        </ul>
       </div>
     </section>
 
     <section class="work-img-section">
-      <div class="img-card">
+      <div class="img-card img-card--dark-caps">
         <div class="img-row">
           <div class="img-item">
             <img src="images/work-01/team-record-btn.png" alt="チーム内記録ボタンのスクリーンショット">
@@ -484,7 +705,7 @@
               <img src="images/work-01/team-record-custom1.png" alt="カスタマイズ機能のスクリーンショット1">
               <img src="images/work-01/team-record-custom2.png" alt="カスタマイズ機能のスクリーンショット2">
             </div>
-            <p>入力ハードルを下げるために、必要の無い項目は非表示にカスタマイズできるようにした</p>
+            <p style="max-width: 340px; margin: 0 auto;">入力ハードルを下げるために、必要の無い項目は非表示にカスタマイズできるようにした</p>
           </div>
         </div>
       </div>
@@ -494,57 +715,74 @@
       <h2>ユーザー属性による棲み分け</h2>
       <div class="solution-pair">
         <div class="solution-box">みんチャレは証拠写真を送信し、チームメンバーがOKボタンを押さないと記録として達成したとみなされない仕様になっている。これはコア機能であるピアサポートを強化するための仕掛けの一つである。ピアサポートの恩恵は課金しないと受けられない設計になっており、保険者が使用料を払うtoBユーザーと他の属性ユーザーとは棲み分けが必要となる。</div>
-        <span class="solution-arrow">→</span>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
         <div class="solution-box">健康データ画面は全ユーザーに共通で公開されており、記録が漏れても後から編集できるようにしている。しかし習慣化に良いとされる「毎日する」「仲間がいる」などの機能はチームに入らないと利用できないようにした。また、行動目標を設定し結果を送信する機能はtoBユーザー限定とした。</div>
       </div>
       <div class="note-block" style="margin-top: var(--sp-m);">
         <h3>工夫した点・苦労した点</h3>
-        <p>
-          みんチャレは1つで2C2B2Gのユーザーが混在しており、課金方法・額も属性ごとに異なるため棲み分けに苦労した。チームに参加しないとコア機能であるピアサポートは受けられない。健康管理機能はチームに参加しなくても使用できるよう整合を取る必要があった。社長と医療職メンバーと3人で2日に1回MTGを行い大量の画面を作成した。
-        </p>
+        <ul>
+          <li>みんチャレは1つで2C2B2Gのユーザーが混在しており、課金方法・額も属性ごとに異なるため棲み分けに苦労した。</li>
+          <li>チームに参加しないとコア機能であるピアサポートは受けられない。健康管理機能はチームに参加しなくても使用できるよう整合を取る必要があった。社長と医療職メンバーと3人で2日に1回MTGを行い大量の画面を作成した。</li>
+        </ul>
       </div>
 
       <div class="note-block" style="margin-top: var(--sp-l);">
-        <h3>アクセシビリティについて</h3>
-        <p>
-          みんチャレのカラースタイルは決められたルールがあったが、スマートフォンアプリ黎明期に作られたアプリだったためWCAGの基準に満たないグレーが使用されていた。健康管理機能ユーザーは高齢、壮年が対象になるため基準に満たないグレーを使用しないように、AAを達成している新しいグレーカラーの追加を行った。別プロジェクトになるがiOSのダイナミックフォント対応を行ったため、フォント崩れする画面が生まれていた。今回追加した画面はそれらの対応を念頭に、あらかじめバリアブルで高齢者文字サイズのモードを設定し、大目に余白を取るなど崩れにくい画面設計を目指した。
-        </p>
+        <h3 style="text-align: center; color: var(--color-text-primary);">アクセシビリティについて</h3>
+        <ul>
+          <li>みんチャレのカラースタイルは決められたルールがあったが、スマートフォンアプリ黎明期に作られたアプリだったためWCAGの基準に満たないグレーが使用されていた。健康管理機能ユーザーは高齢、壮年が対象になるため基準に満たないグレーを使用しないように、AAを達成している新しいグレーカラーの追加を行った。</li>
+          <li>別プロジェクトになるがiOSのダイナミックフォント対応を行ったため、フォント崩れする画面が生まれていた。今回追加した画面はそれらの対応を念頭に、あらかじめバリアブルで高齢者文字サイズのモードを設定し、大目に余白を取るなど崩れにくい画面設計を目指した。</li>
+        </ul>
       </div>
     </section>
 
     <section class="work-img-section">
       <div class="img-card">
         <img src="images/work-01/fix-screens-full.png" alt="本プロジェクトFix画面全体" style="width:100%; border-radius: var(--radius-s);">
-        <p>本プロジェクトFix画面全体。同じUIはコンポーネント化しプロパティ活用で極力省力化した。ここには載せないが、没画面は3倍ほどある。</p>
+        <div style="display:flex; flex-direction:column; gap: 0; width:100%; max-width:608px; margin:0 auto;">
+          <p style="color: var(--color-text-secondary); text-align: left; margin: 0;">本プロジェクトFix画面全体。同じUIはコンポーネント化しプロパティ活用で極力省力化した。</p>
+          <p style="color: var(--color-text-secondary); text-align: left; margin: 0;">ここには載せないが、没画面は3倍ほどある。</p>
+        </div>
       </div>
     </section>
 
     <section class="work-section">
       <h2>成果と振り返り</h2>
-      <p>
-        toBユーザーのオンボーディングでの離脱が減少し、プログラム参加者が増加した。外部ツールで行なっていた人力によるオペレーション工数削減につながった。血圧手帳や他のアプリを併用していたユーザーから、感謝の声をいただいた。血圧と血糖値は新規プログラムのため継続率はまだ測定できていない。リソースの不足により、まだ実装されていない機能がいくつかある。キャッチアップフェーズにおけるプロジェクトだったため、事業目標やステークホルダーの意図を正確に把握する初期ヒアリングに十分な時間を投資した。専門職・開発チーム間において認識の齟齬が起きやすい難易度の高い案件であったため、初期の要件定義とフィードバックの回収・調整に時間をかけた。
-      </p>
+      <ul>
+        <li>toBユーザーのオンボーディングでの離脱が減少し、プログラム参加者が増加した。</li>
+        <li>外部ツールで行なっていた人力によるオペレーション工数削減につながった。</li>
+        <li>血圧手帳や他のアプリを併用していたユーザーから、感謝の声をいただいた。</li>
+        <li>血圧と血糖値は新規プログラムのため継続率はまだ測定できていない。</li>
+        <li>リソースの不足により、まだ実装されていない機能がいくつかある。</li>
+        <li>キャッチアップフェーズにおけるプロジェクトだったため、事業目標やステークホルダーの意図を正確に把握する初期ヒアリングに十分な時間を投資した。</li>
+        <li>専門職・開発チーム間において認識の齟齬が起きやすい難易度の高い案件であったため、初期の要件定義とフィードバックの回収・調整に時間をかけた。</li>
+      </ul>
       <div class="note-block" style="margin-top: var(--sp-m);">
         <h3>副次的な効果</h3>
-        <p>
-          カレンダーを分離したことにより、1週間単位での目標達成状況が可視化された。複数チーム参加のtoCユーザーに「カレンダーを全部写真で埋めたい」という欲求が生まれ、toCユーザーの継続率が向上した。今回の機能を活用した自治体向けの入札に参加できるようになった。未実装だが、AIによるにゃんチャレの性格調教のテストができた。
-        </p>
+        <ul>
+          <li>カレンダーを分離したことにより、1週間単位での目標達成状況が可視化された。複数チーム参加のtoCユーザーに「カレンダーを全部写真で埋めたい」という欲求が生まれ、toCユーザーの継続率が向上した。</li>
+          <li>今回の機能を活用した自治体向けの入札に参加できるようになった。</li>
+          <li>未実装だが、AIによるにゃんチャレの性格調教のテストができた。</li>
+        </ul>
       </div>
     </section>
 
     <section class="work-img-section">
       <div class="img-card">
         <div class="img-row">
-          <img src="images/work-01/phase2-img1.png" alt="フェーズ2以降の機能スクリーンショット1" style="height:360px; width:auto; border-radius: var(--radius-s);">
-          <img src="images/work-01/phase2-img2.png" alt="フェーズ2以降の機能スクリーンショット2" style="height:360px; width:auto; border-radius: var(--radius-s);">
-          <div class="img-stack">
-            <img src="images/work-01/phase2-img3-top.png" alt="フェーズ2以降の機能スクリーンショット3上" style="border-radius: var(--radius-s);">
-            <img src="images/work-01/phase2-img3-bottom.png" alt="フェーズ2以降の機能スクリーンショット3下" style="border-radius: var(--radius-s);">
+          <div class="phase2-pair">
+            <img src="images/work-01/phase2-img1.png" alt="フェーズ2以降の機能スクリーンショット1" style="height:360px; width:auto; border-radius: var(--radius-s);">
+            <img src="images/work-01/phase2-img2.png" alt="フェーズ2以降の機能スクリーンショット2" style="height:360px; width:auto; border-radius: var(--radius-s);">
           </div>
-          <img src="images/work-01/phase2-img4.png" alt="フェーズ2以降の機能スクリーンショット4" style="height:360px; width:auto; border-radius: var(--radius-s);">
+          <div class="phase2-pair phase2-pair--match-height">
+            <div class="img-stack">
+              <img src="images/work-01/phase2-img3-top.png" alt="フェーズ2以降の機能スクリーンショット3上" style="border-radius: var(--radius-s);">
+              <img src="images/work-01/phase2-img3-bottom.png" alt="フェーズ2以降の機能スクリーンショット3下" style="border-radius: var(--radius-s);">
+            </div>
+            <img src="images/work-01/phase2-img4.png" alt="フェーズ2以降の機能スクリーンショット4" style="height:360px; width:auto; border-radius: var(--radius-s);">
+          </div>
         </div>
+        <p class="figure-caption" style="color: var(--color-text-secondary);">開発工数の制約や優先度からフェーズ2以降に開発することになった機能一部分</p>
       </div>
-      <p class="figure-caption">開発工数の制約や優先度からフェーズ2以降に開発することになった機能一部分</p>
     </section>
 
     <section class="recommendation">
@@ -563,7 +801,7 @@
               </div>
             </div>
           </a>
-          <a class="pickup-card" href="work-03.html">
+          <a class="pickup-card" href="work-08.html">
             <div class="thumb"><img src="images/home/card-03-denso.png" alt="持込み持出し許可証 のスクリーンショット"></div>
             <div class="body">
               <h3>持込み持出し許可証</h3>

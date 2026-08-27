@@ -2,103 +2,42 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>情報記憶媒体の持込み持出し許可証 | Yumi Takaki</title>
+<title>歩数計ウィジェット | Yumi Takaki</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="DENSO グループ会社間の情報記憶媒体 持込み・持出し許可証アプリのケーススタディ。申請業務プロセスの電子化と運用改善の事例。">
+<meta name="description" content="みんチャレ 歩数計ウィジェットのケーススタディ。歩数確認までの導線の長さを解消するAndroidウィジェットの企画・デザイン。">
 <link rel="stylesheet" href="css/style.css">
 
 <style>
   /* ---------- work-03 scoped additions ---------- */
-  .issue-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--sp-m);
-  }
-  @media (max-width: 720px) { .issue-grid { grid-template-columns: 1fr; } }
-  .issue-card {
-    background: var(--color-background);
-    border: 1px solid var(--color-text-secondary);
-    border-radius: var(--radius-m);
-    padding: var(--sp-m) var(--sp-l);
-    display: flex;
-    align-items: center;
-    font-size: var(--fs-body);
-    color: var(--color-text-secondary);
-  }
-  .issue-card b { color: var(--color-text-secondary); font-weight: 600; }
-  .issue-label {
-    font-family: var(--font-jp);
-    font-weight: 600;
-    font-size: var(--fs-body);
-    color: var(--color-text-secondary);
-    margin-bottom: var(--sp-s);
-  }
-  .issue-block + .issue-block { margin-top: var(--sp-l); }
-
-  .constraint-box {
-    background: var(--color-backgray);
-    border-radius: var(--radius-s);
-    padding: var(--sp-l);
-  }
-  .constraint-box h3 {
-    font-family: var(--font-jp);
-    font-weight: 600;
-    font-size: var(--fs-body);
-    color: var(--color-text-blueblack);
-    margin-bottom: var(--sp-s);
-  }
-  .constraint-box ul { display: flex; flex-direction: column; gap: var(--sp-xs); }
-  .constraint-box li {
-    font-size: var(--fs-body);
-    color: var(--color-text-secondary);
-    padding-left: 1.1em;
-    position: relative;
-  }
-  .constraint-box li::before {
-    content: '';
-    position: absolute;
-    left: 0.2em;
-    top: 0.7em;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--color-text-blueblack);
-  }
-
-  .screen-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--sp-l);
-  }
-  @media (max-width: 720px) { .screen-grid { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; } }
-  .screen-item { text-align: center; }
-  .screen-item img { border-radius: var(--radius-s); width: 100%; margin-bottom: var(--sp-s); }
-  .screen-item h4 {
-    font-family: var(--font-jp);
-    font-weight: 600;
-    font-size: var(--fs-body);
-    margin-bottom: 4px;
-  }
-  .screen-item p { font-size: var(--fs-caption); color: var(--color-text-secondary); }
-
-  .tools-note {
-    font-family: var(--font-ui);
-    font-size: var(--fs-caption);
-    color: var(--color-text-secondary);
-    background: var(--color-backgray);
-    border-radius: var(--radius-s);
-    padding: var(--sp-m) var(--sp-l);
-    width: fit-content;
-  }
-  .disclaimer {
-    font-size: var(--fs-caption);
-    color: var(--color-text-secondary);
-    background: var(--color-backgray);
-    border-radius: var(--radius-s);
-    padding: var(--sp-m) var(--sp-l);
+  /* Mirrors work-01's mobile treatment: .img-card gets wider side padding
+     and its images cap at a shorter max-height instead of the shared
+     220px default; multi-image rows stack into a single column below
+     768px. Unlike other work pages, this title is short enough that it
+     should never break to a second line, even on mobile. */
+  /* Figma specifies no border-radius on this page's figure images — the
+     shared .img-card img rule (css/style.css) rounds them by default. */
+  .img-card img { border-radius: 0; }
+  @media (max-width: 768px) {
+    .img-card {
+      width: 100%;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    .img-card img {
+      height: auto !important;
+      max-height: 300px !important;
+      width: auto !important;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+    .img-card .img-row {
+      flex-direction: column;
+      align-items: center;
+    }
   }
 </style>
-
 </head>
 <body data-page="works">
 
@@ -114,12 +53,15 @@
     <div class="updated num-ui">Last updated: 2026.8</div>
     <div class="sp-menu-wrap">
       <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
-        <span></span><span></span><span></span>
+        <img class="sp-menu-cat" src="images/icons/sp-menu-cat-blueblack.svg" alt="">
+        <span class="sp-menu-label">menu</span>
       </button>
 
       <div class="sp-menu-popup" id="sp-menu-popup" hidden>
         <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
-          <span></span><span></span>
+          <img class="sp-menu-cat" src="images/icons/sp-menu-cat-white.svg" alt="">
+          <span class="sp-menu-label">close</span>
+          <img class="sp-menu-close-x" src="images/icons/sp-menu-close-x.svg" alt="">
         </button>
         <nav class="site-nav">
           <a href="works.html" data-page="works">Work</a>
@@ -129,164 +71,94 @@
     </div>
   </header>
 
-  <main class="wrap">
+  <main>
 
-    <section class="work-hero">
-      <h1>情報記憶媒体の持込み持出し許可証</h1>
-      <p class="info num-ui">
-        <span class="tag">UI/UX</span><span class="tag">DENSO</span><span class="tag">2021</span><span class="tag">Shipped</span>
-      </p>
-      <p class="note num-ui">個人プロジェクト</p>
-      <p class="note">
-        デンソー社員がトヨタ自動車グループ間で情報記憶媒体を会社構内に持込み・持出しする際に使用するアプリ。グループ間の連携を深め、時間がかかっていた申請手続きを簡易にする。
-      </p>
-      <p class="disclaimer">※機密事項を含まないよう、変更を加えて再現しています。実際の製品やサイトは掲載していません。</p>
-      <div class="work-hero-img">
-        <img src="images/work-03/hero.png" alt="情報機器持込み許可証アプリのスクリーンショット(2画面)">
-      </div>
-    </section>
+    <div class="work-hero-band" style="background:#eedd11;">
+      <img src="images/work-03/hero-widget-app.png" alt="歩数計ウィジェットを配置したホーム画面">
+      <img src="images/work-03/hero-widget-team.png" alt="チームメンバーの歩数が並ぶウィジェット画面">
+    </div>
 
-    <section class="work-section">
-      <h2>背景</h2>
-      <p>
-        デンソーでは、情報記憶媒体の持出し・持込み申請は紙の帳票を使用しており、複数の承認ステップや入門チェックなど、許可までに多大な時間がかかっていた。コロナ禍のテレワーク拡大で処理件数が増大し、スピーディーに対応できる簡易制度の考案が急務となっていた。当時一人で社内の帳票の処理、40万台以上のPCのセキュリティ監視、3つのヘルプデスクの窓口の担当など業務過多の状態に、メキシコ拠点とドイツ拠点でのセキュリティ事故も重なり多忙を極めていた。そんな中、親会社であるトヨタ自動車より、グループ間で相互に簡易持込みができる「ルール統一制度」への参加要請を受けた。少しでも効率化するため、アプリ開発し省人化することにした。
-      </p>
-    </section>
+    <div class="work-content">
 
-    <section class="work-section">
-      <h2>課題</h2>
+      <section class="work-hero">
+        <h1>歩数計ウィジェット</h1>
+        <p class="info num-ui">
+          <span class="item"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>A10lab</span>
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2024.10</span>
+          <span class="item"><svg width="14.1" height="16" viewBox="0 0 15 17" fill="none"><path d="M2.51072 0L4.1727 0.00436242L4.16962 1.6892C4.91437 1.70561 5.70909 1.69204 6.45697 1.69215L10.8399 1.69106C10.8219 1.18184 10.8323 0.514125 10.8447 0.00201844L12.4926 0.00303842C12.5048 0.556186 12.498 1.13718 12.4981 1.69154C12.9118 1.69135 13.4723 1.66717 13.858 1.78997C14.2724 1.92487 14.6172 2.22236 14.8163 2.61681C14.957 2.8922 14.9935 3.18042 14.9963 3.48756C15.0015 4.05642 14.9998 4.62533 14.9995 5.19423L14.9995 12.9218C14.9998 13.6945 15.0012 14.4666 14.994 15.2392C14.9872 15.9782 14.679 16.4917 14.0345 16.8326C13.7531 16.9724 13.3387 16.9935 13.0307 16.9956L2.85748 16.9964C2.35755 16.9969 1.80568 17.0192 1.31475 16.9468C1.04309 16.9067 0.693502 16.6912 0.498897 16.4911C0.0144176 15.9932 0.00339418 15.4809 0.00228762 14.8225L0.00243666 4.49856C0.00230898 4.15009 -0.0139701 3.44381 0.0393573 3.11585C0.0935147 2.76543 0.255987 2.44184 0.503111 2.19221C1.07133 1.61519 1.75948 1.69039 2.5064 1.69167L2.51072 0Z" fill="#47536F"/><path d="M1.67959 5.94933L13.3359 5.94911C13.3692 9.0389 13.3371 12.1909 13.337 15.2858L1.6784 15.2836L1.67648 11.3248L1.67959 5.94933Z" fill="#F9F9F8"/><path d="M5.82243 8.50687C5.85037 8.54519 5.8405 10.0139 5.84178 10.1881C6.65246 10.2223 7.48522 10.183 8.29848 10.1978C8.58384 10.203 8.88478 10.2005 9.16889 10.1861L9.17093 8.47711C9.36556 8.72459 10.024 9.36236 10.2779 9.6211L11.1933 10.5518C11.3438 10.7048 11.5224 10.902 11.6785 11.042C10.8466 11.8574 10.0355 12.7334 9.20432 13.5569C9.1957 13.5446 9.18521 13.5296 9.17285 13.512C9.16259 13.0401 9.16951 12.353 9.17119 11.8979L5.84261 11.8972C5.83461 12.3532 5.81984 13.1499 5.84942 13.5841C5.64138 13.4171 5.20229 12.944 4.99488 12.7325L3.3419 11.0447C3.95704 10.4521 4.54387 9.78815 5.1571 9.18913C5.36828 8.98284 5.6374 8.73169 5.82243 8.50687Z" fill="#47536F"/></svg>1日</span>
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>UIUX Design</span>
+        </p>
+        <p class="note">
+          a10labプロダクト事業部では1ヶ月に1日「改善デー」という日が設けられている。リファクタリングのようなやらなければいけないけれど優先度が低く手が付けられてないものや、事業貢献に繋がるやりたいことをやっていい日である。ユーザーの声で多くあったのが「歩数がチャレンジ投稿画面までいかないとわからず導線が長い」という不満である。個人的に解決したいと考えていたので取り組むことにした。
+        </p>
+      </section>
 
-      <div class="issue-block">
-        <p class="issue-label">ユーザー体験の課題</p>
-        <div class="issue-grid">
-          <div class="issue-card">現状の申請手続きのような混乱を無くす。</div>
-          <div class="issue-card">事前の複雑な申請フローを、シンプルで手軽な動線にする。</div>
-          <div class="issue-card">出張者や出向者が、現場で「迷わず」「スムーズに入門できる」UI。</div>
+      <section class="work-img-section">
+        <div class="img-card">
+          <div class="img-row">
+            <img src="images/work-03/fig1-app-search.png" alt="歩数を確認するにはチームのチャレンジ送信画面まで移動する必要がある画面遷移1">
+            <img src="images/work-03/fig1-app-challenge.png" alt="歩数を確認するにはチームのチャレンジ送信画面まで移動する必要がある画面遷移2">
+          </div>
+          <p class="cap">歩数を確認するにはチームに入って、チャレンジ送信画面まで行かなければならない。</p>
         </div>
-      </div>
+      </section>
 
-      <div class="issue-block">
-        <p class="issue-label">運営側の課題</p>
-        <div class="issue-grid">
-          <div class="issue-card"><b>グループ間相互の持込み手続きの共通化・効率化：</b>トヨタグループ全体での出張・出向・転籍に伴う入門時のタイムロスを削減。</div>
-          <div class="issue-card"><b>グループ各社の足並み揃え：</b>各社で異なる運用の共通化と、スピーディーに処理できる簡易制度への落とし込み。</div>
-          <div class="issue-card"><b>セキュリティと利便性の両立：</b>グループ全体のセキュリティ基準を満たしつつ、従来の煩雑な承認ステップをどれだけ簡素化できるかの調整。</div>
+      <section class="work-section">
+        <h2>背景と課題</h2>
+        <p>
+          「歩く」は人気カテゴリーの1つで、5人で2万歩を歩くウォーキングリレーというチームも用意されている。前述した通り実際の歩数を確認するには、アプリを立ち上げ→チームに入り→チャレンジ投稿画面までいかないと確認できない(上図左の画面)。ここでの歩数はGoogle fitと連携した数値を表示しているが、みんチャレ内にとり込まれるタイミングはラグがあり実際とズレることが多くそれも問い合わせが多い不満の一つである。Google側が提供しているものに対しては対策がとれないので、それが気にならないようにできるものを考えことにした。
+        </p>
+      </section>
+
+      <section class="work-section">
+        <h2>制約</h2>
+        <p>
+          iOSエンジニアが足りていないのでAndroidのみ作成。実装もエンジニアの気が向いた時に行うのでいつ完成するか不明。
+        </p>
+      </section>
+
+      <section class="work-img-section">
+        <div class="img-card">
+          <div class="img-row">
+            <img src="images/work-03/fig1-app-search.png" alt="ウィジェット企画の元になったアプリ画面">
+            <img src="images/work-03/fig2-widget-mockup.png" alt="歩数計ウィジェットのモックアップ">
+            <img src="images/work-03/fig2-widget-list.png" alt="ウィジェットのイラストバリエーション一覧">
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="work-section">
-      <h2>プロセス</h2>
-      <p>
-        定期的に行われるトヨタ自動車各社とのグループ会議に上司の室長と2人でデンソー代表者として参加。各社と運用のすり合わせ、ルール共通化の最低ラインを決めた。すでに運用しているデンソー社内の申請の体験がよくないため、同じ道を辿らないよう現状の問題点を洗い出し、体験改善の足がかりとすることにした。
-      </p>
-    </section>
+      <section class="work-section">
+        <h2>解決策</h2>
+        <p>
+          歩く歩数に応じてイラストが変化するウィジェットを作ることにした。たくさん歩くことでポジティブなイラストに変化し、よりやる気が出る体験を提供。習慣化は心理ハードルが低い方がよく、毎日歩くよりは歩けない日があってもいいと思えるように週の合計も表示し毎日の変化がわかるようにした。タップするとアプリが立ち上がるのでエンゲージメント向上にもつながると考えた。
+        </p>
+      </section>
 
-    <section class="work-section">
-      <h2>制約</h2>
-      <div class="constraint-box">
-        <h3>トヨタ自動車側の求める共通条件</h3>
+      <section class="work-img-section">
+        <div class="img-card">
+          <img src="images/work-03/fig3-cat-illustrations.png" alt="歩数に応じて変化する猫のイラストバリエーション一覧">
+        </div>
+      </section>
+
+      <section class="work-section">
+        <h2>成果と振り返り</h2>
         <ul>
-          <li>許可証は紙で指定の業者に発注(まとめて1ヶ月に一度だけ発注可能)</li>
-          <li>申請には、必要な教育を受講すること</li>
-          <li>年に一度更新を確認し、不要となったカードは回収すること</li>
-          <li>セキュリティ要件を担保すること</li>
-          <li>トヨタ自動車より支給されたExcelの帳票は使用してもしなくても良い(カスタマイズ可)</li>
+          <li>エンジニアにも好評で、ステージング環境で使用してみたところ可愛くて愛社精神も高まった。</li>
+          <li>その他のリリースで忙しく、バグ修正ができていないため本番リリースはされていない。</li>
+          <li>社内で一番要望の強かった自治体部からは「高齢者にウィジェットの概念を説明するのが難しい」と次の課題をもらった。</li>
         </ul>
-      </div>
-    </section>
+      </section>
 
-    <section class="work-section">
-      <h2>問題抽出</h2>
-      <p>
-        特性要因図を使い、自社独自制度のヘルプデスクに届く、ユーザーの要望やクレームを分類した。ユーザー視点と事務局側視点の両方から、下記の観点で問題を洗い出した。<br>
-        ・どこに時間がかかっているか　・何に不満を持っているか
-      </p>
-    </section>
-
-    <section class="work-section">
-      <h2>現状の体験分析｜共感マップ</h2>
-      <p>ユーザー視点と管理側視点の両方の体験を可視化してみた。現制度の良い体験・改善できそうな体験を洗い出した。</p>
-      <img src="images/work-03/empathy-map.png" alt="事務局担当の共感マップ。Think and Feel、See、Hear、Say and Do、Pain、Gainの各象限に付箋で整理" style="border-radius: var(--radius-m); width: 100%;">
-    </section>
-
-    <section class="work-section">
-      <h2>体験設計｜ユーザーシナリオ</h2>
-      <img src="images/work-03/journey-map.png" alt="Tグループへ出張時の記憶媒体持ち込み体験のユーザージャーニーマップ" style="border-radius: var(--radius-m); width: 100%;">
-    </section>
-
-    <section class="work-section">
-      <h2>改善方針決定</h2>
-      <div class="constraint-box">
-        <ul>
-          <li>各部でのとりまとめをやめて個人申請に</li>
-          <li>受付・登録・更新作業を省人化</li>
-          <li>承認者や受付側がチェックする時点では申請を一覧で確認できるようにする</li>
-          <li>専用の申請アプリと情報発信サイトを構築する</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="work-section">
-      <h2>フロー＆システム設計</h2>
-      <img src="images/work-03/flow-diagram.png" alt="ユーザー・承認者・事務局・業者間の申請フロー＆システム設計図。Power Automate、Teams、Outlook、SharePoint、Accessを連携" style="border-radius: var(--radius-m); width: 100%;">
-      <p class="tools-note num-ui">使用ツール：Figma・Power Automate・Microsoft Teams・Outlook・Access・SharePoint</p>
-    </section>
-
-    <section class="work-section">
-      <h2>運用設計｜社内イントラ用サイト構築</h2>
-      <img src="images/work-03/intranet-site.png" alt="社内イントラサイトのワイヤーフレーム" style="border-radius: var(--radius-m); width: 100%;">
-      <p>
-        申請に必要な条件をいくつか課している制度のため、冒頭に注意文を記載。マニュアルはスライド形式でサイトトップに埋め込み、画面遷移せずに読めるように変更。シンプルな構成で1ページ内に納め、見た目のボリュームを削減。運用フローはインフォグラフィック化し文字を削減。資料類直下にアプリを埋め込み、制度の理解から申請まで、サイト内で完結できるようにした。セキュリティ事故報告など、関連リンク集を右側にまとめて設置。
-      </p>
-    </section>
-
-    <section class="work-section">
-      <h2>主要画面</h2>
-      <div class="screen-grid">
-        <div class="screen-item">
-          <img src="images/work-03/screen-menu.png" alt="入門時表示画面">
-          <h4>入門時表示画面</h4>
-          <p>運用途中で証明書が紙のカードから電子化することが確定したので画面を追加</p>
-        </div>
-        <div class="screen-item">
-          <img src="images/work-03/screen-form.png" alt="新規登録画面">
-          <h4>新規登録画面</h4>
-          <p>「Office 365 ユーザーコネクタ」登録済み情報は自動で入力</p>
-        </div>
-        <div class="screen-item">
-          <img src="images/work-03/screen-card.png" alt="TOP画面(許可証カード表示)">
-          <h4>TOP画面</h4>
-          <p>M365のアカウントに紐付き、自動でログイン</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="work-section">
-      <h2>工夫した点・苦労した点</h2>
-      <p>
-        出向や2重籍の方も多いためアカウント切り替え間違いがないよう確認を入れた。教育コンテンツは年に一度教育を受講しないといけないため、新規登録時と年度更新時のみ受講確認のモーダルが出現するようにし、回答結果もDBに蓄積しエビデンスを記録した。
-      </p>
-      <p>
-        社員情報のDBがグループ内で統一されていなかったため上司や部署の情報は自動で入力させることができなかった。そのためコンボボックスで検索途中に選択肢を出し選べるようにした。同姓同名も多く、5〜6人くらいいるので部署名でも確認させるようにした。
-      </p>
-      <p>
-        入力内容に不備があった場合、入力完了直後にエラーメッセージを出し、修正内容がわかるようにした。承認依頼のボタンはエラーがなく必要事項が全て入力された場合にのみ活性化するようにした。
-      </p>
-    </section>
-
-    <section class="work-section">
-      <h2>成果と振り返り</h2>
-      <p>
-        業務量を圧縮できた。他のメイン業務の傍少しづつ進めたので時間がかかってしまった。実装はプログラムに詰まった時は社内のエンジニアコミュニティに相談し助けてもらいながらも、一人でやり切ることができた。トヨタ自動車から途中紙での印刷をやめてアプリ化したいと定例で相談があった際、デンソーはすでにアプリ化していると言うことができて、他社のサンプルになれた。派遣社員だったが、色々な業務を率先して行なっていたため、部長報告や5社会議に代表者で出るなど普通できない体験ができた。個人的には入社時から比べて時給が2.5倍になっていたのが嬉しかった。
-      </p>
-    </section>
-
-    <nav class="work-nav">
-      <a href="works.html">&larr; Work一覧へ戻る</a>
-    </nav>
+    </div>
 
   </main>
+
+  <button type="button" class="page-top-btn" aria-label="ページの先頭に戻る">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="page-top-btn-circle" cx="20" cy="20" r="19.5" fill="white" stroke="#47536F"/>
+      <path class="page-top-btn-arrow" d="M20.005 11V29M12.5 18.7143L20 11L27.5 18.7143" stroke="#47536F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
 
   <footer class="site-footer num-ui">©Yumi Takaki</footer>
 

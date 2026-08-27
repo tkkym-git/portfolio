@@ -6,29 +6,46 @@ document.querySelectorAll('.site-nav a').forEach((link) => {
   }
 });
 
-// SP menu popup toggle
+// SP menu popup toggle — slides down from the top on open, slides back up
+// on close. The popup can't animate straight from display:none, so `hidden`
+// is only ever toggled at the *edges* of the transition: removed right
+// before adding .is-open (open), and set only after the close transition
+// has actually finished (close).
 (function () {
   const toggle = document.querySelector('.sp-menu-toggle');
   const popup = document.getElementById('sp-menu-popup');
   const closeBtn = document.querySelector('.sp-menu-close');
   if (!toggle || !popup) return;
 
+  let closeTimer = null;
+
+  const isOpen = () => popup.classList.contains('is-open');
+
   const openMenu = () => {
+    clearTimeout(closeTimer);
     popup.hidden = false;
+    // Force a layout flush so the browser registers the pre-open (hidden)
+    // state before .is-open is added — otherwise the two class changes get
+    // batched into one style recalc and the transition never plays.
+    void popup.offsetHeight;
+    popup.classList.add('is-open');
     toggle.setAttribute('aria-expanded', 'true');
   };
   const closeMenu = () => {
-    popup.hidden = true;
+    if (!isOpen()) return;
+    popup.classList.remove('is-open');
     toggle.setAttribute('aria-expanded', 'false');
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => { popup.hidden = true; }, 220);
   };
 
   toggle.addEventListener('click', (e) => {
     e.stopPropagation();
-    popup.hidden ? openMenu() : closeMenu();
+    isOpen() ? closeMenu() : openMenu();
   });
   if (closeBtn) closeBtn.addEventListener('click', closeMenu);
   document.addEventListener('click', (e) => {
-    if (!popup.hidden && !popup.contains(e.target) && !toggle.contains(e.target)) {
+    if (isOpen() && !popup.contains(e.target) && !toggle.contains(e.target)) {
       closeMenu();
     }
   });

@@ -21,12 +21,15 @@
     <div class="updated num-ui">Last updated: 2026.8</div>
     <div class="sp-menu-wrap">
       <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
-        <span></span><span></span><span></span>
+        <img class="sp-menu-cat" src="images/icons/sp-menu-cat-blueblack.svg" alt="">
+        <span class="sp-menu-label">menu</span>
       </button>
 
       <div class="sp-menu-popup" id="sp-menu-popup" hidden>
         <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
-          <span></span><span></span>
+          <img class="sp-menu-cat" src="images/icons/sp-menu-cat-white.svg" alt="">
+          <span class="sp-menu-label">close</span>
+          <img class="sp-menu-close-x" src="images/icons/sp-menu-close-x.svg" alt="">
         </button>
         <nav class="site-nav">
           <a href="works.html" data-page="works">Work</a>
@@ -99,6 +102,13 @@
       </div>
     </div>
   </main>
+
+  <button type="button" class="page-top-btn" aria-label="ページの先頭に戻る">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="page-top-btn-circle" cx="20" cy="20" r="19.5" fill="white" stroke="#47536F"/>
+      <path class="page-top-btn-arrow" d="M20.005 11V29M12.5 18.7143L20 11L27.5 18.7143" stroke="#47536F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
 
   <div class="thanks-bar">Thanks for visiting!</div>
   <footer class="site-footer num-ui">©Yumi Takaki</footer>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Snapshot / A10lab | Yumi Takaki</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A10labでの制作実績集。UIバナー、イラスト、動画、印刷物、Webサイトなど多岐にわたる制作物を紹介。">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* ---------- work-04 scoped additions ---------- */
+  /* Figma specifies no border-radius on any of this page's gallery images
+     — the shared .gallery-media img rule (css/style.css) rounds them by
+     default; override back to square corners here. */
+  .gallery-media img { border-radius: 0; }
+  .gallery-media a { display: block; max-width: 100%; }
+  /* This video returns YouTube error 153 (embedded playback blocked by the
+     owner's restrictions) even though its src/allow attributes were
+     correct — no iframe fix resolves that server-side block. Falls back
+     to a linked thumbnail that opens the video on YouTube instead. */
+  .video-link {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .video-link img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .video-link .play-badge {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-s);
+    background: rgba(0, 0, 0, 0.15);
+    transition: background 0.2s ease;
+  }
+  .video-link:hover .play-badge { background: rgba(0, 0, 0, 0.3); }
+  .video-link .play-badge-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-s);
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--color-text-white);
+    font-family: var(--font-ui);
+    font-weight: 700;
+    font-size: var(--fs-body);
+    padding: var(--sp-s) var(--sp-l);
+    border-radius: 999px;
+  }
+  .video-link .play-badge svg { flex-shrink: 0; }
+</style>
+</head>
+<body data-page="works">
+
+  <header class="site-header">
+    <a href="index.html" class="brand">
+      <span class="icon"><img src="images/icons/avatar.png" alt="Yumi Takaki"></span>
+      <span class="name num-ui">Yumi Takaki</span>
+    </a>
+    <nav class="site-nav">
+      <a href="works.html" data-page="works">Work</a>
+      <a href="about.html" data-page="about">About</a>
+    </nav>
+    <div class="updated num-ui">Last updated: 2026.8</div>
+    <div class="sp-menu-wrap">
+      <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
+        <img class="sp-menu-cat" src="images/icons/sp-menu-cat-blueblack.svg" alt="">
+        <span class="sp-menu-label">menu</span>
+      </button>
+
+      <div class="sp-menu-popup" id="sp-menu-popup" hidden>
+        <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
+          <img class="sp-menu-cat" src="images/icons/sp-menu-cat-white.svg" alt="">
+          <span class="sp-menu-label">close</span>
+          <img class="sp-menu-close-x" src="images/icons/sp-menu-close-x.svg" alt="">
+        </button>
+        <nav class="site-nav">
+          <a href="works.html" data-page="works">Work</a>
+          <a href="about.html" data-page="about">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="hero-color-band" style="background:rgba(255,128,207,0.3);">
+      <div class="work-hero" style="padding:0;">
+        <h1>Snapshot / A10lab</h1>
+        <p class="info num-ui">
+          <span class="item"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>A10lab</span>
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2024.5-</span>
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Art Direction / Design / Movie etc</span>
+        </p>
+      </div>
+    </div>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-04/maintenance-banners.png" alt="サーバーメンテナンスバナー2種" style="max-width:423px;"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">サーバーメンテナンスバナー2種</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>UI/UX</p>
+          <div class="gallery-desc">
+          <p>サーバーメンテナンス予告のバナーと、メンテナンス中のバナーの見分けがつきにくく紛らわしいと要望があったため改善した。メンテナンス中は寝てるブルーのイラストと文言でみんチャレらしい遊び心をプラス。小学生ユーザーもいるので「ととのえ中」はひらがなに。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media" style="flex-direction:column;"><img src="images/work-04/wanchalle-1.png" alt="エイプリルフール企画 わんチャレ バナー1"><img src="images/work-04/wanchalle-2.png" alt="エイプリルフール企画 わんチャレ バナー2"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">エイプリルフール企画 わんチャレ</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>UI/UX &amp; Illustration</p>
+          <div class="gallery-desc">
+          <p>エイプリルフール何かやりたいねとエンジニアと話していて生まれたキャラクター。気合いが入りすぎて凝りに凝った結果、イラストレーターさんの著作権侵害になるのでは...となり下は没に。4/1だけ語尾が「にゃわん」になる。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-04/fanbook.png" alt="10周年ファンブック 28頁"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">10周年ファンブック 28頁</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>PM &amp; Planning &amp; UX &amp; Design</p>
+          <div class="gallery-desc">
+          <p>アプリリリース10周年を記念して1年前から準備。10年間を振り返る動画を生成する機能や、ファンブック作成、プレゼントキャンペーンを企画。ファンブックにはこれまで関わった企業や有名イラストレーターさん達とのコラボレーションイラストも企画した。ファンブックはランキング頁以外は、中扉のイラストディレクションから全て担当。イラストは好評で壁紙企画にも転用したところ沢山のユーザーにDLしていただけた。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media">
+          <div style="width:300px; height:400px; max-width:100%; overflow:hidden; display:flex; align-items:center; justify-content:center;">
+            <img src="images/work-04/splash.gif" alt="Android用スプラッシュアニメーション" style="width:100%; height:100%; object-fit:cover; max-width:none;">
+          </div>
+        </div>
+        <div class="gallery-cap">
+          <p class="gallery-title">Android用splash</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Motion</p>
+          <div class="gallery-desc">
+          <p>アプリ起動時の待ち時間に再生されるスプラッシュアニメ。iOSは思想的にスプラッシュを否定しているのでAndroidのみ実装。10周年記念にパーティーをイメージして作成。AEで作ったが実装が難しいとのことでapngに変換した。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media pair"><img src="images/work-04/flyer-1.png" alt="共同研究事業チラシ 表面"><img src="images/work-04/flyer-2.png" alt="共同研究事業チラシ 裏面"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">API連携(左がiOS、右がAndroid) / OS標準歩数連携機能追加 / Android ver.8対応</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>PM &amp; UI/UX</p>
+          <div class="gallery-desc">
+          <p>千葉市・千葉大学・ノボ ノルディスク ファーマとの共同研究事業用に作成したチラシ。小学生とその親向けに漫画のコマ割りのような表現で手に取りやすさを重視した。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media">
+          <a class="video-link" href="https://youtu.be/LCsCZlD1t28" target="_blank" rel="noopener">
+            <img src="images/work-04/promo-video-thumb.jpg" alt="健康づくりのための運動習慣編 プロモーション動画">
+            <span class="play-badge">
+              <span class="play-badge-inner">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7-11-7z" fill="currentColor"/></svg>
+                YouTubeで再生する
+              </span>
+            </span>
+          </a>
+        </div>
+        <div class="gallery-cap">
+          <p class="gallery-title">健康づくりのための運動習慣編</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Movie / Scenario / Audio editing</p>
+          <div class="gallery-desc">
+          <p>千葉市・千葉大学・ノボ ノルディスク ファーマとの共同研究事業用に作成したプロモーション動画。Aftereffectで作成。Youtubeのアイコンやヘッダーなども整備した。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-04/api-integration-1.png" alt="API連携設定画面(左がiOS、右がAndroid)"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">API連携(左がiOS、右がAndroid) / OS標準歩数連携機能追加 / Android ver.8対応</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>PM &amp; UI/UX</p>
+          <div class="gallery-desc">
+          <p>歩数・体重・睡眠時間・アクティビティ・血圧のAPI連携設定。OS標準の歩数計測連携機能追加対応。Androidのver.8がサポート対象外になった時の対応。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-04/api-integration-2.png" alt="チーム内API連携誘導画面"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">チーム内API連携誘導改善と連携エラー時の対応統一</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>PM &amp; UI/UX</p>
+          <div class="gallery-desc">
+          <p>PHR系チームに参加した時のチーム内での連携誘導動線の改善。POPUPやモーダルが重なりすぎていたのを整理し、文言やOSによる仕様差などを調整。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media pair"><img src="images/work-04/notice-modal-1.png" alt="同意確認付きお知らせ 採用案"><img src="images/work-04/notice-modal-2.png" alt="同意確認付きお知らせ 没案"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">同意確認付きお知らせ</p>
+          <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>PM &amp; UI/UX</p>
+          <div class="gallery-desc">
+          <p>PHR記録機能追加に伴い個人情報を扱うため同意チェック付きお知らせを作成。</p>
+          <p>同時にモーダル類の閉じるボタンのグレー色が高齢者には見にくいという要望が以前からあったため、高齢者でも困らない用に確認の文字を大きくしたり、チェックを入れないとボタンが見えないように逆にグレーは極限まで薄くするなど改善を行なった。右は没案。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner" style="flex-direction:row; align-items:flex-start; gap: var(--sp-l); max-width: 800px;">
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap: var(--sp-m);">
+          <img src="images/work-04/googleplay-banner.png" alt="Google Play ストアバナー" style="max-width:100%;">
+          <p class="gallery-title">Google Play ストアバナー</p>
+          <p class="gallery-desc">他社のバナーと異なる表現で目立たせることを狙った結果、DL数の伸びが良かったらしく社長から褒められた。</p>
+        </div>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap: var(--sp-m);">
+          <img src="images/work-04/iosdc-whiteboard.png" alt="iOSDC2024 スポンサーノベルティ" style="max-width:100%;">
+          <p class="gallery-title">iOSDC2024 スポンサーノベルティ</p>
+          <p class="gallery-desc">みんチャレらしい習慣化が身につくようなものということで、書いて消せるミニホワイトボード。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-04/iosdc2025-novelty.png" alt="iOSDC2025 スポンサーノベルティ"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">iOSDC2025 スポンサーノベルティ</p>
+          
+          <div class="gallery-desc">
+          <p>イラストディレクションとデザインを担当。エンジニアにまつわる日付にXXの日と記載し、エンジニア採用に繋がる用遊び心を加えた。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media"><a href="https://a10lab.com/publication/" target="_blank" rel="noopener"><img src="images/work-04/a10lab-site.png" alt="A10lab 公式サイト 研究業績&採用ページ"></a></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">A10lab 公式サイト 研究業績&amp;採用ページ</p>
+          
+          <div class="gallery-desc">
+          <p>研究業績ページは、これまでの実証研究や論文、研究会への登壇情報を時系列でわかりやすくまとめた。</p>
+          <p>採用ページは、人事からWordPressの使い方がわからなくても更新したいという要望を受けてスライドを埋め込み、差し替えれば更新できるようにした。またエンジニア採用につながるように、現場の雰囲気がわかるポッドキャストや、note、エンジニアのXへの導線を設けた。</p>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-04/x-header.png" alt="A10lab 公式X ヘッダー画像"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">A10lab 公式X ヘッダー画像</p>
+          
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item bg-gray">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-04/gathermap.png" alt="gather MAP"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">gather MAP</p>
+          
+          
+        </div>
+      </div>
+    </section>
+
+    <section class="gallery-item">
+      <div class="gallery-inner">
+        <div class="gallery-media"><img src="images/work-04/collab-banner.png" alt="コラボバナー"></div>
+        <div class="gallery-cap">
+          <p class="gallery-title">コラボバナー</p>
+          
+          
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button type="button" class="page-top-btn" aria-label="ページの先頭に戻る">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="page-top-btn-circle" cx="20" cy="20" r="19.5" fill="white" stroke="#47536F"/>
+      <path class="page-top-btn-arrow" d="M20.005 11V29M12.5 18.7143L20 11L27.5 18.7143" stroke="#47536F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <footer class="site-footer num-ui">©Yumi Takaki</footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

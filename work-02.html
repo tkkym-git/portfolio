@@ -9,6 +9,38 @@
 
 <style>
   /* ---------- work-02 scoped additions ---------- */
+  /* Mirrors work-01's mobile-title line-break control: <br class="sp-only">
+     splits the h1 on mobile only, suppressed on desktop. */
+  .sp-only { display: none; }
+  @media (max-width: 768px) {
+    .sp-only { display: inline; }
+  }
+  /* Figma "Hero Section" (517:13552): full-bleed #3b5 band, 32px padding,
+     single centered phone screenshot at height:376px (aspect-ratio-derived
+     width ~189px) — not the shared .work-hero-band 260px default. */
+  .work-hero-band img { height: 376px; }
+
+  /* <main class="wrap"> caps width and adds side padding, unlike work-01's
+     unconstrained <main> — break .recommendation out to full viewport width
+     the same way .work-hero-band already does. */
+  .recommendation {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+  }
+  /* .recommendation already ends flush with its own 64px padding; the
+     shared .site-footer{margin-top:64px} default would stack an extra gap
+     on top of that. */
+  .site-footer { margin-top: 0; }
+
+  /* Figma プロセス section (517:13589): the intro line is SemiBold 14px
+     (body_caption), distinct from the shared .work-section p 16px default —
+     the observations that follow it are a bulleted list, not a paragraph. */
+  .process-intro {
+    font-weight: 600;
+    font-size: var(--fs-caption);
+  }
+
   .issue-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -18,11 +50,13 @@
   @media (max-width: 720px) {
     .issue-grid, .issue-grid.cols-2 { grid-template-columns: 1fr; }
   }
+  /* Figma "issue" component: padding is 32px vertical / 16px horizontal
+     (py-l px-m) — the axes were swapped in the original build. */
   .issue-card {
     background: var(--color-background);
     border: 1px solid var(--color-text-secondary);
     border-radius: var(--radius-m);
-    padding: var(--sp-m) var(--sp-l);
+    padding: var(--sp-l) var(--sp-m);
     display: flex;
     align-items: center;
     font-size: var(--fs-body);
@@ -43,9 +77,11 @@
     gap: var(--sp-s);
   }
   .solution-pair + .solution-pair { margin-top: var(--sp-m); }
+  /* Figma "issuecard" component: 1px border (not 2px), 16px gap between
+     stacked paragraphs (not 8px). */
   .solution-box {
     flex: 1;
-    border: 2px solid var(--color-text-blueblack);
+    border: 1px solid var(--color-text-blueblack);
     border-radius: var(--radius-s);
     padding: var(--sp-l) var(--sp-m);
     display: flex;
@@ -53,48 +89,114 @@
     font-size: var(--fs-body);
     color: var(--color-text-secondary);
   }
-  .solution-box p + p { margin-top: var(--sp-s); }
+  .solution-box p + p { margin-top: var(--sp-m); }
   .solution-arrow {
     flex-shrink: 0;
     width: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-text-blueblack);
-    font-size: 20px;
   }
+  .solution-arrow img { display: block; width: 32px; height: 32px; }
   @media (max-width: 720px) {
     .solution-pair { flex-direction: column; }
-    .solution-arrow { transform: rotate(90deg); padding: var(--sp-xs) 0; }
+    /* .solution-pair keeps align-items:stretch so .solution-box stays
+       full-width in the column layout; a fixed-width flex item can't
+       stretch though, so it falls back to flex-start (left) instead of
+       centering — align-self pins the arrow to the middle regardless
+       (same fix already applied on work-01). */
+    .solution-arrow { transform: rotate(90deg); padding: var(--sp-xs) 0; align-self: center; }
   }
 
-  .scenario-figure {
+  /* Figma "figure" card pattern reused across this page's photo/screenshot
+     sections: backgray box, radius-m, gap-l between content and caption.
+     Plain single photos use uniform 64px padding + a small centered gray
+     caption (.cap); multi-image comparison cards (scenario / OS-setting /
+     retry) use 64px horizontal / 32px vertical padding + a bold centered
+     label (.label) — the raw Figma extraction reported text-align:right,
+     but the actual render (verified via get_screenshot) shows it centered:
+     the text node is auto-sized to its own content and centered as a whole
+     by the parent's flex layout, so "align:right" only ever mattered
+     inside a already-content-width box. */
+  .figure-card {
+    background: var(--color-backgray);
+    border-radius: var(--radius-m);
+    padding: var(--sp-xl);
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: var(--sp-m);
-    max-width: 640px;
-    margin: 0 auto;
+    gap: var(--sp-l);
   }
-  .scenario-figure img { border-radius: var(--radius-s); }
-  .scenario-figure .arrow { flex-shrink: 0; color: var(--color-text-blueblack); font-size: 24px; }
-  .figure-caption {
-    text-align: center;
+  .figure-card--compact { padding: var(--sp-l) var(--sp-xl); }
+  .figure-card .cap {
     font-size: var(--fs-caption);
     color: var(--color-text-secondary);
-    margin-top: var(--sp-s);
+    text-align: center;
+  }
+  .figure-card .label {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--color-text-primary);
+    text-align: center;
   }
   @media (max-width: 720px) {
-    .scenario-figure { flex-direction: column; }
-    .scenario-figure .arrow { transform: rotate(90deg); }
+    .figure-card, .figure-card--compact { padding: var(--sp-l); }
+  }
+  /* Mirrors work-01's SP image treatment: cap every image inside a figure
+     card at 300px tall on mobile instead of the fixed desktop heights
+     (360/400/300px etc.) — !important is needed to beat the inline
+     height/width styles used on a few <img> tags directly. */
+  @media (max-width: 768px) {
+    .figure-card img {
+      height: auto !important;
+      max-height: 300px !important;
+      width: auto !important;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
   }
 
-  .source-note {
-    font-family: var(--font-ui);
+  .scenario-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-s);
+  }
+  .scenario-row img { width: 240px; max-width: 100%; height: auto; border-radius: var(--radius-s); display: block; }
+  .scenario-row .arrow { flex-shrink: 0; color: var(--color-text-blueblack); font-size: 24px; }
+  @media (max-width: 720px) {
+    .scenario-row { flex-direction: column; }
+    .scenario-row .arrow { transform: rotate(90deg); }
+  }
+  @media (max-width: 768px) {
+    .scenario-row { gap: 8px; }
+  }
+
+  .os-compare {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: var(--sp-l);
+    flex-wrap: wrap;
+  }
+  /* Figma specifies no border-radius on these three images (the phone
+     frame's own rounding is already baked into the screenshots). */
+  .os-compare > img { height: 360px; width: auto; max-width: 100%; display: block; }
+  .os-compare .os-note {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-m);
+    align-items: flex-start;
+  }
+  .os-compare .os-note p {
     font-size: var(--fs-caption);
     color: var(--color-text-secondary);
-    margin-top: var(--sp-s);
+    line-height: 1.6;
+    margin: 0;
   }
+  .os-compare .os-note img { width: 170px; height: auto; display: block; }
 </style>
 
 </head>
@@ -112,12 +214,15 @@
     <div class="updated num-ui">Last updated: 2026.8</div>
     <div class="sp-menu-wrap">
       <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
-        <span></span><span></span><span></span>
+        <img class="sp-menu-cat" src="images/icons/sp-menu-cat-blueblack.svg" alt="">
+        <span class="sp-menu-label">menu</span>
       </button>
 
       <div class="sp-menu-popup" id="sp-menu-popup" hidden>
         <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
-          <span></span><span></span>
+          <img class="sp-menu-cat" src="images/icons/sp-menu-cat-white.svg" alt="">
+          <span class="sp-menu-label">close</span>
+          <img class="sp-menu-close-x" src="images/icons/sp-menu-close-x.svg" alt="">
         </button>
         <nav class="site-nav">
           <a href="works.html" data-page="works">Work</a>
@@ -129,17 +234,28 @@
 
   <main class="wrap">
 
+    <div class="work-hero-band" style="background:#3b5;">
+      <img src="images/works/card-02-elderly.png" alt="みんチャレ アプリのオンボーディング画面のスクリーンショット">
+    </div>
+
     <section class="work-hero">
-      <h1>自治体事業 高齢者講座体験改善</h1>
-      <p class="info num-ui">
-        <span class="tag">UI/UX</span><span class="tag">みんチャレ</span><span class="tag">2025</span><span class="tag">Shipped</span>
-      </p>
-      <p class="note num-ui">PJ体制：Designer 1名（自身） / Engineer 2名 / 営業 1名 / CS 1名</p>
+      <h1>自治体事業 <br class="sp-only">高齢者講座体験改善</h1>
+      <div class="info num-ui">
+        <span class="item"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>A10lab</span>
+        <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2024.8-2025.5</span>
+        <span class="item"><svg width="14.1" height="16" viewBox="0 0 15 17" fill="none"><path d="M2.51072 0L4.1727 0.00436242L4.16962 1.6892C4.91437 1.70561 5.70909 1.69204 6.45697 1.69215L10.8399 1.69106C10.8219 1.18184 10.8323 0.514125 10.8447 0.00201844L12.4926 0.00303842C12.5048 0.556186 12.498 1.13718 12.4981 1.69154C12.9118 1.69135 13.4723 1.66717 13.858 1.78997C14.2724 1.92487 14.6172 2.22236 14.8163 2.61681C14.957 2.8922 14.9935 3.18042 14.9963 3.48756C15.0015 4.05642 14.9998 4.62533 14.9995 5.19423L14.9995 12.9218C14.9998 13.6945 15.0012 14.4666 14.994 15.2392C14.9872 15.9782 14.679 16.4917 14.0345 16.8326C13.7531 16.9724 13.3387 16.9935 13.0307 16.9956L2.85748 16.9964C2.35755 16.9969 1.80568 17.0192 1.31475 16.9468C1.04309 16.9067 0.693502 16.6912 0.498897 16.4911C0.0144176 15.9932 0.00339418 15.4809 0.00228762 14.8225L0.00243666 4.49856C0.00230898 4.15009 -0.0139701 3.44381 0.0393573 3.11585C0.0935147 2.76543 0.255987 2.44184 0.503111 2.19221C1.07133 1.61519 1.75948 1.69039 2.5064 1.69167L2.51072 0Z" fill="#47536F"/><path d="M1.67959 5.94933L13.3359 5.94911C13.3692 9.0389 13.3371 12.1909 13.337 15.2858L1.6784 15.2836L1.67648 11.3248L1.67959 5.94933Z" fill="#F9F9F8"/><path d="M5.82243 8.50687C5.85037 8.54519 5.8405 10.0139 5.84178 10.1881C6.65246 10.2223 7.48522 10.183 8.29848 10.1978C8.58384 10.203 8.88478 10.2005 9.16889 10.1861L9.17093 8.47711C9.36556 8.72459 10.024 9.36236 10.2779 9.6211L11.1933 10.5518C11.3438 10.7048 11.5224 10.902 11.6785 11.042C10.8466 11.8574 10.0355 12.7334 9.20432 13.5569C9.1957 13.5446 9.18521 13.5296 9.17285 13.512C9.16259 13.0401 9.16951 12.353 9.17119 11.8979L5.84261 11.8972C5.83461 12.3532 5.81984 13.1499 5.84942 13.5841C5.64138 13.4171 5.20229 12.944 4.99488 12.7325L3.3419 11.0447C3.95704 10.4521 4.54387 9.78815 5.1571 9.18913C5.36828 8.98284 5.6374 8.73169 5.82243 8.50687Z" fill="#47536F"/></svg>10ヶ月(デザインは3日)</span>
+        <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>PM / UIUX Design / Writing</span>
+      </div>
+      <p class="note note-narrow">PJ体制: Designer 1名（自身） / Engineer 2名 / 営業 1名 / CS 1名</p>
       <p class="note">
         みんチャレは1つのプロダクトでtoC、toB、toGのユーザーが存在し、年齢は小学生から90代までと幅広い。自治体事業におけるBtoGtoCのモデルにおいては高齢社会向けのフレイル予防講座やスマホ活用講座などを展開しており、特に後期高齢者はスマートフォンの操作に不慣れである。全ユーザー1つのオンボーディングで全てを賄っていたが、高齢者専用のオンボーディングを用意することで、決まった時間内に講座内で全ての設定を完了し、高齢者が「一人でもスマートフォンを使える」と自信が持てる体験を提供したい。
       </p>
-      <div class="work-hero-img">
-        <img src="images/works/card-02-elderly.png" alt="みんチャレ アプリのオンボーディング画面のスクリーンショット">
+    </section>
+
+    <section class="work-section">
+      <div class="figure-card">
+        <img src="images/work-02/event-fuchu-hall.jpg" alt="府中市で開催されたみんチャレ大交流会の会場の様子" style="width:600px; max-width:100%; height:400px; object-fit:cover; border-radius:var(--radius-s);">
+        <p class="cap">府中市で開催した「みんチャレフレイル予防」大交流会の様子</p>
       </div>
     </section>
 
@@ -180,98 +296,118 @@
 
     <section class="work-section">
       <h2>プロセス</h2>
-      <p>
+      <p class="process-intro">
         ユーザーが何に困っているのか、何に時間がかかっているのかを自分自身で知るため、実際に港区や府中市でフレイル講座に参加し講座全体の様子や、ユーザーの画面操作を観察させていただいた。観察の結果下記のような問題が浮かび上がった。KA法で体験価値を整理し、効果のすぐ出そうなもの・インパクトのありそうなものを優先度高くし、改善することにした。
       </p>
-      <p>
-        長いオンボーディングを終えた後に、メニューから一個づつ設定をしていたが、アカウント認証やAPI連携で止まってしまうことが多かった。iOSの標準UIであるドラムロールは操作の仕方が分からず戸惑う高齢者が多いことがわかった。らくらくほんユーザーはある程度文字を大きくする方法がわかっているが、その他のユーザーは文字サイズが変えれること自体を知らず、アプリ外のスマホの使い方をある程度マニュアルに盛り込む必要があることがわかった。1つのチームを１つの机で一人の担当者が説明していることがわかったが、近所の方を同じチームに集めていた。その為OSが異なると説明の時間もかかり、また隣り合った同士お互いの画面を見せて「画面が違う」＝「説明と進捗が違っているかも」「操作を間違えたかも」と不安に感じ説明を求めてしまう。ウィジェットを使いこなす80代もいれば、タップがわからない60代もいる。それぞれの知識のばらつきを感じた。
-      </p>
-      <figure>
-        <img src="images/work-02/event-fuchu-hall.jpg" alt="府中市で開催されたみんチャレ大交流会の会場の様子" style="border-radius: var(--radius-m); width: 100%;">
-        <p class="figure-caption">府中市で開催した「みんチャレフレイル予防」大交流会の様子</p>
-      </figure>
+      <ul>
+        <li>長いオンボーディングを終えた後に、メニューから一個づつ設定をしていたが、アカウント認証やAPI連携で止まってしまうことが多かった。</li>
+        <li>iOSの標準UIであるドラムロールは操作の仕方が分からず戸惑う高齢者が多いことがわかった。</li>
+        <li>らくらくほんユーザーはある程度文字を大きくする方法がわかっているが、その他のユーザーは文字サイズが変えれること自体を知らず、アプリ外のスマホの使い方をある程度マニュアルに盛り込む必要があることがわかった。</li>
+        <li>1つのチームを１つの机で一人の担当者が説明していることがわかったが、近所の方を同じチームに集めていた。その為OSが異なると説明の時間もかかり、また隣り合った同士お互いの画面を見せて「画面が違う」＝「説明と進捗が違っているかも」「操作を間違えたかも」と不安に感じ説明を求めてしまう。</li>
+        <li>ウィジェットを使いこなす80代もいれば、タップがわからない60代もいる。それぞれの知識のばらつきを感じた。</li>
+      </ul>
     </section>
 
     <section class="work-section">
-      <h2>高齢者用オンボーディングシナリオ</h2>
-      <p>実際の講座観察をもとに、通常のオンボーディングフローを見直し、高齢者向けに再設計したシナリオの画面遷移です。</p>
-      <div class="scenario-figure">
-        <img src="images/work-02/onboarding-flow-01.png" alt="高齢者用オンボーディングシナリオ 画面1">
-        <span class="arrow">→</span>
-        <img src="images/work-02/onboarding-flow-02.png" alt="高齢者用オンボーディングシナリオ 画面2">
+      <div class="figure-card figure-card--compact">
+        <div class="scenario-row">
+          <img src="images/work-02/onboarding-flow-01.png" alt="高齢者用オンボーディングシナリオ 画面1">
+          <span class="arrow">→</span>
+          <img src="images/work-02/onboarding-flow-02.png" alt="高齢者用オンボーディングシナリオ 画面2">
+        </div>
+        <p class="label">高齢者用オンボーディングシナリオ</p>
       </div>
-      <p class="figure-caption">高齢者用オンボーディングシナリオ</p>
     </section>
 
     <section class="work-section">
-      <h2>問題点と解決策</h2>
-
-      <div class="issue-block">
-        <p class="issue-label">01</p>
-        <div class="solution-pair">
-          <div class="solution-box">フレイル予防講座に参加する高齢者は、目標分だけ歩くこと、チャットを使いこなし同じ自治体の高齢者と触れ合えるようになることが目標であり、「習慣化」という概念や「チーム」などの機能を説明すること自体がノイズである。</div>
-          <span class="solution-arrow">→</span>
-          <div class="solution-box">
-            <div>
-              <p>高齢者に対しては習慣化アプリではなくフレイル予防アプリとして取り扱ってもらうことに焦点を絞り、オンボーディングを終えればフレイル講座に必要な設定が全て完了するようにシナリオを組み直した専用オンボーディングを作成することにした。</p>
-              <p>専用の2次元コードから遷移するようにした。</p>
-            </div>
+      <h2>問題点と解決策_01</h2>
+      <div class="solution-pair">
+        <div class="solution-box">フレイル予防講座に参加する高齢者は、目標分だけ歩くこと、チャットを使いこなし同じ自治体の高齢者と触れ合えるようになることが目標であり、「習慣化」という概念や「チーム」などの機能を説明すること自体がノイズである。</div>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
+        <div class="solution-box">
+          <div>
+            <p>高齢者に対しては習慣化アプリではなくフレイル予防アプリとして取り扱ってもらうことに焦点を絞り、オンボーディングを終えればフレイル講座に必要な設定が全て完了するようにシナリオを組み直した専用オンボーディングを作成することにした。</p>
+            <p>専用の2次元コードから遷移するようにした。</p>
           </div>
         </div>
-        <div class="solution-pair">
-          <div class="solution-box">オンボーディングを終えた後は、チーム検索から目的の自治体を探し、チームに入っていた。</div>
-          <span class="solution-arrow">→</span>
-          <div class="solution-box">オンボーディングを終えた後は、目的の自治体画面TOPに直接遷移しチームに入れるようにした。</div>
-        </div>
       </div>
-
-      <div class="issue-block">
-        <p class="issue-label">02</p>
-        <div class="solution-pair">
-          <div class="solution-box">通常PHR連携はヘルスケアアプリ/Google fitを使用しているが、アプリ側が提供しているダイアログの仕様などが高齢者にとっては連携までの難易度が高く、また連携の不具合も多い。</div>
-          <span class="solution-arrow">→</span>
-          <div class="solution-box">それぞれのOS標準で搭載されている歩数カウント機能を使用することにした。</div>
-        </div>
-        <figure style="margin-top: var(--sp-m);">
-          <img src="images/work-02/retry-scenario.png" alt="OS標準の歩数連携設定とリトライシナリオの画面例" style="border-radius: var(--radius-m); width: 100%;">
-          <p class="figure-caption">左がiOS 右がAndroid／OS標準の歩数連携設定</p>
-        </figure>
+      <div class="solution-pair">
+        <div class="solution-box">オンボーディングを終えた後は、チーム検索から目的の自治体を探し、チームに入っていた。</div>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
+        <div class="solution-box">オンボーディングを終えた後は、目的の自治体画面TOPに直接遷移しチームに入れるようにした。</div>
       </div>
+    </section>
 
-      <div class="issue-block">
-        <p class="issue-label">03</p>
-        <div class="solution-pair">
-          <div class="solution-box">
-            <div>
-              <p>アカウント認証で失敗すると、止まってしまう。</p>
-              <p>進めれないとアプリごと落として諦めてしまう。</p>
-            </div>
-          </div>
-          <span class="solution-arrow">→</span>
-          <div class="solution-box">失敗が検知できるものは繰り返し可能な、リトライシナリオを用意した。また失敗してもスキップ可能にすることで、後日CSがフォローすることにした。</div>
-        </div>
-      </div>
-
-      <div class="issue-block">
-        <p class="issue-label">04</p>
-        <div class="solution-pair">
-          <div class="solution-box">ご近所さんでチームを作ってしまうと、一人仲の良い人が辞めた時に連鎖して辞めてしまう人もいることがわかった。</div>
-          <span class="solution-arrow">→</span>
-          <div class="solution-box">
-            <div>
-              <p>端末の種類やOSごとにチーム分けをし、説明担当者の負荷を軽減。</p>
-              <p>初めましてでも関係性が作れるような、自己紹介タイムやアシスタントを話し合って決めるなどの時間を確保しチームビルディングに注力することにした。</p>
-            </div>
+    <section class="work-section">
+      <div class="figure-card figure-card--compact">
+        <div class="os-compare">
+          <img src="images/work-02/os-ios.png" alt="iOSのモーション&フィットネスデータへのアクセス許可ダイアログ">
+          <img src="images/work-02/os-android.png" alt="Androidの活動データへのアクセス許可ダイアログ">
+          <div class="os-note">
+            <p>左がiOS<br>右がAndroid</p>
+            <img src="images/work-02/os-permission-post.png" alt="ダイアログが出せない場合の挙動に関する仕様メモ">
           </div>
         </div>
-        <div class="solution-pair">
-          <div class="solution-box">全員に同じマニュアルを配布していた。</div>
-          <span class="solution-arrow">→</span>
-          <div class="solution-box">
-            <div>
-              <p>OSごとに内容を変え2種類作成した。</p>
-              <p>文字の大きさの設定変更など役立つ情報も盛り込んだ。講座内では説明をしないが、リテラシーの高いユーザー向けにアプリを使った寄附の仕方なども盛り込んだ。</p>
-            </div>
+        <p class="label">OS標準の歩数連携設定</p>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>問題点と解決策_02</h2>
+      <div class="solution-pair">
+        <div class="solution-box">通常PHR連携はヘルスケアアプリ/Google fitを使用しているが、アプリ側が提供しているダイアログの仕様などが高齢者にとっては連携までの難易度が高く、また連携の不具合も多い。</div>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
+        <div class="solution-box">それぞれのOS標準で搭載されている歩数カウント機能を使用することにした。</div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <div class="figure-card figure-card--compact">
+        <img src="images/work-02/retry-scenario.png" alt="アカウント認証エラー時のリトライシナリオ3画面" style="width:520px; max-width:100%; height:auto; border-radius:var(--radius-s); display:block;">
+        <p class="label">リトライシナリオ</p>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>問題点と解決策_03</h2>
+      <div class="solution-pair">
+        <div class="solution-box">
+          <div>
+            <p>アカウント認証で失敗すると、止まってしまう。</p>
+            <p>進めれないとアプリごと落として諦めてしまう。</p>
+          </div>
+        </div>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
+        <div class="solution-box">失敗が検知できるものは繰り返し可能な、リトライシナリオを用意した。また失敗してもスキップ可能にすることで、後日CSがフォローすることにした。</div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <div class="figure-card">
+        <img src="images/work-02/event-fuchu-closeup.jpeg" alt="府中市で行われた大交流会の様子" style="width:398px; max-width:100%; height:300px; object-fit:cover; border-radius:var(--radius-s);">
+        <p class="cap">府中市で行われた大交流会に参加し、ユーザーさんの声を直接聞いてきました。</p>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>問題点と解決策_04</h2>
+      <div class="solution-pair">
+        <div class="solution-box">ご近所さんでチームを作ってしまうと、一人仲の良い人が辞めた時に連鎖して辞めてしまう人もいることがわかった。</div>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
+        <div class="solution-box">
+          <div>
+            <p>端末の種類やOSごとにチーム分けをし、説明担当者の負荷を軽減。</p>
+            <p>初めましてでも関係性が作れるような、自己紹介タイムやアシスタントを話し合って決めるなどの時間を確保しチームビルディングに注力することにした。</p>
+          </div>
+        </div>
+      </div>
+      <div class="solution-pair">
+        <div class="solution-box">全員に同じマニュアルを配布していた。</div>
+        <span class="solution-arrow"><img src="images/icons/arrow-right.svg" alt=""></span>
+        <div class="solution-box">
+          <div>
+            <p>OSごとに内容を変え2種類作成した。</p>
+            <p>文字の大きさの設定変更など役立つ情報も盛り込んだ。講座内では説明をしないが、リテラシーの高いユーザー向けにアプリを使った寄附の仕方なども盛り込んだ。</p>
           </div>
         </div>
       </div>
@@ -279,21 +415,56 @@
 
     <section class="work-section">
       <h2>成果と振り返り</h2>
-      <p>
-        講座時間が1時間で完結できるようになった。基本設定を30分に収めることができたので、残りの30分をチームメンバーとの交流の時間に当て、ピアサポートを強化できた。オペレーションの負荷も軽減できた。高齢者同士がお互いに撮った写真を見せ合い会話が生まれていた。同じ自治体内の住民なので「どこで撮影したの」「どこに住んでいるの」など新しい関係が生まれていてとても良かった。後日行われた交流会イベントで、写真を撮るために遠くまで歩くようになったというユーザーの声がいくつも聞けた。長い時間を理由に断られた自治体でも、再度営業をかけ受注することができた。高齢者に優しくないUIは今後新機能追加する際にも参考にすることにした。
-      </p>
-      <p class="source-note">内閣府 令和7年度版「高齢社会白書」掲載</p>
-      <figure>
-        <img src="images/work-02/event-fuchu-closeup.jpeg" alt="府中市で行われた大交流会の様子" style="border-radius: var(--radius-m); width: 100%;">
-        <p class="figure-caption">府中市で行われた大交流会に参加し、ユーザーさんの声を直接聞いてきました。</p>
-      </figure>
+      <ul>
+        <li>講座時間が1時間で完結できるようになった。基本設定を30分に収めることができたので、残りの30分をチームメンバーとの交流の時間に当て、ピアサポートを強化できた。オペレーションの負荷も軽減できた。</li>
+        <li>高齢者同士がお互いに撮った写真を見せ合い会話が生まれていた。同じ自治体内の住民なので「どこで撮影したの」「どこに住んでいるの」など新しい関係が生まれていてとても良かった。</li>
+        <li>後日行われた交流会イベントで、写真を撮るために遠くまで歩くようになったというユーザーの声がいくつも聞けた。</li>
+        <li>長い時間を理由に断られた自治体でも、再度営業をかけ受注することができた。</li>
+        <li>高齢者に優しくないUIは今後新機能追加する際にも参考にすることにした。</li>
+        <li>内閣府 令和7年度版「高齢社会白書」掲載</li>
+      </ul>
     </section>
 
-    <nav class="work-nav">
-      <a href="works.html">&larr; Work一覧へ戻る</a>
-    </nav>
+    <section class="recommendation">
+      <div class="recommendation-inner">
+        <h2 class="recommendation-title">Next Recommendation</h2>
+        <div class="recommendation-grid">
+          <a class="pickup-card" href="work-01.html">
+            <div class="thumb"><img src="images/home/card-01-health.png" alt="健康管理機能 のスクリーンショット"></div>
+            <div class="body">
+              <h3>健康管理機能</h3>
+              <p class="meta num-ui">2026.みんチャレ.Shipped &amp; Wip</p>
+              <div class="desc">
+                <p class="desc-block"><b>課題：</b> ヘルスケア事業の主軸を重症化予防へ転換し、LTVを向上させる</p>
+                <p class="desc-block"><b>施策：</b> PHR機能追加と導線の最適化・専用チーム機能開発</p>
+                <p class="desc-block"><b>成果：</b> MAU増加と継続率の向上</p>
+              </div>
+            </div>
+          </a>
+          <a class="pickup-card" href="work-08.html">
+            <div class="thumb"><img src="images/home/card-03-denso.png" alt="持込み持出し許可証 のスクリーンショット"></div>
+            <div class="body">
+              <h3>持込み持出し許可証</h3>
+              <p class="meta num-ui">2021.DENSO.Shipped</p>
+              <div class="desc">
+                <p class="desc-block"><b>課題：</b> グループ間の連携強化。複雑な業務プロセスの運用改善</p>
+                <p class="desc-block"><b>施策：</b> ルールの共通化。申請の電子化。情報発信の動線構築</p>
+                <p class="desc-block"><b>成果：</b> 入構時間短縮と管理工数の削減</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
 
   </main>
+
+  <button type="button" class="page-top-btn" aria-label="ページの先頭に戻る">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="page-top-btn-circle" cx="20" cy="20" r="19.5" fill="white" stroke="#47536F"/>
+      <path class="page-top-btn-arrow" d="M20.005 11V29M12.5 18.7143L20 11L27.5 18.7143" stroke="#47536F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
 
   <footer class="site-footer num-ui">©Yumi Takaki</footer>
 

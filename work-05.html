@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Power Design Laboratory | Yumi Takaki</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="株式会社Power Design Laboratory コーポレートサイト新規制作のケーススタディ。ヒアリングからデザイン提案、実装連携までを担当。">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* ---------- work-05 scoped additions ---------- */
+  /* Mirrors work-01's mobile-title line-break control and its .img-card
+     mobile treatment (wider side padding, shorter image max-height with
+     object-fit:contain instead of the shared 220px default). */
+  .sp-only { display: none; }
+  /* Figma specifies no border-radius anywhere on this page's images —
+     the shared .img-card img rule (css/style.css) rounds them by default. */
+  .img-card img { border-radius: 0; }
+  /* Figma has both this page's figure captions ("ヒアリング資料" and
+     "※グレー部分は公開後にコンテンツ追加") in text/primary (black), not the
+     shared .img-card .cap gray default used on other work pages. */
+  .img-card .cap { color: var(--color-text-primary); }
+  @media (max-width: 768px) {
+    .sp-only { display: inline; }
+    .img-card {
+      width: 100%;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    .img-card img {
+      height: auto !important;
+      max-height: 300px !important;
+      width: auto !important;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+  /* Figma sizes this table to its own content (631px total: 120px label
+     column + 511px value column) rather than stretching across the full
+     800px reading column — width:auto lets each cell's text set the
+     table's natural width instead of forcing it edge to edge. */
+  .info-table {
+    width: auto;
+    max-width: 100%;
+    border-collapse: collapse;
+  }
+  .info-table td {
+    border-bottom: 1px solid var(--color-text-secondary);
+    padding: var(--sp-m) var(--sp-s);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    vertical-align: top;
+    /* .info-table sits inside .work-hero, which sets text-align:center;
+       Figma has every cell left-aligned (items-start), so override it
+       back here instead of inheriting the centered hero default. */
+    text-align: left;
+  }
+  .info-table td:first-child {
+    width: 120px;
+    white-space: nowrap;
+  }
+  .info-table tr:last-child td { border-bottom: none; }
+  .info-table a { color: var(--color-text-secondary); text-decoration: underline; }
+
+  .compare-row {
+    display: flex;
+    gap: var(--sp-l);
+    align-items: flex-end;
+    width: 100%;
+  }
+  .compare-row > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-m);
+  }
+  .compare-row img { width: 100%; }
+  .compare-row .cap {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: var(--fs-body);
+    text-align: center;
+  }
+
+  .color-swatches {
+    display: flex;
+    gap: var(--sp-l);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .color-swatch { display: flex; align-items: center; gap: var(--sp-m); }
+  .color-swatch .chip { width: 60px; height: 60px; flex-shrink: 0; }
+  .color-swatch p { color: var(--color-text-secondary); font-size: var(--fs-body); margin: 0; }
+
+  .mockup-compare {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    background: var(--color-backgray);
+    padding: var(--sp-xl) 20px;
+    display: flex;
+    gap: var(--sp-2xl);
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .mockup-compare figure { margin: 0; display: flex; flex-direction: column; align-items: center; gap: var(--sp-m); }
+  .mockup-compare img { height: 480px; width: auto; max-width: 100%; }
+  .mockup-compare figcaption {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    font-size: var(--fs-body);
+  }
+  @media (max-width: 720px) {
+    .compare-row { flex-direction: column; }
+    .mockup-compare img { height: 320px; }
+  }
+</style>
+</head>
+<body data-page="works">
+
+  <header class="site-header">
+    <a href="index.html" class="brand">
+      <span class="icon"><img src="images/icons/avatar.png" alt="Yumi Takaki"></span>
+      <span class="name num-ui">Yumi Takaki</span>
+    </a>
+    <nav class="site-nav">
+      <a href="works.html" data-page="works">Work</a>
+      <a href="about.html" data-page="about">About</a>
+    </nav>
+    <div class="updated num-ui">Last updated: 2026.8</div>
+    <div class="sp-menu-wrap">
+      <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
+        <img class="sp-menu-cat" src="images/icons/sp-menu-cat-blueblack.svg" alt="">
+        <span class="sp-menu-label">menu</span>
+      </button>
+
+      <div class="sp-menu-popup" id="sp-menu-popup" hidden>
+        <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
+          <img class="sp-menu-cat" src="images/icons/sp-menu-cat-white.svg" alt="">
+          <span class="sp-menu-label">close</span>
+          <img class="sp-menu-close-x" src="images/icons/sp-menu-close-x.svg" alt="">
+        </button>
+        <nav class="site-nav">
+          <a href="works.html" data-page="works">Work</a>
+          <a href="about.html" data-page="about">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="work-hero-band" style="background:#f7f7f7;">
+      <img src="images/work-05/hero-site.png" alt="Power Design Laboratory コーポレートサイトのスクリーンショット">
+    </div>
+
+    <div class="work-content">
+
+      <section class="work-hero" style="padding:0;">
+        <a href="https://powerdsgn.com/" target="_blank" rel="noopener" style="font-family:var(--font-jp); font-size:24px; color:var(--color-text-primary); text-decoration:underline;">WEBサイト |<br class="sp-only"> Power Design Laboratory </a>
+        <p class="info num-ui">
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>DAD</span>
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2024.2-2024.4</span>
+          <span class="item"><svg width="14.1" height="16" viewBox="0 0 15 17" fill="none"><path d="M2.51072 0L4.1727 0.00436242L4.16962 1.6892C4.91437 1.70561 5.70909 1.69204 6.45697 1.69215L10.8399 1.69106C10.8219 1.18184 10.8323 0.514125 10.8447 0.00201844L12.4926 0.00303842C12.5048 0.556186 12.498 1.13718 12.4981 1.69154C12.9118 1.69135 13.4723 1.66717 13.858 1.78997C14.2724 1.92487 14.6172 2.22236 14.8163 2.61681C14.957 2.8922 14.9935 3.18042 14.9963 3.48756C15.0015 4.05642 14.9998 4.62533 14.9995 5.19423L14.9995 12.9218C14.9998 13.6945 15.0012 14.4666 14.994 15.2392C14.9872 15.9782 14.679 16.4917 14.0345 16.8326C13.7531 16.9724 13.3387 16.9935 13.0307 16.9956L2.85748 16.9964C2.35755 16.9969 1.80568 17.0192 1.31475 16.9468C1.04309 16.9067 0.693502 16.6912 0.498897 16.4911C0.0144176 15.9932 0.00339418 15.4809 0.00228762 14.8225L0.00243666 4.49856C0.00230898 4.15009 -0.0139701 3.44381 0.0393573 3.11585C0.0935147 2.76543 0.255987 2.44184 0.503111 2.19221C1.07133 1.61519 1.75948 1.69039 2.5064 1.69167L2.51072 0Z" fill="#47536F"/><path d="M1.67959 5.94933L13.3359 5.94911C13.3692 9.0389 13.3371 12.1909 13.337 15.2858L1.6784 15.2836L1.67648 11.3248L1.67959 5.94933Z" fill="#F9F9F8"/><path d="M5.82243 8.50687C5.85037 8.54519 5.8405 10.0139 5.84178 10.1881C6.65246 10.2223 7.48522 10.183 8.29848 10.1978C8.58384 10.203 8.88478 10.2005 9.16889 10.1861L9.17093 8.47711C9.36556 8.72459 10.024 9.36236 10.2779 9.6211L11.1933 10.5518C11.3438 10.7048 11.5224 10.902 11.6785 11.042C10.8466 11.8574 10.0355 12.7334 9.20432 13.5569C9.1957 13.5446 9.18521 13.5296 9.17285 13.512C9.16259 13.0401 9.16951 12.353 9.17119 11.8979L5.84261 11.8972C5.83461 12.3532 5.81984 13.1499 5.84942 13.5841C5.64138 13.4171 5.20229 12.944 4.99488 12.7325L3.3419 11.0447C3.95704 10.4521 4.54387 9.78815 5.1571 9.18913C5.36828 8.98284 5.6374 8.73169 5.82243 8.50687Z" fill="#47536F"/></svg>3ヶ月</span>
+          <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Direction / Web Design / Writing</span>
+        </p>
+        <p class="note note-narrow">PJ体制: Designer 1名（自身） / Engineer 1名 / 営業 1名</p>
+
+        <table class="info-table">
+          <tr><td>クライアント</td><td>株式会社 Power Design Laboratory</td></tr>
+          <tr><td>依頼内容</td><td>Webサイトの新規作成</td></tr>
+          <tr><td>目的</td><td>2023年11月に起業し、会社の情報を発信する名詞代わりとなるサイトが欲しい</td></tr>
+          <tr><td>課題</td><td>企業認知</td></tr>
+          <tr><td>ターゲット</td><td>エンジニア20代、男性</td></tr>
+          <tr><td>事前情報</td><td>環境省のプロジェクト専用チームサイトを立ち上げた過去実績からのご依頼</td></tr>
+          <tr><td>先行事例</td><td><a href="https://www.gan-vehicle.jp/" target="_blank" rel="noopener">All GaN Vehicle.</a></td></tr>
+        </table>
+      </section>
+
+      <section class="work-img-section">
+        <div class="img-card">
+          <img src="images/work-05/hearing-doc.png" alt="ヒアリング資料のスクリーンショット">
+          <p class="cap" style="font-weight:600;">ヒアリング資料</p>
+        </div>
+      </section>
+
+      <section class="work-section">
+        <h2>プロセス</h2>
+        <p style="font-weight:600; color:var(--color-text-secondary); text-align:center;">近しい業種のスタートアップ企業サイトをベンチマーク</p>
+        <p style="text-align:center;">掲載要素比較表</p>
+        <img src="images/work-05/content-comparison-table.png" alt="掲載要素比較表" style="width:100%;">
+      </section>
+
+      <section class="work-section">
+        <h2>掲載コンテンツすり合わせ</h2>
+        <ul>
+          <li>メッセージ、MISSION、VISIONを明確に打ち出す</li>
+          <li>代表者、関係者の顔が見えるようにする</li>
+          <li>パートナーシップのロゴを掲載する</li>
+          <li>英語版の作成提案</li>
+        </ul>
+      </section>
+
+      <section class="work-section">
+        <h2>デザインイメージ認識すり合わせ</h2>
+        <div class="compare-row">
+          <div>
+            <img src="images/work-05/color-image-scale.png" alt="カラーイメージスケール(3色)">
+            <p class="cap">カラーイメージスケール（3色）</p>
+          </div>
+          <div>
+            <img src="images/work-05/language-image-scale.png" alt="言語イメージスケール">
+            <p class="cap">言語イメージスケール</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="work-img-section">
+        <div class="img-card">
+          <p style="font-weight:600; color:var(--color-text-primary);">情報設計｜サイトマップ案</p>
+          <img src="images/work-05/sitemap.png" alt="情報設計 サイトマップ案">
+          <p class="cap">※グレー部分は公開後にコンテンツ追加</p>
+        </div>
+      </section>
+
+      <section class="work-section">
+        <h2>デザイン｜2案提案</h2>
+        <p>
+          キャッチコピーは極細のフォントで静謐さを表現。ファーストビューのKVをゆったり入れ替えアカデミックな空気感を演出。サービスページへの誘導アニメーションも派手すぎないが存在感があるよう動きを抑えた。カンパニーページ誘導エリアはパーティクルJSで二酸化炭素を表現。
+        </p>
+        <div class="color-swatches">
+          <div class="color-swatch"><span class="chip" style="background:#003149;"></span><p>メインカラー<br>#003149</p></div>
+          <div class="color-swatch"><span class="chip" style="background:#be1956;"></span><p>アクセントカラー<br>#BE1956</p></div>
+        </div>
+        <p style="text-align:center;">https://powerdsgn.com/</p>
+      </section>
+
+      <div class="mockup-compare">
+        <figure>
+          <img src="images/work-05/mockup-adopted.png" alt="デザイン提案 採用案">
+          <figcaption>採用案</figcaption>
+        </figure>
+        <figure>
+          <img src="images/work-05/mockup-rejected.png" alt="デザイン提案 没案" style="border:1px solid #787878;">
+          <figcaption>没案</figcaption>
+        </figure>
+      </div>
+
+      <section class="work-section">
+        <h2 style="color:var(--color-text-secondary);">工夫した点・苦労した点</h2>
+        <ul>
+          <li>テキストや写真原稿がリリース予定1週間前になっても出ておらず、生成AIを活用してなんとか形にした。原稿がなくても先行してデザインイメージのチェックを行うことができた。</li>
+          <li>個性的なレイアウトにしたので、レスポンシブ対応が少し難しかった。</li>
+        </ul>
+      </section>
+
+      <section class="work-section">
+        <h2>成果と振り返り</h2>
+        <ul>
+          <li>MTGの中で少し個性を出したいとおっしゃっていたので、メニューを左上に置き追従するタイプにしたところクライアントから好評だった。</li>
+          <li>矢印部分はlottiefilesでアニメーション作成した。DAD内では動きのあるものはエンジニアがつくるらしく、デザイナーが作ること自体珍しがられる&工数短縮になり喜んでもらえた。</li>
+          <li>Figmaが導入されていなかった為このプロジェクトでXDからの乗り換えを提案し、社内で採用された。</li>
+        </ul>
+      </section>
+
+    </div>
+
+  </main>
+
+  <button type="button" class="page-top-btn" aria-label="ページの先頭に戻る">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="page-top-btn-circle" cx="20" cy="20" r="19.5" fill="white" stroke="#47536F"/>
+      <path class="page-top-btn-arrow" d="M20.005 11V29M12.5 18.7143L20 11L27.5 18.7143" stroke="#47536F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <footer class="site-footer num-ui">©Yumi Takaki</footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

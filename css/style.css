@@ -181,28 +181,41 @@ body:not([data-page="index"]) .site-header .updated { display: none; }
 
 .sp-menu-wrap {
   display: none;
-  position: relative;
 }
 .sp-menu-toggle {
   display: flex;
   position: relative;
   z-index: 1;
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--color-text-blueblack);
+  background: transparent;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  gap: 4px;
 }
-.sp-menu-toggle span {
-  display: block;
-  width: 18px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--color-text-white);
+.sp-menu-cat {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 56px;
+  height: auto;
+  transform: translate(-50%, -52%);
+  pointer-events: none;
+}
+.sp-menu-toggle .sp-menu-cat { opacity: 1; }
+.sp-menu-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.sp-menu-toggle .sp-menu-label {
+  color: var(--color-text-white);
+  transform: translate(-50%, -40%);
 }
 @media (max-width: 980px) {
   .site-header {
@@ -220,17 +233,30 @@ body:not([data-page="index"]) .site-header .updated { display: none; }
   top: 0;
   right: 0;
   margin: 0;
-  transform: none;
   z-index: 2;
   width: 161px;
   box-sizing: border-box;
   background: var(--color-text-blueblack);
-  border-radius: var(--radius-m);
-  padding: 80px var(--sp-l) var(--sp-l);
+  border-radius: 0 0 var(--radius-m) var(--radius-m);
+  padding: 100px var(--sp-l) var(--sp-l);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--sp-m);
+  /* Slide-down-from-top open / slide-up-to-close animation. The element
+     stays display:flex (no [hidden]-driven display:none) whenever this
+     transition needs to run — see .sp-menu-popup[hidden] below and the JS,
+     which delays setting `hidden` on close until after this transition
+     finishes, since display:none can't be animated. */
+  transform: translateY(-16px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.18s ease;
+}
+.sp-menu-popup.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 .sp-menu-popup[hidden] { display: none; }
 .sp-menu-popup .site-nav {
@@ -240,29 +266,48 @@ body:not([data-page="index"]) .site-header .updated { display: none; }
   border-radius: 0;
   flex-direction: column;
   width: 100%;
+  gap: var(--sp-m);
 }
-.sp-menu-popup .site-nav a { width: 100%; }
+.sp-menu-popup .site-nav a {
+  width: 100%;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-s);
+  background: transparent;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: var(--fs-heading);
+  color: var(--color-text-secondary);
+}
+.sp-menu-popup .site-nav a.is-active {
+  background: var(--color-text-white);
+  color: var(--color-text-blueblack);
+}
+body[data-page="index"] .sp-menu-popup .site-nav a {
+  background: rgba(255, 255, 255, 0.7);
+}
 .sp-menu-close {
   position: absolute;
   top: 16px;
   right: 16px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--color-text-white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 56px;
+  height: 56px;
 }
-.sp-menu-close span {
+.sp-menu-close .sp-menu-cat { opacity: 1; }
+.sp-menu-close .sp-menu-label {
+  color: var(--color-text-blueblack);
+  font-size: 12px;
+  transform: translate(-50%, 15%);
+}
+.sp-menu-close-x {
   position: absolute;
-  width: 18px;
-  height: 2px;
-  border-radius: 1px;
-  background: var(--color-text-blueblack);
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  transform: translate(-50%, -60%);
 }
-.sp-menu-close span:first-child { transform: rotate(45deg); }
-.sp-menu-close span:last-child { transform: rotate(-45deg); }
 
 /* ---------- Footer ---------- */
 .site-footer {
@@ -884,3 +929,175 @@ body[data-page="index"] .site-footer {
 .page-top-btn:hover .page-top-btn-arrow {
   stroke: var(--color-text-white);
 }
+
+/* ---------- Work detail: simple "snapshot" pages (work-03/04/05/06/07/09/10) ---------- */
+.work-hero-band {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--sp-l);
+  padding: var(--sp-l);
+  min-height: 280px;
+}
+.work-hero-band img {
+  height: 260px;
+  width: auto;
+  max-width: 90%;
+  display: block;
+}
+@media (max-width: 720px) {
+  .work-hero-band { padding: var(--sp-l) 20px; min-height: 0; }
+  .work-hero-band img { height: 180px; }
+}
+
+.work-content {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--sp-2xl) 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-xl);
+}
+.work-content > .work-hero,
+.work-content > .work-section {
+  padding: 0;
+  margin: 0;
+  max-width: 800px;
+  width: 100%;
+}
+.work-content > .work-img-section {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.work-section ul {
+  width: 100%;
+  padding-left: 1.2em;
+}
+.work-section li {
+  font-size: var(--fs-body);
+  color: var(--color-text-secondary);
+  list-style: disc;
+}
+/* A <li> that's also a flex item doesn't render its bullet marker (per the
+   CSS Lists spec) — display:flex on .work-section ul above was silently
+   killing every bullet on the page. Use margin instead of flex+gap for the
+   spacing between items, which doesn't have that side effect. */
+.work-section li + li {
+  margin-top: var(--sp-xs);
+}
+
+.img-card {
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  background: var(--color-backgray);
+  border-radius: var(--radius-m);
+  padding: var(--sp-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-l);
+}
+.img-card .img-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--sp-l);
+}
+.img-card img {
+  display: block;
+  height: 360px;
+  width: auto;
+  max-width: 100%;
+  border-radius: var(--radius-s);
+}
+.img-card .cap {
+  font-size: var(--fs-caption);
+  color: var(--color-text-secondary);
+  text-align: center;
+  max-width: 608px;
+}
+@media (max-width: 720px) {
+  .img-card { padding: var(--sp-l); }
+  .img-card img { height: 220px; }
+}
+
+/* ---------- Work detail: full-bleed colored hero band (text-only hero) ---------- */
+.hero-color-band {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: var(--sp-2xl) 20px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- Work detail: "snapshot gallery" list (work-04/06/07/09 style pages) ---------- */
+.gallery-item {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding: var(--sp-xl) 20px;
+  display: flex;
+  justify-content: center;
+}
+.gallery-item.bg-gray { background: var(--color-backgray); }
+.gallery-inner {
+  max-width: 800px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-l);
+}
+.gallery-media {
+  display: flex;
+  gap: var(--sp-l);
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.gallery-media img {
+  max-width: 100%;
+  border-radius: var(--radius-s);
+  display: block;
+}
+.gallery-media.pair img { flex: 1 1 0; min-width: 0; }
+.gallery-cap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-s);
+  align-items: flex-start;
+}
+.gallery-title {
+  font-family: var(--font-jp);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  color: var(--color-text-primary);
+}
+.gallery-role {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-s);
+  font-family: var(--font-ui);
+  font-size: var(--fs-caption);
+  color: var(--color-text-primary);
+}
+.gallery-role svg { flex-shrink: 0; }
+.gallery-desc {
+  font-size: var(--fs-body);
+  color: var(--color-text-secondary);
+  width: 100%;
+}
+.gallery-desc p + p { margin-top: var(--sp-s); }

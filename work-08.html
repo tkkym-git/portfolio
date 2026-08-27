@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>情報記憶媒体の持込み持出し許可証 | Yumi Takaki</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="DENSO グループ会社間の情報記憶媒体 持込み・持出し許可証アプリのケーススタディ。申請業務プロセスの電子化と運用改善の事例。">
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+  /* ---------- work-08 scoped additions ---------- */
+  /* Mirrors work-01's mobile-title line-break control: <br class="sp-only">
+     splits the h1 on mobile only, suppressed on desktop. */
+  .sp-only { display: none; }
+  @media (max-width: 768px) {
+    .sp-only { display: inline; }
+  }
+  /* Figma "Hero Section" (517:13133): full-bleed #137ad1 band, two flat
+     phone screenshots at height:376px — not the shared .work-hero-band
+     260px default. */
+  .work-hero-band img { height: 376px; }
+  .disclaimer-line {
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+  }
+
+  .issue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sp-m);
+  }
+  @media (max-width: 720px) { .issue-grid { grid-template-columns: 1fr; } }
+  /* Figma "issue" component: padding is 32px vertical / 16px horizontal
+     (py-l px-m) — the axes were swapped in the original build. */
+  .issue-card {
+    background: var(--color-background);
+    border: 1px solid var(--color-text-secondary);
+    border-radius: var(--radius-m);
+    padding: var(--sp-l) var(--sp-m);
+    display: flex;
+    align-items: center;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+  }
+  .issue-card b { color: var(--color-text-secondary); font-weight: 600; }
+  .issue-label {
+    font-family: var(--font-jp);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--sp-s);
+  }
+  .issue-block + .issue-block { margin-top: var(--sp-l); }
+
+  /* Figma 制約 section (517:13166): plain SemiBold sub-heading + a standard
+     disc-bullet list — no gray card, no custom dot bullets (the old
+     .constraint-box invented a boxed treatment with its own ::before dots
+     that also doubled up with the global disc bullets). The heading+list
+     block is left-aligned *within itself*, but Figma centers that whole
+     block as a unit inside the section (shrink-to-fit + margin auto) —
+     it does not stretch edge-to-edge like a normal .work-section child. */
+  .constraint-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-m);
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  .constraint-heading {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  /* Figma "figure" card pattern (same as work-02): backgray box, radius-m,
+     64px padding, gap-l between content and caption. */
+  .figure-card {
+    background: var(--color-backgray);
+    border-radius: var(--radius-m);
+    padding: var(--sp-xl);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-l);
+  }
+  .figure-card .cap {
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+  @media (max-width: 720px) {
+    .figure-card { padding: var(--sp-l); }
+  }
+  /* Mirrors work-01/02's SP image treatment: cap every image inside a
+     figure card at 300px tall on mobile instead of the fixed desktop
+     heights. */
+  @media (max-width: 768px) {
+    .figure-card img {
+      height: auto !important;
+      max-height: 300px !important;
+      width: auto !important;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+  }
+
+  /* Two equal-width images side by side (問題抽出 / 現状の体験分析). */
+  .split-row {
+    display: flex;
+    gap: var(--sp-l);
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  /* Figma specifies no border-radius on these (both the 問題抽出 pair and
+     the 共感マップ pair) — square corners, matching the source screenshots. */
+  .split-row img {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    display: block;
+  }
+  @media (max-width: 720px) {
+    .split-row { flex-direction: column; }
+  }
+
+  /* 改善方針決定: bullet list + a small white "使用ツール" box, side by side. */
+  .plan-decision {
+    display: flex;
+    gap: var(--sp-l);
+    align-items: center;
+    width: 100%;
+  }
+  .plan-decision ul { flex: 1; }
+  .plan-decision .tool-box {
+    background: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-m);
+    padding: var(--sp-m);
+    flex-shrink: 0;
+  }
+  .plan-decision .tool-box img { width: 235px; max-width: 100%; display: block; }
+  .plan-decision .tool-box .label {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    color: var(--color-text-primary);
+  }
+  @media (max-width: 720px) {
+    .plan-decision { flex-direction: column; }
+  }
+
+  /* 運用設計: image + bullet list side by side, inside a figure-card. */
+  .intranet-row {
+    display: flex;
+    gap: var(--sp-l);
+    align-items: center;
+    width: 100%;
+  }
+  /* Figma specifies no border-radius on this image — square corners. */
+  .intranet-row img {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    display: block;
+    box-shadow: 0 8px 24px rgba(30, 38, 61, 0.08);
+  }
+  .intranet-row ul { flex: 1; min-width: 0; }
+  @media (max-width: 720px) {
+    .intranet-row { flex-direction: column; }
+  }
+
+  .screen-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--sp-l);
+  }
+  @media (max-width: 900px) { .screen-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 500px; margin: 0 auto; } }
+  @media (max-width: 480px) { .screen-grid { grid-template-columns: 1fr; max-width: 320px; } }
+  .screen-item { text-align: center; }
+  .screen-item img { border-radius: var(--radius-s); width: 100%; margin-bottom: var(--sp-s); }
+  .screen-item h4 {
+    font-family: var(--font-jp);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    margin-bottom: 4px;
+  }
+  /* Figma centers the image/title as blocks but the caption text itself
+     is left-aligned within its own (content-width) box, same pattern as
+     the other multi-line captions on this page. */
+  .screen-item p { font-size: var(--fs-caption); color: var(--color-text-secondary); text-align: left; }
+
+  /* 工夫した点・苦労した点: unlike the other section headings, Figma styles
+     this one left-aligned and in the secondary gray (not centered black). */
+  .effort-card { align-items: stretch; }
+  .effort-card .subheading {
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    font-size: var(--fs-body);
+    text-align: left;
+    width: 100%;
+  }
+  .effort-card ul { width: 100%; }
+  .effort-row {
+    display: flex;
+    gap: var(--sp-l);
+    align-items: flex-start;
+    width: 100%;
+  }
+  .effort-row .effort-box {
+    background: var(--color-background);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-m);
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    align-self: stretch;
+  }
+  .effort-row .effort-box img { width: 100%; display: block; }
+  .effort-row .effort-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-l);
+    flex: 1;
+    min-width: 0;
+  }
+  .effort-row .effort-col .effort-item { display: flex; flex-direction: column; gap: var(--sp-m); width: 100%; }
+  .effort-row .effort-col img { width: 100%; display: block; }
+  .effort-row p { font-size: var(--fs-caption); color: var(--color-text-secondary); margin: 0; }
+  @media (max-width: 720px) {
+    .effort-row { flex-direction: column; }
+  }
+
+  /* Figma positions this QR block dead-center within the 1440px page
+     (x:578, width:284 → midpoint 720 = exactly half of 1440) — centered
+     as a shrink-to-fit unit, not stretched to the section's full width. */
+  .prototype-link { display: flex; align-items: center; gap: var(--sp-m); width: fit-content; max-width: 100%; margin: 0 auto; }
+  .prototype-link img { width: 120px; height: 120px; flex-shrink: 0; display: block; }
+  .prototype-link p { font-size: var(--fs-body); color: var(--color-text-secondary); margin: 0; }
+
+  /* <main class="wrap"> caps width and adds side padding, unlike work-01's
+     unconstrained <main> — break .recommendation out to full viewport
+     width the same way .work-hero-band already does. */
+  .recommendation {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+  }
+  /* .recommendation already ends flush with its own 64px padding; the
+     shared .site-footer{margin-top:64px} default would stack an extra
+     gap on top of that. */
+  .site-footer { margin-top: 0; }
+</style>
+
+</head>
+<body data-page="works">
+
+  <header class="site-header">
+    <a href="index.html" class="brand">
+      <span class="icon"><img src="images/icons/avatar.png" alt="Yumi Takaki"></span>
+      <span class="name num-ui">Yumi Takaki</span>
+    </a>
+    <nav class="site-nav">
+      <a href="works.html" data-page="works">Work</a>
+      <a href="about.html" data-page="about">About</a>
+    </nav>
+    <div class="updated num-ui">Last updated: 2026.8</div>
+    <div class="sp-menu-wrap">
+      <button class="sp-menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="sp-menu-popup">
+        <img class="sp-menu-cat" src="images/icons/sp-menu-cat-blueblack.svg" alt="">
+        <span class="sp-menu-label">menu</span>
+      </button>
+
+      <div class="sp-menu-popup" id="sp-menu-popup" hidden>
+        <button class="sp-menu-close" type="button" aria-label="メニューを閉じる">
+          <img class="sp-menu-cat" src="images/icons/sp-menu-cat-white.svg" alt="">
+          <span class="sp-menu-label">close</span>
+          <img class="sp-menu-close-x" src="images/icons/sp-menu-close-x.svg" alt="">
+        </button>
+        <nav class="site-nav">
+          <a href="works.html" data-page="works">Work</a>
+          <a href="about.html" data-page="about">About</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <div class="work-hero-band" style="background:#137ad1;">
+      <img src="images/work-08/hero-1.png" alt="情報機器持込み許可証アプリ TOP画面のスクリーンショット">
+      <img src="images/work-08/hero-2.png" alt="情報機器持込み許可証アプリ 新規申請画面のスクリーンショット">
+    </div>
+
+    <section class="work-hero">
+      <h1>情報記憶媒体の<br class="sp-only">持込み持出し許可証</h1>
+      <div class="info num-ui">
+        <span class="item"><svg width="12.4" height="16" viewBox="0 0 14 18" fill="none"><path d="M7 0C3.42769 0 0 2.817 0 6.3C0 11.025 7 18 7 18C7 18 14 11.025 14 6.3C14 2.817 10.5723 0 7 0ZM7 8.55C5.83231 8.55 4.88462 7.542 4.88462 6.3C4.88462 5.058 5.83231 4.05 7 4.05C8.16769 4.05 9.11538 5.058 9.11538 6.3C9.11538 7.542 8.16769 8.55 7 8.55Z" fill="#47536F"/></svg>DENSO</span>
+        <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2021.9-2022.2</span>
+        <span class="item"><svg width="14.1" height="16" viewBox="0 0 15 17" fill="none"><path d="M2.51072 0L4.1727 0.00436242L4.16962 1.6892C4.91437 1.70561 5.70909 1.69204 6.45697 1.69215L10.8399 1.69106C10.8219 1.18184 10.8323 0.514125 10.8447 0.00201844L12.4926 0.00303842C12.5048 0.556186 12.498 1.13718 12.4981 1.69154C12.9118 1.69135 13.4723 1.66717 13.858 1.78997C14.2724 1.92487 14.6172 2.22236 14.8163 2.61681C14.957 2.8922 14.9935 3.18042 14.9963 3.48756C15.0015 4.05642 14.9998 4.62533 14.9995 5.19423L14.9995 12.9218C14.9998 13.6945 15.0012 14.4666 14.994 15.2392C14.9872 15.9782 14.679 16.4917 14.0345 16.8326C13.7531 16.9724 13.3387 16.9935 13.0307 16.9956L2.85748 16.9964C2.35755 16.9969 1.80568 17.0192 1.31475 16.9468C1.04309 16.9067 0.693502 16.6912 0.498897 16.4911C0.0144176 15.9932 0.00339418 15.4809 0.00228762 14.8225L0.00243666 4.49856C0.00230898 4.15009 -0.0139701 3.44381 0.0393573 3.11585C0.0935147 2.76543 0.255987 2.44184 0.503111 2.19221C1.07133 1.61519 1.75948 1.69039 2.5064 1.69167L2.51072 0Z" fill="#47536F"/><path d="M1.67959 5.94933L13.3359 5.94911C13.3692 9.0389 13.3371 12.1909 13.337 15.2858L1.6784 15.2836L1.67648 11.3248L1.67959 5.94933Z" fill="#F9F9F8"/><path d="M5.82243 8.50687C5.85037 8.54519 5.8405 10.0139 5.84178 10.1881C6.65246 10.2223 7.48522 10.183 8.29848 10.1978C8.58384 10.203 8.88478 10.2005 9.16889 10.1861L9.17093 8.47711C9.36556 8.72459 10.024 9.36236 10.2779 9.6211L11.1933 10.5518C11.3438 10.7048 11.5224 10.902 11.6785 11.042C10.8466 11.8574 10.0355 12.7334 9.20432 13.5569C9.1957 13.5446 9.18521 13.5296 9.17285 13.512C9.16259 13.0401 9.16951 12.353 9.17119 11.8979L5.84261 11.8972C5.83461 12.3532 5.81984 13.1499 5.84942 13.5841C5.64138 13.4171 5.20229 12.944 4.99488 12.7325L3.3419 11.0447C3.95704 10.4521 4.54387 9.78815 5.1571 9.18913C5.36828 8.98284 5.6374 8.73169 5.82243 8.50687Z" fill="#47536F"/></svg>6ヶ月(1日1時間程度作業)</span>
+        <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 8 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>PM &amp; Design &amp; Dev &amp; CS</span>
+      </div>
+      <p class="note note-narrow">個人プロジェクト</p>
+      <p class="note">
+        デンソー社員がトヨタ自動車グループ間で情報記憶媒体を会社構内に持込み・持出しする際に使用するアプリ。グループ間の連携を深め、時間がかかっていた申請手続きを簡易にする。
+      </p>
+      <p class="disclaimer-line">※機密事項を含まないよう、変更を加えて再現しています。実際の製品やサイトは掲載していません。</p>
+    </section>
+
+    <section class="work-section">
+      <h2>背景</h2>
+      <p>
+        デンソーでは、情報記憶媒体の持出し・持込み申請は紙の帳票を使用しており、複数の承認ステップや入門チェックなど、許可までに多大な時間がかかっていた。コロナ禍のテレワーク拡大で処理件数が増大し、スピーディーに対応できる簡易制度の考案が急務となっていた。当時一人で社内の帳票の処理、40万台以上のPCのセキュリティ監視、3つのヘルプデスクの窓口の担当など業務過多の状態に、メキシコ拠点とドイツ拠点でのセキュリティ事故も重なり多忙を極めていた。そんな中、親会社であるトヨタ自動車より、グループ間で相互に簡易持込みができる「ルール統一制度」への参加要請を受けた。少しでも効率化するため、アプリ開発し省人化することにした。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>課題</h2>
+
+      <div class="issue-block">
+        <p class="issue-label">ユーザー体験の課題</p>
+        <div class="issue-grid">
+          <div class="issue-card">現状の申請手続きのような混乱を無くす。</div>
+          <div class="issue-card">事前の複雑な申請フローを、シンプルで手軽な動線にする。</div>
+          <div class="issue-card">出張者や出向者が、現場で「迷わず」「スムーズに入門できる」UI。</div>
+        </div>
+      </div>
+
+      <div class="issue-block">
+        <p class="issue-label">運営側の課題</p>
+        <div class="issue-grid">
+          <div class="issue-card"><p><b>グループ間相互の持込み手続きの共通化・効率化：</b>トヨタグループ全体での出張・出向・転籍に伴う入門時のタイムロスを削減。</p></div>
+          <div class="issue-card"><p><b>グループ各社の足並み揃え：</b>各社で異なる運用の共通化と、スピーディーに処理できる簡易制度への落とし込み。</p></div>
+          <div class="issue-card"><p><b>セキュリティと利便性の両立：</b>グループ全体のセキュリティ基準を満たしつつ、従来の煩雑な承認ステップをどれだけ簡素化できるかの調整。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <div class="figure-card">
+        <img src="images/work-08/alliance.png" alt="Tグループ・Dグループ共通の許可証によるアライアンスの全体像" style="width:600px; max-width:100%; height:auto;">
+        <p class="cap">アライアンスの全体像</p>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>プロセス</h2>
+      <p>
+        定期的に行われるトヨタ自動車各社とのグループ会議に上司の室長と2人でデンソー代表者として参加。各社と運用のすり合わせ、ルール共通化の最低ラインを決めた。すでに運用しているデンソー社内の申請の体験がよくないため、同じ道を辿らないよう現状の問題点を洗い出し、体験改善の足がかりとすることにした。
+      </p>
+    </section>
+
+    <section class="work-section">
+      <h2>制約</h2>
+      <div class="constraint-wrap">
+        <p class="constraint-heading">トヨタ自動車側の求める共通条件</p>
+        <ul>
+          <li>許可証は紙で指定の業者に発注(まとめて1ヶ月に一度だけ発注可能)</li>
+          <li>申請には、必要な教育を受講すること</li>
+          <li>年に一度更新を確認し、不要となったカードは回収すること</li>
+          <li>セキュリティ要件を担保すること</li>
+          <li>トヨタ自動車より支給されたExcelの帳票は使用してもしなくても良い(カスタマイズ可)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <div class="figure-card">
+        <p style="font-weight:600; color:var(--color-text-primary); text-align:center; margin:0;">問題抽出</p>
+        <div style="width:100%;">
+          <p style="text-align:left; margin:0;">特性要因図を使い、自社独自制度のヘルプデスクに届く、ユーザーの要望やクレームを分類した。</p>
+          <p style="text-align:left; margin:0;">ユーザー視点と事務局側視点の両方から、下記の観点で問題を洗い出した<br>・どこに時間がかかっているか<br>・何に不満を持っているか</p>
+        </div>
+        <div class="split-row">
+          <img src="images/work-08/issue-extract-1.png" alt="ユーザー視点での問題点の洗い出し">
+          <img src="images/work-08/issue-extract-2.png" alt="事務局視点での問題点の洗い出し">
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>現状の体験分析｜共感マップ</h2>
+      <p>
+        ユーザー視点と管理側視点の両方の体験を可視化してみた<br>・現制度の良い体験<br>・改善できそうな体験
+      </p>
+      <div class="split-row">
+        <img src="images/work-08/empathy-1.png" alt="ユーザー視点の共感マップ。Think and Feel、See、Hear、Say and Do、Pain、Gainの各象限に付箋で整理">
+        <img src="images/work-08/empathy-2.png" alt="管理側視点の共感マップ。Think and Feel、See、Hear、Say and Do、Pain、Gainの各象限に付箋で整理">
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>体験設計｜ユーザーシナリオ</h2>
+      <img src="images/work-08/journey-map.png" alt="Tグループへ出張時の記憶媒体持ち込み体験のユーザージャーニーマップ" style="border-radius: var(--radius-s); width: 100%;">
+    </section>
+
+    <section class="work-section">
+      <div class="figure-card">
+        <p style="font-weight:600; color:var(--color-text-primary); text-align:center;">改善方針決定</p>
+        <div class="plan-decision">
+          <ul>
+            <li>各部でのとりまとめをやめて個人申請に</li>
+            <li>受付・登録・更新作業を省人化</li>
+            <li>承認者や受付側がチェックする時点では申請を一覧で確認できるようにする</li>
+            <li>専用の申請アプリと情報発信サイトを構築する</li>
+          </ul>
+          <div class="tool-box">
+            <img src="images/work-08/tools-icons.png" alt="使用ツールのアイコン一覧: Figma, Power Automate, Microsoft Teams, Outlook, Access, SharePoint">
+            <p class="label">使用ツール</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>フロー＆システム設計</h2>
+      <img src="images/work-08/flow-diagram.png" alt="ユーザー・承認者・事務局・業者間の申請フロー＆システム設計図。Power Automate、Teams、Outlook、SharePoint、Accessを連携" style="border-radius: var(--radius-s); width: 100%;">
+    </section>
+
+    <section class="work-section">
+      <div class="figure-card">
+        <p style="font-weight:600; color:var(--color-text-primary); text-align:center;">運用設計｜社内イントラ用サイト構築</p>
+        <div class="intranet-row">
+          <img src="images/work-08/intranet-mockup.png" alt="社内イントラサイトのワイヤーフレーム">
+          <ul>
+            <li>申請に必要な条件をいくつか課している制度のため、冒頭に注意文を記載</li>
+            <li>マニュアルはスライド形式でサイトトップに埋め込み、画面遷移せずに読めるように変更</li>
+            <li>シンプルな構成で1ページ内に納め、見た目のボリュームを削減</li>
+            <li>運用フローはインフォグラフィック化し文字を削減</li>
+            <li>資料類直下にアプリを埋め込み、制度の理解から申請まで、サイト内で完結できるようにした</li>
+            <li>セキュリティ事故報告など、関連リンク集を右側にまとめて設置</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>主要画面</h2>
+      <div class="screen-grid">
+        <div class="screen-item">
+          <img src="images/work-08/screen-top.png" alt="TOP画面(許可証カード表示)">
+          <h4>TOP画面</h4>
+          <p>M365のアカウントに紐付き、自動でログイン</p>
+        </div>
+        <div class="screen-item">
+          <img src="images/work-08/screen-register.png" alt="新規登録画面">
+          <h4>新規登録画面</h4>
+          <p>「Office 365 ユーザーコネクタ」登録済み情報は自動で入力</p>
+        </div>
+        <div class="screen-item">
+          <img src="images/work-08/screen-renewal.png" alt="年度更新画面">
+          <h4>年度更新画面</h4>
+          <p>一度入力済みの情報はDBに蓄積され、入力の手間を省く</p>
+        </div>
+        <div class="screen-item">
+          <img src="images/work-08/screen-entry.png" alt="入門時表示画面">
+          <h4>入門時表示画面</h4>
+          <p>運用途中で証明書が紙のカードから電子化することが確定したので画面を追加</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <div class="figure-card effort-card">
+        <p class="subheading">工夫した点・苦労した点</p>
+        <ul>
+          <li>出向や2重籍の方も多いためアカウント切り替え間違いがないよう確認を入れた</li>
+          <li>教育コンテンツは年に一度教育を受講しないといけないため、新規登録時と年度更新時のみ受講確認のモーダルが出現するようにし、回答結果もDBに蓄積しエビデンスを記録</li>
+        </ul>
+        <div class="effort-row">
+          <div class="effort-box">
+            <img src="images/work-08/effort-1.png" alt="コンボボックスでの承認者検索候補表示のスクリーンショット">
+            <p>社員情報のDBがグループ内で統一されていなかったため上司や部署の情報は自動で入力させることができなかった。そのためコンボボックスで検索途中に選択肢を出し選べるようにした。同姓同名も多く、5〜6人くらいいるので部署名でも確認させるようにした。</p>
+          </div>
+          <div class="effort-col">
+            <div class="effort-item">
+              <img src="images/work-08/effort-2.png" alt="社員番号入力エラーメッセージのスクリーンショット">
+              <p>入力内容に不備があった場合、入力完了直後にエラーメッセージを出し、修正内容がわかるようにした</p>
+            </div>
+            <div class="effort-item">
+              <img src="images/work-08/effort-3.png" alt="承認依頼ボタンの活性化条件のスクリーンショット">
+              <p>承認依頼のボタンはエラーがなく必要事項が全て入力された場合にのみ活性化するようにした</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="work-section">
+      <h2>成果と振り返り</h2>
+      <ul>
+        <li>業務量を圧縮できた。</li>
+        <li>他のメイン業務の傍少しづつ進めたので時間がかかってしまった。</li>
+        <li>実装はプログラムに詰まった時は社内のエンジニアコミュニティに相談し助けてもらいながらも、一人でやり切ることができた。</li>
+        <li>トヨタ自動車から途中紙での印刷をやめてアプリ化したいと定例で相談があった際、デンソーはすでにアプリ化していると言うことができて、他社のサンプルになれた。</li>
+        <li>派遣社員だったが、色々な業務を率先して行なっていたため、部長報告や5社会議に代表者で出るなど普通できない体験ができた。</li>
+        <li>個人的には入社時から比べて時給が2.5倍になっていたのが嬉しかった。</li>
+      </ul>
+      <div class="prototype-link">
+        <img src="images/work-08/prototype-qr.png" alt="プロトタイプのFigmaリンクQRコード">
+        <p>プロトタイプリンク<br>(Figmaに遷移します)</p>
+      </div>
+    </section>
+
+    <section class="recommendation">
+      <div class="recommendation-inner">
+        <h2 class="recommendation-title">Next Recommendation</h2>
+        <div class="recommendation-grid">
+          <a class="pickup-card" href="work-01.html">
+            <div class="thumb"><img src="images/home/card-01-health.png" alt="健康管理機能 のスクリーンショット"></div>
+            <div class="body">
+              <h3>健康管理機能</h3>
+              <p class="meta num-ui">2026.みんチャレ.Shipped &amp; Wip</p>
+              <div class="desc">
+                <p class="desc-block"><b>課題：</b> ヘルスケア事業の主軸を重症化予防へ転換し、LTVを向上させる</p>
+                <p class="desc-block"><b>施策：</b> PHR機能追加と導線の最適化・専用チーム機能開発</p>
+                <p class="desc-block"><b>成果：</b> MAU増加と継続率の向上</p>
+              </div>
+            </div>
+          </a>
+          <a class="pickup-card" href="work-02.html">
+            <div class="thumb"><img src="images/home/card-02-elderly.png" alt="高齢者講座体験改善 のスクリーンショット"></div>
+            <div class="body">
+              <h3>高齢者講座体験改善</h3>
+              <p class="meta num-ui">2025.みんチャレ.Shipped</p>
+              <div class="desc">
+                <p class="desc-block"><b>課題：</b> 自治体事業高齢者講座の時間短縮と体験改善</p>
+                <p class="desc-block"><b>施策：</b> 専用オンボーディング追加。マニュアルの整理など講座運用改善</p>
+                <p class="desc-block"><b>成果：</b> 時間短縮と定着率向上</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button type="button" class="page-top-btn" aria-label="ページの先頭に戻る">
+    <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="page-top-btn-circle" cx="20" cy="20" r="19.5" fill="white" stroke="#47536F"/>
+      <path class="page-top-btn-arrow" d="M20.005 11V29M12.5 18.7143L20 11L27.5 18.7143" stroke="#47536F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <footer class="site-footer num-ui">©Yumi Takaki</footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
