@@ -28,6 +28,11 @@
      single centered phone screenshot at height:376px (aspect-ratio-derived
      width ~189px) — not the shared .work-hero-band 260px default. */
   .work-hero-band img { height: 376px; }
+  /* SP: keep the band at a fixed 400px instead of the shared 720px
+     min-height:0 collapse — the screenshot stays centered inside it. */
+  @media (max-width: 768px) {
+    .work-hero-band { min-height: 400px; }
+  }
 
   /* <main class="wrap"> caps width and adds side padding, unlike work-01's
      unconstrained <main> — break .recommendation out to full viewport width

@@ -31,6 +31,9 @@
   .img-card .cap { color: var(--color-text-primary); }
   @media (max-width: 768px) {
     .sp-only { display: inline; }
+    /* Keep the hero band at a fixed 400px instead of the shared 720px
+       min-height:0 collapse — the screenshot stays centered inside it. */
+    .work-hero-band { min-height: 400px; }
     .img-card {
       width: 100%;
       padding-left: 32px;

@@ -27,6 +27,9 @@
      shared .img-card img rule (css/style.css) rounds them by default. */
   .img-card img { border-radius: 0; }
   @media (max-width: 768px) {
+    /* Keep the hero band at a fixed 400px instead of the shared 720px
+       min-height:0 collapse — the screenshots stay centered inside it. */
+    .work-hero-band { min-height: 400px; }
     .img-card {
       width: 100%;
       padding-left: 32px;

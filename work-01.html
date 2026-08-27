@@ -141,6 +141,20 @@
     margin-top: 0;
     margin-bottom: var(--sp-xl); /* + .work-hero's own 32px flex gap = 96px total, matching Figma */
   }
+  /* SP: pin the hero image to a fixed 400px band instead of scaling by its
+     native aspect ratio, so it doesn't run tall on narrow screens; cover
+     keeps it filling that band without distorting. */
+  @media (max-width: 768px) {
+    .work-hero-img {
+      height: 400px;
+      min-height: 400px;
+    }
+    .work-hero-img img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+  }
   .recommendation {
     margin-top: var(--sp-2xl);
   }

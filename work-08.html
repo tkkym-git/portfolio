@@ -28,6 +28,11 @@
      phone screenshots at height:376px — not the shared .work-hero-band
      260px default. */
   .work-hero-band img { height: 376px; }
+  /* SP: keep the band at a fixed 400px instead of the shared 720px
+     min-height:0 collapse — both screenshots stay centered inside it. */
+  @media (max-width: 768px) {
+    .work-hero-band { min-height: 400px; }
+  }
   .disclaimer-line {
     font-size: var(--fs-caption);
     color: var(--color-text-secondary);

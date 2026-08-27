@@ -819,6 +819,15 @@ body[data-page="404"] .hero-panel {
   white-space: nowrap;
 }
 .work-hero .info .item svg { display: block; flex-shrink: 0; }
+@media (max-width: 720px) {
+  /* Spec items wrap onto multiple lines on narrow screens; halve just the
+     vertical gap between wrapped lines (row-gap) so the block reads
+     tighter, while leaving the horizontal spacing between items on the
+     same line (column-gap) at the shared 32px. */
+  .work-hero .info {
+    row-gap: var(--sp-m);
+  }
+}
 .work-hero .note {
   color: var(--color-text-secondary);
   font-size: var(--fs-body);
