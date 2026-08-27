@@ -1,7 +1,7 @@
 /* =========================================================
    Yumi Takaki Portfolio — Design Tokens (from Figma variables)
    ========================================================= */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Montserrat+Alternates:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Montserrat+Alternates:ital,wght@0,500;0,600;0,700;1,400&display=swap');
 
 :root {
   /* Color */
@@ -64,9 +64,10 @@ button { font: inherit; border: none; background: none; cursor: pointer; }
   font-variation-settings: "wdth" 100;
 }
 
-/* ---------- Fit-to-viewport (index page only) ---------- */
-html:has(body[data-page="index"]) { height: 100%; }
-body[data-page="index"] {
+/* ---------- Fit-to-viewport (index + 404 pages) ---------- */
+html:has(body[data-page="index"]), html:has(body[data-page="404"]) { height: 100%; }
+body[data-page="index"],
+body[data-page="404"] {
   height: 100vh;
   height: 100dvh;
   display: flex;
@@ -79,11 +80,17 @@ body[data-page="index"] {
   background-size: 150px 150px, cover;
   background-blend-mode: overlay, normal;
 }
-body[data-page="index"] .site-header { flex-shrink: 0; }
-body[data-page="index"] .hero { flex: 1 1 auto; min-height: 0; }
-body[data-page="index"] .site-footer { flex-shrink: 0; }
+body[data-page="index"] .site-header,
+body[data-page="404"] .site-header { flex-shrink: 0; }
+body[data-page="index"] .hero,
+body[data-page="404"] .hero { flex: 1 1 auto; min-height: 0; }
+body[data-page="index"] .site-footer,
+body[data-page="404"] .site-footer { flex-shrink: 0; }
 
 @media (max-width: 980px), (max-height: 700px) {
+  /* index page's content (3-card grid) can outgrow the viewport on
+     mobile, so it falls back to a normal scrolling page. The 404 page's
+     content is short and stays fixed to 100vh/100dvh at every size. */
   body[data-page="index"] {
     height: auto;
     overflow-y: visible;
@@ -177,7 +184,7 @@ body:not([data-page="index"]) .site-nav a.is-active {
   color: var(--color-text-secondary);
   white-space: nowrap;
 }
-body:not([data-page="index"]) .site-header .updated { display: none; }
+body:not([data-page="index"]):not([data-page="404"]) .site-header .updated { display: none; }
 
 .sp-menu-wrap {
   display: none;
@@ -285,7 +292,8 @@ body:not([data-page="index"]) .site-header .updated { display: none; }
   background: var(--color-text-white);
   color: var(--color-text-blueblack);
 }
-body[data-page="index"] .sp-menu-popup .site-nav a {
+body[data-page="index"] .sp-menu-popup .site-nav a,
+body[data-page="404"] .sp-menu-popup .site-nav a {
   background: rgba(255, 255, 255, 0.7);
 }
 .sp-menu-close {
@@ -321,7 +329,8 @@ body[data-page="index"] .sp-menu-popup .site-nav a {
   font-size: var(--fs-caption);
   margin-top: var(--sp-xl);
 }
-body[data-page="index"] .site-footer {
+body[data-page="index"] .site-footer,
+body[data-page="404"] .site-footer {
   height: clamp(40px, 6vh, 64px);
   margin-top: 0;
 }
@@ -509,7 +518,40 @@ body[data-page="index"] .site-footer {
     flex-shrink: 0;
     margin-top: var(--sp-m);
   }
+  /* 404's content is short, so keep its panel filling the fixed 100vh
+     body instead of shrinking to content height like the index grid. */
+  body[data-page="404"] .hero-panel {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+  }
 }
+
+/* ---------- 404 ---------- */
+body[data-page="404"] .hero-panel {
+  gap: var(--sp-2xl);
+}
+.error-code {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--color-text-blueblack);
+  font-size: clamp(64px, min(23vw, 34vh), 333px);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: center;
+  margin: 0;
+}
+.error-message {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-display-l);
+  letter-spacing: 0.02em;
+  color: var(--color-text-blueblack);
+  text-align: center;
+  margin: 0;
+}
+
 /* ---------- Page heading ---------- */
 .page-title {
   font-family: var(--font-display);
