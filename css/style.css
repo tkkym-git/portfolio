@@ -161,13 +161,14 @@ body[data-page="404"] .site-footer { flex-shrink: 0; }
 }
 .site-nav a.is-active { background: rgba(255, 255, 255, 0.42); }
 
-/* Work/About pages use a light-gray nav pill instead of the index page's blueblack one */
-body:not([data-page="index"]) .site-nav {
+/* Work/About pages use a light-gray nav pill instead of the index page's
+   blueblack one. The 404 page keeps the index-style blueblack pill. */
+body:not([data-page="index"]):not([data-page="404"]) .site-nav {
   background: rgba(71, 83, 111, 0.1);
   padding: var(--sp-xs);
   border-radius: 20px;
 }
-body:not([data-page="index"]) .site-nav a {
+body:not([data-page="index"]):not([data-page="404"]) .site-nav a {
   height: 28px;
   padding: 0 var(--sp-s);
   border-radius: 14px;
@@ -175,7 +176,7 @@ body:not([data-page="index"]) .site-nav a {
   font-weight: 600;
   color: var(--color-text-secondary);
 }
-body:not([data-page="index"]) .site-nav a.is-active {
+body:not([data-page="index"]):not([data-page="404"]) .site-nav a.is-active {
   background: var(--color-text-white);
   color: var(--color-text-secondary);
 }
