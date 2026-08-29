@@ -87,10 +87,12 @@ body[data-page="404"] .hero { flex: 1 1 auto; min-height: 0; }
 body[data-page="index"] .site-footer,
 body[data-page="404"] .site-footer { flex-shrink: 0; }
 
-@media (max-width: 980px), (max-height: 700px) {
+@media (max-width: 980px), (max-height: 900px) {
   /* index page's content (3-card grid) can outgrow the viewport on
-     mobile, so it falls back to a normal scrolling page. The 404 page's
-     content is short and stays fixed to 100vh/100dvh at every size. */
+     mobile and on short-height desktop windows, so it falls back to a
+     normal scrolling page instead of being squashed/clipped by the fixed
+     100vh layout. The 404 page's content is short and stays fixed to
+     100vh/100dvh at every size. */
   body[data-page="index"] {
     height: auto;
     overflow-y: visible;
@@ -376,7 +378,7 @@ body[data-page="404"] .site-footer {
     linear-gradient(to right, rgba(255, 255, 255, 0.5) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
   background-size: 48px 48px;
-  padding: 0 64px;
+  padding: clamp(20px, 3vh, 40px) 64px;
   overflow: hidden;
   width: 100%;
   min-width: 0;
@@ -461,6 +463,11 @@ body[data-page="404"] .site-footer {
   font-weight: 400;
   font-size: var(--fs-caption);
   color: var(--color-text-primary);
+}
+.pickup-card .desc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 .pickup-card .desc-block {
   font-size: var(--fs-body);
