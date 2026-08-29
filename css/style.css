@@ -406,7 +406,7 @@ body[data-page="404"] .site-footer {
   gap: var(--sp-l);
   position: relative;
   z-index: 1;
-  max-width: 964px;
+  max-width: 1040px;
   width: 100%;
   margin: 0 auto;
   flex-shrink: 0;
