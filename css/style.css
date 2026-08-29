@@ -451,7 +451,7 @@ body[data-page="404"] .site-footer {
 .pickup-card .body {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-s);
+  gap: 12px;
 }
 .pickup-card h3 {
   font-family: var(--font-jp);
@@ -463,11 +463,6 @@ body[data-page="404"] .site-footer {
   font-weight: 400;
   font-size: var(--fs-caption);
   color: var(--color-text-primary);
-}
-.pickup-card .desc {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
 }
 .pickup-card .desc-block {
   font-size: var(--fs-body);
