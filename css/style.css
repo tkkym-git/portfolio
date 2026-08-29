@@ -451,7 +451,7 @@ body[data-page="404"] .site-footer {
 .pickup-card .body {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 .pickup-card h3 {
   font-family: var(--font-jp);
