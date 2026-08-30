@@ -12,6 +12,7 @@
   --color-background: #ffffff;
   --color-backgray: #f7f7f7;
   --color-accent: #ceff00;
+  --color-accent-thin: #f3ffbf; /* Figma変数 Color/AccentThin。カードホバー時のサムネ背景に使用 */
   --color-border: rgba(0, 0, 0, 0.08);
 
   /* Typography */
@@ -431,12 +432,14 @@ body[data-page="404"] .site-footer {
   display: flex;
   flex-direction: column;
   gap: var(--sp-m);
-  box-shadow: 0 12px 32px rgba(30, 38, 61, 0.08);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+  position: relative;
+  z-index: 1;
 }
 .pickup-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(30, 38, 61, 0.14);
+  transform: scale(1.05);
+  opacity: 0.65; /* Figmaのhoverプロトタイプ仕様に準拠 */
+  z-index: 2;
 }
 .pickup-card .thumb {
   aspect-ratio: 268 / 201;
@@ -448,6 +451,10 @@ body[data-page="404"] .site-footer {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  transition: background 0.25s ease;
+}
+.pickup-card:hover .thumb {
+  background: var(--color-accent-thin);
 }
 .pickup-card .thumb img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
 .pickup-card .body {
@@ -617,13 +624,14 @@ body[data-page="404"] .hero-panel {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0 8px 24px rgba(30, 38, 61, 0.06);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease, opacity 0.25s ease;
   position: relative;
+  z-index: 1;
 }
 .work-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 32px rgba(30, 38, 61, 0.12);
+  transform: scale(1.05);
+  opacity: 0.65; /* Figmaのhoverプロトタイプ仕様に準拠 */
+  z-index: 2;
 }
 .work-card .thumb {
   aspect-ratio: 268 / 201;
@@ -635,6 +643,10 @@ body[data-page="404"] .hero-panel {
   align-items: center;
   justify-content: center;
   position: relative;
+  transition: background 0.25s ease;
+}
+.work-card:hover .thumb {
+  background: var(--color-accent-thin);
 }
 .work-card .thumb img { width: 100%; height: 100%; object-fit: contain; }
 .work-card .pickup-badge {
