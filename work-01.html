@@ -329,7 +329,7 @@
       padding-right: 20px;
     }
     /* Severity row (チーム参加直後の画面 → 目標設定画面 → チャレンジ送信画面):
-       this row already goes flex-direction:column below 960px (see the
+       this row already goes flex-direction:column below 768px (see the
        .img-card .img-row rule further down), so the "→" between the first
        two items should read as "↓" here, and the stacked gap should match
        the same tightened spacing used on desktop for this row. */
@@ -356,14 +356,15 @@
       gap: 8px;
     }
   }
-  /* This row needs ~630px of raw image width just to lay out its 3 phone
-     screenshots, plus card/section padding — comfortable in a row above
-     ~960px, but cramped (and prone to an awkward "2 up, 1 wrapped below"
-     partial-wrap) anywhere narrower. Rather than let flex-wrap decide that
-     case by case per viewport, switch cleanly between two fixed layouts at
-     a single breakpoint: side-by-side row above it, plain vertical stack
-     below it. flex-wrap stays "wrap" only as a harmless fallback — nowrap
-     would force 3 full-height images to overflow instead of ever stacking. */
+  /* Row layout runs the full PC range (project convention: tablet is
+     426–768px and stacks to a column, PC is 769px+ and stays
+     side-by-side). At 769–960px the raw ~630px of 3 phone-screenshot
+     width would be cramped in a row on its own — that's handled by the
+     .img-item img height-260 shrink further below (still keyed to
+     960px), which keeps the row comfortable down to 769px; full 360px
+     images resume above 960px. flex-wrap stays "wrap" only as a
+     harmless fallback — nowrap would force 3 full-height images to
+     overflow instead of ever stacking. */
   .img-row {
     display: flex;
     flex-direction: row;
@@ -373,7 +374,7 @@
     gap: var(--sp-l);
     width: 100%;
   }
-  @media (max-width: 960px) {
+  @media (max-width: 768px) {
     /* The shared .img-card .img-row rule (css/style.css) is two classes
        (specificity 0,2,0); a plain .img-row here is only one class
        (0,1,0) and loses to it regardless of media query or source order
@@ -384,25 +385,11 @@
       align-items: center;
     }
   }
-  /* 旧画面/リニューアル画面/分離&改善したカレンダー row only: with the first
-     two images now grouped into .renewal-pair (which shrinks to fit two
-     side by side down to mobile), this row no longer needs the full
-     960px column-stack margin the other 3-image rows on this page use —
-     it now only needs to collapse to a column on true mobile (<=768px),
-     matching every other SP-only breakpoint on this page. Cancel the
-     960px stack for the 769–960px band specifically; the <=768px column
-     behavior above is untouched. */
-  @media (min-width: 769px) and (max-width: 960px) {
-    .img-card .img-row.img-row--renewal {
-      flex-direction: row;
-      align-items: stretch;
-    }
-  }
   /* Plain 3-image rows (歩数/食事/血圧詳細, チーム内記録系) that don't need any
-     mobile pairing trick: same tablet fix as .img-row--renewal above, but
-     these fit comfortably as a row down to phone width, so cancel the
-     960px stack down to 600px instead of 768px. */
-  @media (min-width: 601px) and (max-width: 960px) {
+     mobile pairing trick: fit comfortably as a row down to tablet width,
+     so cancel the column-stack above (<=768px) down to 601px — only true
+     phone widths (<=600px) still stack. */
+  @media (min-width: 601px) and (max-width: 768px) {
     .img-card .img-row.img-row--nostack-tablet {
       flex-direction: row;
       align-items: stretch;
@@ -427,29 +414,21 @@
     }
   }
   /* "分離&改善したカレンダー" item has an extra caption+description below it
-     that the other two items in this row don't have, so its natural content
-     height is taller than theirs. Above the 960px breakpoint (row layout),
-     give it a fixed total height equal to a plain item's (measured: 360px
-     image + gap + one caption line ≈ 394px) and let its own image flex to
-     fill whatever space is left after its caption+description — this makes
-     the whole block (image+text) match the other two items' total height,
-     per feedback that "揃える" should include the text block, not just the
-     image. This uses a fixed height rather than flexbox cross-line stretch
-     (stretch depends on sharing a flex line with a taller sibling; at
-     several in-between viewport widths this item wrapped onto its own line
-     before reaching the old mobile breakpoint, where there was nothing to
-     stretch against and the image collapsed to 0 height — a fixed height
-     is unaffected by wrapping). Below 960px the row is a plain vertical
-     stack (no shared-line matching to do), so this item just falls back to
-     the same plain image height as its siblings. */
+     that the other two items in this row don't have, so its natural block
+     (image+text) is taller than theirs. Per feedback, only the IMAGE
+     height should match the other two items (360px full size / 260px at
+     <=960px, same as the shared .img-item img rule) — the extra
+     caption+description is left to extend below that, making this item's
+     total block taller than its siblings. .img-row--renewal below sets
+     align-items:flex-start so that extra height doesn't stretch the
+     shorter siblings (the default .img-row align-items:stretch would
+     otherwise pull the renewal-pair box — and the blank space under its
+     captions — down to match this item's full height). */
   .img-item--fit {
-    height: 394px;
     justify-content: flex-start;
   }
   .img-item--fit img {
-    flex: 1 1 0;
-    min-height: 0;
-    height: auto;
+    height: 360px;
     width: auto;
     max-width: 100%;
     object-fit: contain;
@@ -457,15 +436,12 @@
   .img-item--fit p:not(.cap) {
     text-align: left;
   }
+  .img-row--renewal {
+    align-items: flex-start;
+  }
   @media (max-width: 960px) {
-    .img-item--fit {
-      height: auto;
-    }
     .img-item--fit img {
-      flex: none;
       height: 260px;
-      min-height: 260px;
-      width: auto;
     }
   }
   .img-item .cap {
@@ -563,11 +539,80 @@
     max-width: none;
     object-fit: contain;
   }
+  /* Narrow PC band only: at 769–780px the 旧画面/リニューアル画面 pair
+     (rendered at the shared .img-item img 260px height used up to 960px)
+     plus the 分離&改善したカレンダー item's own ~260px-wide caption text
+     just barely don't fit on one line (measured: needs ~602px, this band
+     only has ~593–604px of content width) and wrap. Shrink just these two
+     images a bit further so the row stays side-by-side down to 769px;
+     780px+ already fits without this. Shrink .img-item--fit img to the
+     same 230px here too, so all three images stay height-matched inside
+     this narrow band instead of the fit item's image staying at 260px. */
+  @media (min-width: 769px) and (max-width: 780px) {
+    .renewal-pair .img-item img,
+    .img-item--fit img {
+      height: 230px;
+    }
+  }
+  /* Narrow PC band only: at 769–949px this row's 4 full-size images
+     (pair1 at 360px, pair2's img-stack at 175px×2) need ~771px of content
+     width, more than this band has (~578–780px of .img-row content width),
+     and wrap into two lines. Shrink both pairs to fit on one line down to
+     769px; 950px+ already fits at full size.
+     Note: .phase2-pair--match-height > img's height:100% (above) turns out
+     to never actually resolve — its containing block's height is
+     indefinite, so per spec the percentage computes to auto and the image
+     silently falls back to its own inline height:360 regardless of the
+     stack's real height (confirmed via computed layout at 769px: img-stack
+     shrinks correctly but the height:100% sibling stays at 360). It only
+     looked height-matched before by the coincidence the code comment
+     already calls out (175*2+gap ≈ 360). Set its height explicitly here
+     instead of depending on that rule. */
+  @media (min-width: 769px) and (max-width: 949px) {
+    .phase2-pair:not(.phase2-pair--match-height) > img {
+      height: 245px !important;
+    }
+    .img-stack img {
+      height: 118px;
+    }
+    .phase2-pair--match-height > img {
+      height: 244px !important;
+    }
+  }
   .img-pair {
     display: flex;
     gap: 4px;
   }
   .img-pair img { height: 360px; }
+  /* Keep in lockstep with the plain .img-item img shrink above (960px)
+     so チーム内記録ボタン/チーム内入力UI and this pair's カスタマイズ機能
+     screenshots stay the same height as each other at tablet/PC-transition
+     widths — .img-pair img's own unconditional 360px rule otherwise wins
+     over .img-item img's 260px (more specific selector) and the two pairs
+     visibly mismatch between 769–960px. */
+  @media (max-width: 960px) {
+    .img-pair img {
+      height: 260px;
+    }
+  }
+  /* Narrow PC/tablet-transition band: at this width, team-record-pair
+     (チーム内記録ボタン/チーム内入力UI, ~305px) + this item's img-pair
+     (247px) + 340px-wide paragraph need ~677px total (measured via
+     getBoundingClientRect), more than the ~578–721px of content width
+     this band has, so the row wraps onto two lines instead of staying
+     side-by-side (confirmed wrapped up to 860px, fits from ~870px on its
+     own). Narrow the paragraph and shrink img-pair's images a bit more
+     than the shared 260px (team-record-pair's own images are left at
+     260px, same as every other row in this range) so the row fits on one
+     line down to 769px. */
+  @media (min-width: 769px) and (max-width: 870px) {
+    .img-pair img {
+      height: 245px;
+    }
+    .img-pair + p {
+      max-width: 225px !important;
+    }
+  }
   .img-arrow {
     flex-shrink: 0;
     align-self: center;
