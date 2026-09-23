@@ -24,6 +24,10 @@
   @media (max-width: 768px) {
     .sp-only { display: inline; }
   }
+  .pc-only { display: inline; }
+  @media (max-width: 768px) {
+    .pc-only { display: none; }
+  }
   /* Figma "Hero Section" (517:13552): full-bleed #3b5 band, 32px padding,
      single centered phone screenshot at height:376px (aspect-ratio-derived
      width ~189px) — not the shared .work-hero-band 260px default. */
@@ -31,7 +35,21 @@
   /* SP: keep the band at a fixed 400px instead of the shared 720px
      min-height:0 collapse — the screenshot stays centered inside it. */
   @media (max-width: 768px) {
-    .work-hero-band { min-height: 400px; }
+    .work-hero-band { min-height: 320px; }
+    .work-hero-band img { height: 256px; }
+  }
+  /* SP: match work-01's section-gap treatment — collapse the shared
+     64px top+bottom padding stacking (128px between sections) down to a
+     single 32px margin-top, without touching PC. */
+  @media (max-width: 768px) {
+    .work-section {
+      padding-top: 0;
+      padding-bottom: 0;
+      margin-top: var(--sp-l);
+    }
+    .work-hero {
+      padding-bottom: 0;
+    }
   }
 
   /* <main class="wrap"> caps width and adds side padding, unlike work-01's
@@ -180,12 +198,12 @@
   }
   .scenario-row img { width: 240px; max-width: 100%; height: auto; border-radius: var(--radius-s); display: block; }
   .scenario-row .arrow { flex-shrink: 0; color: var(--color-text-blueblack); font-size: 24px; }
-  @media (max-width: 720px) {
-    .scenario-row { flex-direction: column; }
-    .scenario-row .arrow { transform: rotate(90deg); }
-  }
   @media (max-width: 768px) {
     .scenario-row { gap: 8px; }
+  }
+  @media (max-width: 600px) {
+    .scenario-row img { width: calc(50% - 20px) !important; }
+    .scenario-row .arrow { font-size: 18px; }
   }
 
   .os-compare {
@@ -211,6 +229,21 @@
     margin: 0;
   }
   .os-compare .os-note img { width: 170px; height: auto; display: block; }
+
+  @media (max-width: 768px) {
+    .os-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      justify-items: center;
+      gap: var(--sp-m) var(--sp-s);
+    }
+    .os-compare .os-note {
+      grid-column: 1 / -1;
+      align-items: center;
+      text-align: center;
+    }
+  }
 </style>
 
 </head>
@@ -358,7 +391,7 @@
           <img src="images/work-02/os-ios.png" alt="iOSのモーション&フィットネスデータへのアクセス許可ダイアログ">
           <img src="images/work-02/os-android.png" alt="Androidの活動データへのアクセス許可ダイアログ">
           <div class="os-note">
-            <p>左がiOS<br>右がAndroid</p>
+            <p>左がiOS<br class="pc-only">右がAndroid</p>
             <img src="images/work-02/os-permission-post.png" alt="ダイアログが出せない場合の挙動に関する仕様メモ">
           </div>
         </div>

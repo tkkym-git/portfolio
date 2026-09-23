@@ -146,13 +146,21 @@
      keeps it filling that band without distorting. */
   @media (max-width: 768px) {
     .work-hero-img {
-      height: 400px;
-      min-height: 400px;
+      height: 320px;
+      min-height: 320px;
+      margin-bottom: var(--sp-m);
     }
     .work-hero-img img {
       height: 100%;
       width: 100%;
       object-fit: cover;
+    }
+    .work-section,
+    .work-img-section {
+      margin-top: var(--sp-l);
+    }
+    .work-hero {
+      padding-bottom: 0;
     }
   }
   .recommendation {
@@ -263,6 +271,59 @@
       width: auto !important;
       height: 100% !important;
     }
+    /* 旧画面/リニューアル画面 pair: keep side by side on mobile instead of
+       stacking with the rest of this row (see .img-card .img-row column
+       override further down). Placed after .img-card img so the
+       equal-specificity !important declarations resolve in this rule's
+       favor via source order, same trick as .phase2-pair above. */
+    .renewal-pair {
+      flex-wrap: nowrap;
+      gap: 8px;
+    }
+    .renewal-pair > .img-item {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .renewal-pair > .img-item img {
+      width: 100% !important;
+      height: auto !important;
+      max-height: none !important;
+    }
+    /* チーム内記録ボタン/チーム内入力UI pair: keep side by side on mobile
+       instead of stacking with the カスタマイズ機能 item below it. Placed
+       after .img-card img so the equal-specificity !important
+       declarations resolve in this rule's favor via source order, same
+       trick as .renewal-pair above. */
+    .team-record-pair {
+      flex-wrap: nowrap;
+      gap: 8px;
+    }
+    .team-record-pair > .img-item {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .team-record-pair > .img-item img {
+      width: 100% !important;
+      height: auto !important;
+      max-height: none !important;
+    }
+    /* 目標設定画面/チャレンジ送信画面 pair: keep side by side on mobile
+       instead of stacking with チーム参加直後の画面 above it. Placed after
+       .img-card img so the equal-specificity !important declarations
+       resolve in this rule's favor via source order, same trick as
+       .renewal-pair/.phase2-pair above. */
+    .severity-pair {
+      flex-wrap: nowrap;
+    }
+    .severity-pair > .img-item {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .severity-pair > .img-item img {
+      width: 100% !important;
+      height: auto !important;
+      max-height: none !important;
+    }
     .work-img-section {
       padding-left: 20px;
       padding-right: 20px;
@@ -321,6 +382,30 @@
     .img-card .img-row {
       flex-direction: column;
       align-items: center;
+    }
+  }
+  /* 旧画面/リニューアル画面/分離&改善したカレンダー row only: with the first
+     two images now grouped into .renewal-pair (which shrinks to fit two
+     side by side down to mobile), this row no longer needs the full
+     960px column-stack margin the other 3-image rows on this page use —
+     it now only needs to collapse to a column on true mobile (<=768px),
+     matching every other SP-only breakpoint on this page. Cancel the
+     960px stack for the 769–960px band specifically; the <=768px column
+     behavior above is untouched. */
+  @media (min-width: 769px) and (max-width: 960px) {
+    .img-card .img-row.img-row--renewal {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+  /* Plain 3-image rows (歩数/食事/血圧詳細, チーム内記録系) that don't need any
+     mobile pairing trick: same tablet fix as .img-row--renewal above, but
+     these fit comfortably as a row down to phone width, so cancel the
+     960px stack down to 600px instead of 768px. */
+  @media (min-width: 601px) and (max-width: 960px) {
+    .img-card .img-row.img-row--nostack-tablet {
+      flex-direction: row;
+      align-items: stretch;
     }
   }
   .img-item {
@@ -396,6 +481,39 @@
     font-size: var(--fs-body);
     font-weight: 600;
     color: var(--color-text-primary);
+  }
+  /* Desktop default: 旧画面/リニューアル画面 pair behaves exactly like a plain
+     run of img-row children (same alignment/gap as the row itself) — the
+     grouping wrapper only matters for the mobile override below, which
+     keeps this pair side-by-side instead of falling into the column stack
+     the rest of this row uses below 768px. */
+  .renewal-pair {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--sp-l);
+  }
+  /* Desktop default: チーム内記録ボタン/チーム内入力UI pair behaves exactly
+     like a plain run of img-row children (same alignment/gap as the row
+     itself) — the grouping wrapper only matters for the mobile override
+     above, which keeps this pair side-by-side instead of falling into the
+     column stack the rest of this row uses below 768px. */
+  .team-record-pair {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--sp-l);
+  }
+  /* Desktop default: 目標設定画面/チャレンジ送信画面 pair behaves exactly like
+     a plain run of this row's children (same tight 8px gap as the row
+     itself) — the grouping wrapper only matters for the mobile override
+     below, which keeps this pair side-by-side instead of stacking with
+     the rest of the row below 768px. */
+  .severity-pair {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 8px;
   }
   /* The shared .work-img-section p rule (in css/style.css) forces
      width:100%; max-width:608px on ANY nested <p>, including these small
@@ -572,14 +690,16 @@
 
     <section class="work-img-section">
       <div class="img-card img-card--dark-caps">
-        <div class="img-row">
-          <div class="img-item">
-            <img src="images/work-01/renewal-old.png" alt="旧画面(マイデータ)のスクリーンショット">
-            <p class="cap">旧画面(マイデータ)</p>
-          </div>
-          <div class="img-item">
-            <img src="images/work-01/renewal-new.png" alt="リニューアル画面のスクリーンショット">
-            <p class="cap">リニューアル画面</p>
+        <div class="img-row img-row--renewal">
+          <div class="renewal-pair">
+            <div class="img-item">
+              <img src="images/work-01/renewal-old.png" alt="旧画面(マイデータ)のスクリーンショット">
+              <p class="cap">旧画面(マイデータ)</p>
+            </div>
+            <div class="img-item">
+              <img src="images/work-01/renewal-new.png" alt="リニューアル画面のスクリーンショット">
+              <p class="cap">リニューアル画面</p>
+            </div>
           </div>
           <div class="img-item img-item--fit">
             <img src="images/work-01/renewal-calendar-detail.png" alt="分離&改善したカレンダーのスクリーンショット">
@@ -629,7 +749,7 @@
 
     <section class="work-img-section">
       <div class="img-card img-card--dark-caps">
-        <div class="img-row">
+        <div class="img-row img-row--nostack-tablet">
           <div class="img-item">
             <img src="images/work-01/detail-steps.png" alt="歩数詳細のスクリーンショット">
             <p class="cap">歩数詳細</p>
@@ -677,13 +797,15 @@
             <p style="max-width: 180px;">チーム参加直後の画面。「開始する」押下で目標設定画面に遷移。</p>
           </div>
           <span class="img-arrow">→</span>
-          <div class="img-item">
-            <img src="images/work-01/severity-goal.png" alt="目標設定画面">
-            <p class="cap">目標設定画面</p>
-          </div>
-          <div class="img-item">
-            <img src="images/work-01/severity-challenge.png" alt="チャレンジ送信画面">
-            <p class="cap">チャレンジ送信画面</p>
+          <div class="severity-pair">
+            <div class="img-item">
+              <img src="images/work-01/severity-goal.png" alt="目標設定画面">
+              <p class="cap" style="color: var(--color-text-primary); font-size: var(--fs-body); font-weight: 600;">目標設定画面</p>
+            </div>
+            <div class="img-item">
+              <img src="images/work-01/severity-challenge.png" alt="チャレンジ送信画面">
+              <p class="cap" style="color: var(--color-text-primary); font-size: var(--fs-body); font-weight: 600;">チャレンジ送信画面</p>
+            </div>
           </div>
         </div>
       </div>
@@ -714,14 +836,16 @@
 
     <section class="work-img-section">
       <div class="img-card img-card--dark-caps">
-        <div class="img-row">
-          <div class="img-item">
-            <img src="images/work-01/team-record-btn.png" alt="チーム内記録ボタンのスクリーンショット">
-            <p class="cap">チーム内記録ボタン</p>
-          </div>
-          <div class="img-item">
-            <img src="images/work-01/team-record-input.png" alt="チーム内入力UIのスクリーンショット">
-            <p class="cap">チーム内入力UI</p>
+        <div class="img-row img-row--nostack-tablet">
+          <div class="team-record-pair">
+            <div class="img-item">
+              <img src="images/work-01/team-record-btn.png" alt="チーム内記録ボタンのスクリーンショット">
+              <p class="cap">チーム内記録ボタン</p>
+            </div>
+            <div class="img-item">
+              <img src="images/work-01/team-record-input.png" alt="チーム内入力UIのスクリーンショット">
+              <p class="cap">チーム内入力UI</p>
+            </div>
           </div>
           <div class="img-item">
             <div class="img-pair">

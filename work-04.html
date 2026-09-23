@@ -22,6 +22,21 @@
      — the shared .gallery-media img rule (css/style.css) rounds them by
      default; override back to square corners here. */
   .gallery-media img { border-radius: 0; }
+  /* SP: "サーバーメンテナンスバナー2種" は横幅いっぱいに広がって
+     左右の余白が消えてしまうため、少し縮めて余白を作る。 */
+  @media (max-width: 768px) {
+    .gallery-media img.maintenance-banners {
+      width: 85%;
+      max-width: 85%;
+      margin: 0 auto;
+    }
+  }
+  /* SP: 最後の「コラボバナー」セクション下の余白を無くす。 */
+  @media (max-width: 768px) {
+    main > .gallery-item:last-of-type {
+      padding-bottom: 0;
+    }
+  }
   .gallery-media a { display: block; max-width: 100%; }
   /* This video returns YouTube error 153 (embedded playback blocked by the
      owner's restrictions) even though its src/allow attributes were
@@ -109,7 +124,7 @@
 
     <section class="gallery-item">
       <div class="gallery-inner">
-        <div class="gallery-media"><img src="images/work-04/maintenance-banners.png" alt="サーバーメンテナンスバナー2種" style="max-width:423px;"></div>
+        <div class="gallery-media"><img class="maintenance-banners" src="images/work-04/maintenance-banners.png" alt="サーバーメンテナンスバナー2種" style="max-width:423px;"></div>
         <div class="gallery-cap">
           <p class="gallery-title">サーバーメンテナンスバナー2種</p>
           <p class="gallery-role"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>UI/UX</p>

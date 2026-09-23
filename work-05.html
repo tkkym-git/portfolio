@@ -33,7 +33,8 @@
     .sp-only { display: inline; }
     /* Keep the hero band at a fixed 400px instead of the shared 720px
        min-height:0 collapse — the screenshot stays centered inside it. */
-    .work-hero-band { min-height: 400px; }
+    .work-hero-band { min-height: 320px; }
+    .work-hero-band img { height: 256px; }
     .img-card {
       width: 100%;
       padding-left: 32px;
@@ -48,6 +49,10 @@
       margin: 0 auto;
       display: block;
     }
+    /* SP: match work-01's section-gap treatment — tighten the
+       .work-content flex gap between hero/sections from 64px to 32px,
+       without touching PC. */
+    .work-content { gap: var(--sp-l); padding-top: 32px; padding-bottom: 0; }
   }
   /* Figma sizes this table to its own content (631px total: 120px label
      column + 511px value column) rather than stretching across the full
@@ -107,6 +112,17 @@
   .color-swatch { display: flex; align-items: center; gap: var(--sp-m); }
   .color-swatch .chip { width: 60px; height: 60px; flex-shrink: 0; }
   .color-swatch p { color: var(--color-text-secondary); font-size: var(--fs-body); margin: 0; }
+  @media (max-width: 768px) {
+    /* SPでは2つのcolor-swatchを縦積みにし、ブロック内は左揃え(チップの
+       左端が揃う)にしつつ、ブロック全体は幅をコンテンツに合わせて
+       中央寄せする。 */
+    .color-swatches {
+      flex-direction: column;
+      align-items: flex-start;
+      width: fit-content;
+      margin: 0 auto;
+    }
+  }
 
   .mockup-compare {
     width: 100vw;
@@ -128,8 +144,10 @@
     color: var(--color-text-primary);
     font-size: var(--fs-body);
   }
-  @media (max-width: 720px) {
+  @media (max-width: 600px) {
     .compare-row { flex-direction: column; }
+  }
+  @media (max-width: 720px) {
     .mockup-compare img { height: 320px; }
   }
 </style>

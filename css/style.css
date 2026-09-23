@@ -972,6 +972,7 @@ body[data-page="404"] .hero-panel {
 }
 @media (max-width: 720px) {
   .work-section .stat-row { grid-template-columns: 1fr; }
+  .work-section { gap: 20px; }
 }
 .stat-box {
   background: var(--color-backgray);
@@ -1189,6 +1190,15 @@ body[data-page="404"] .hero-panel {
   padding: var(--sp-2xl) 20px;
   display: flex;
   justify-content: center;
+}
+@media (max-width: 768px) {
+  /* SP: match the 320px hero height used on the image-hero work pages —
+     padding stays the shared var(--sp-2xl) 20px value, so pages with more
+     title/spec/note text than others simply grow taller than 320px from
+     that content, same as before. */
+  .hero-color-band {
+    min-height: 320px;
+  }
 }
 
 /* ---------- Work detail: "snapshot gallery" list (work-04/06/07/09 style pages) ---------- */

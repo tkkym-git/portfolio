@@ -29,7 +29,14 @@
   @media (max-width: 768px) {
     /* Keep the hero band at a fixed 400px instead of the shared 720px
        min-height:0 collapse — the screenshots stay centered inside it. */
-    .work-hero-band { min-height: 400px; }
+    /* This page's hero band holds two landscape screenshots (not the
+       single portrait phone mockup other work pages use) — at 256px tall
+       they're too wide to fit side by side on mobile and wrap onto two
+       lines, ballooning the band's height. Shrink them enough to stay on
+       one line and let the shared align-items:center vertically center
+       them within the fixed 320px band instead. */
+    .work-hero-band { min-height: 320px; }
+    .work-hero-band img { height: 130px; }
     .img-card {
       width: 100%;
       padding-left: 32px;
@@ -44,9 +51,38 @@
       margin: 0 auto;
       display: block;
     }
+    /* SP: match work-01's section-gap treatment — tighten the
+       .work-content flex gap between hero/sections from 64px to 32px,
+       without touching PC. */
+    .work-content { gap: var(--sp-l); padding-bottom: 0; }
+  }
+  /* Phone only: the shared .img-card .img-row rule (css/style.css) stacks
+     to a column at 768px, which also caught tablet widths where there's
+     plenty of room for the row layout — narrow that down to true phone
+     widths only. */
+  @media (max-width: 600px) {
     .img-card .img-row {
       flex-direction: column;
       align-items: center;
+    }
+    /* "歩数を確認するには…" の上にある2枚組だけは、SPでも横並びのまま
+       維持する（呼び出し元指示）。ここだけ列積みを打ち消す。 */
+    .img-card .img-row.img-row--sp-inline {
+      flex-direction: row;
+      align-items: center;
+    }
+    .img-card .img-row--sp-inline img {
+      width: calc(50% - var(--sp-l) / 2) !important;
+    }
+    /* 「制約」下の3枚組も、SPで横並びのまま縮小表示する。 */
+    .img-card .img-row.img-row--sp-inline-3 {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      gap: var(--sp-s);
+    }
+    .img-card .img-row--sp-inline-3 img {
+      width: calc((100% - var(--sp-s) * 2) / 3) !important;
     }
   }
 </style>
@@ -107,7 +143,7 @@
 
       <section class="work-img-section">
         <div class="img-card">
-          <div class="img-row">
+          <div class="img-row img-row--sp-inline">
             <img src="images/work-03/fig1-app-search.png" alt="歩数を確認するにはチームのチャレンジ送信画面まで移動する必要がある画面遷移1">
             <img src="images/work-03/fig1-app-challenge.png" alt="歩数を確認するにはチームのチャレンジ送信画面まで移動する必要がある画面遷移2">
           </div>
@@ -131,7 +167,7 @@
 
       <section class="work-img-section">
         <div class="img-card">
-          <div class="img-row">
+          <div class="img-row img-row--sp-inline-3">
             <img src="images/work-03/fig1-app-search.png" alt="ウィジェット企画の元になったアプリ画面">
             <img src="images/work-03/fig2-widget-mockup.png" alt="歩数計ウィジェットのモックアップ">
             <img src="images/work-03/fig2-widget-list.png" alt="ウィジェットのイラストバリエーション一覧">

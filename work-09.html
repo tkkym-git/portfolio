@@ -17,6 +17,13 @@
 <meta name="twitter:image" content="https://tkkym-git.github.io/portfolio/ogp.png">
 <style>
   .gallery-title svg { margin-right: var(--sp-s); vertical-align: -2px; }
+  /* SP: スギヤス様と坂角様のカタログ/DMは横並びだと窮屈なので縦並びにする。 */
+  @media (max-width: 768px) {
+    .gallery-inner.sugiyasu-sakasu-row {
+      flex-direction: column !important;
+      align-items: center !important;
+    }
+  }
   /* Figma specifies no border-radius on any of this page's gallery images
      — the shared .gallery-media img rule (css/style.css) rounds them by
      default; override back to square corners here. */
@@ -177,7 +184,7 @@
     </section>
 
     <section class="gallery-item">
-      <div class="gallery-inner" style="flex-direction:row; align-items:flex-start; gap: var(--sp-xl); max-width:800px;">
+      <div class="gallery-inner sugiyasu-sakasu-row" style="flex-direction:row; align-items:flex-start; gap: var(--sp-xl); max-width:800px;">
         <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap: var(--sp-l);">
           <img src="images/work-09/sugiyasu-catalog.jpg" alt="株式会社スギヤス様 製品カタログ">
           <div class="gallery-cap">

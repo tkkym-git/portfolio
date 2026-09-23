@@ -22,13 +22,17 @@
      — the shared .gallery-media img rule (css/style.css) rounds them by
      default; override back to square corners here. */
   .gallery-media img { border-radius: 0; }
+  .sp-only { display: none; }
+  @media (max-width: 768px) {
+    .sp-only { display: inline; }
+  }
   /* The last .gallery-item already ends with its own 64px bottom padding;
      the shared .site-footer{margin-top:64px} default stacks an extra gap
      on top of that (same double-gap bug found on work-01/02/08). */
   .site-footer { margin-top: 0; }
   /* SP: the 3-up carousel banner rows (セゾン/エポス) stack one-per-row
      instead of wrapping 2-up-then-1. */
-  @media (max-width: 720px) {
+  @media (max-width: 600px) {
     .carousel { flex-direction: column; }
     .carousel img { width: 100%; }
   }
@@ -68,7 +72,7 @@
     object-fit: cover;
     display: block;
   }
-  @media (max-width: 720px) {
+  @media (max-width: 600px) {
     .toyopet-row { flex-direction: column; align-items: center; }
     .toyopet-row > img { height: auto; width: 100%; max-width: 300px; }
     .toyopet-row .square-col { width: 100%; max-width: 300px; }
@@ -118,7 +122,7 @@
           <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M7.992 0C3.576 0 0 3.584 0 8C0 12.416 3.576 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 7.992 0ZM10.632 11.768L7.2 8.328V4H8.8V7.672L11.768 10.64L10.632 11.768Z" fill="#47536F"/></svg>2023.7-2023.12</span>
           <span class="item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 0C3.584 0 0 3.584 0 8C0 12.416 3.584 16 7.992 16C12.416 16 16 12.416 16 8C16 3.584 12.416 0 8 0ZM8 3.2C9.544 3.2 10.8 4.456 10.8 6C10.8 7.544 9.544 8.8 8 8.8C6.456 8.8 5.2 7.544 5.2 6C5.2 4.456 6.456 3.2 8 3.2ZM8 14.4C6.376 14.4 4.456 13.744 3.088 12.096C4.44 11.04 6.144 10.4 8 10.4C9.856 10.4 11.56 11.04 12.912 12.096C11.544 13.744 9.624 14.4 8 14.4Z" fill="#47536F"/></svg>Art Direction / Design</span>
         </p>
-        <p style="color: var(--color-text-secondary);">ここに掲載しているものは全て一人で担当しています。</p>
+        <p style="color: var(--color-text-secondary);">ここに掲載しているものは<br class="sp-only">全て一人で担当しています。</p>
       </div>
     </div>
 
