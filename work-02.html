@@ -175,15 +175,43 @@
   @media (max-width: 720px) {
     .figure-card, .figure-card--compact { padding: var(--sp-l); }
   }
+  /* Base sizes for this page's three standalone (non-grouped) figure-card
+     photos — previously inline style="width:...; height:...; ..." on each
+     <img> tag. Moved into CSS so the shared mobile override below is a
+     plain rule instead of needing !important to beat an inline style. */
+  .photo-fuchu-hall {
+    width: 600px;
+    max-width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: var(--radius-s);
+  }
+  .photo-retry-scenario {
+    width: 520px;
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-s);
+    display: block;
+  }
+  .photo-fuchu-closeup {
+    width: 398px;
+    max-width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: var(--radius-s);
+  }
   /* Mirrors work-01's SP image treatment: cap every image inside a figure
      card at 300px tall on mobile instead of the fixed desktop heights
-     (360/400/300px etc.) — !important is needed to beat the inline
-     height/width styles used on a few <img> tags directly. */
+     above. .scenario-row img and .os-compare > img below are declared
+     later in this stylesheet, so — at equal specificity (one class +
+     element each) — they already win over this rule without needing
+     !important; only .photo-fuchu-hall etc. above (no component wrapper
+     of their own) fall through to this default. */
   @media (max-width: 768px) {
     .figure-card img {
-      height: auto !important;
-      max-height: 300px !important;
-      width: auto !important;
+      height: auto;
+      max-height: 300px;
+      width: auto;
       max-width: 100%;
       object-fit: contain;
       margin: 0 auto;
@@ -202,7 +230,7 @@
     .scenario-row { gap: 8px; }
   }
   @media (max-width: 600px) {
-    .scenario-row img { width: calc(50% - 20px) !important; }
+    .scenario-row img { width: calc(50% - 20px); }
     .scenario-row .arrow { font-size: 18px; }
   }
 
@@ -301,7 +329,7 @@
 
     <section class="work-section">
       <div class="figure-card">
-        <img src="images/work-02/event-fuchu-hall.jpg" alt="府中市で開催されたみんチャレ大交流会の会場の様子" style="width:600px; max-width:100%; height:400px; object-fit:cover; border-radius:var(--radius-s);">
+        <img class="photo-fuchu-hall" src="images/work-02/event-fuchu-hall.jpg" alt="府中市で開催されたみんチャレ大交流会の会場の様子">
         <p class="cap">府中市で開催した「みんチャレフレイル予防」大交流会の様子</p>
       </div>
     </section>
@@ -410,7 +438,7 @@
 
     <section class="work-section">
       <div class="figure-card figure-card--compact">
-        <img src="images/work-02/retry-scenario.png" alt="アカウント認証エラー時のリトライシナリオ3画面" style="width:520px; max-width:100%; height:auto; border-radius:var(--radius-s); display:block;">
+        <img class="photo-retry-scenario" src="images/work-02/retry-scenario.png" alt="アカウント認証エラー時のリトライシナリオ3画面">
         <p class="label">リトライシナリオ</p>
       </div>
     </section>
@@ -431,7 +459,7 @@
 
     <section class="work-section">
       <div class="figure-card">
-        <img src="images/work-02/event-fuchu-closeup.jpg" alt="府中市で行われた大交流会の様子" style="width:398px; max-width:100%; height:300px; object-fit:cover; border-radius:var(--radius-s);">
+        <img class="photo-fuchu-closeup" src="images/work-02/event-fuchu-closeup.jpg" alt="府中市で行われた大交流会の様子">
         <p class="cap">府中市で行われた大交流会に参加し、ユーザーさんの声を直接聞いてきました。</p>
       </div>
     </section>

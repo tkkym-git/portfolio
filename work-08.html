@@ -120,14 +120,24 @@
   @media (max-width: 720px) {
     .figure-card { padding: var(--sp-l); }
   }
+  /* Base size for the standalone (non-grouped) アライアンス figure-card
+     photo — previously an inline style="width:600px; max-width:100%;
+     height:auto" on the <img> tag. Moved into CSS so the mobile override
+     below is a plain rule instead of needing !important to beat an
+     inline style. */
+  .photo-alliance {
+    width: 600px;
+    max-width: 100%;
+    height: auto;
+  }
   /* Mirrors work-01/02's SP image treatment: cap every image inside a
      figure card at 300px tall on mobile instead of the fixed desktop
      heights. */
   @media (max-width: 768px) {
     .figure-card img {
-      height: auto !important;
-      max-height: 300px !important;
-      width: auto !important;
+      height: auto;
+      max-height: 300px;
+      width: auto;
       max-width: 100%;
       object-fit: contain;
       margin: 0 auto;
@@ -373,7 +383,7 @@
 
     <section class="work-section">
       <div class="figure-card">
-        <img src="images/work-08/alliance.png" alt="Tグループ・Dグループ共通の許可証によるアライアンスの全体像" style="width:600px; max-width:100%; height:auto;">
+        <img class="photo-alliance" src="images/work-08/alliance.png" alt="Tグループ・Dグループ共通の許可証によるアライアンスの全体像">
         <p class="cap">アライアンスの全体像</p>
       </div>
     </section>

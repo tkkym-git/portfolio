@@ -210,142 +210,10 @@
     align-items: center;
     gap: var(--sp-l);
   }
-  /* Mobile only: .img-card normally hugs its own (narrower, single-column)
-     content via width:fit-content, while .solution-box fills the full
-     column via flex:1 — at narrow widths that made the gray figure cards
-     visibly narrower/off-center than the bordered cards below them. Force
-     both to the same full-width box below 768px without touching the
-     desktop "hug content" sizing. Also fixes .solution-arrow: in the
-     column layout (.solution-pair goes column at <=720px) a fixed-width
-     flex item can't stretch and falls back to flex-start (left) instead of
-     centering — align-self pins it to the middle regardless. */
-  @media (max-width: 768px) {
-    .img-card {
-      width: 100%;
-      padding-left: 32px;
-      padding-right: 32px;
-    }
-    /* !important on height/max-height/width is needed to beat the inline
-       style="height:360px; width:auto;" attributes used directly on a few
-       <img> tags (e.g. the phase2 row) — inline styles otherwise win over
-       any external stylesheet rule regardless of specificity. */
-    .img-card img {
-      height: auto !important;
-      max-height: 300px !important;
-      width: auto !important;
-      max-width: 100%;
-      object-fit: contain;
-      margin: 0 auto;
-      display: block;
-    }
-    /* Phase2 row, pinpoint exception to the .img-card img rule above: keep
-       these two pairs (チャット+猫キャラクター / 血糖値グラフ+服薬管理画面)
-       side by side even on mobile instead of falling into the column stack
-       every other multi-image row uses here. Placed after .img-card img so
-       the equal-specificity !important declarations resolve in this rule's
-       favor via source order. */
-    .phase2-pair {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: center;
-      gap: 8px;
-    }
-    .phase2-pair > img,
-    .phase2-pair > .img-stack {
-      width: calc(50% - 4px) !important;
-      max-width: none !important;
-    }
-    .phase2-pair > img {
-      height: auto !important;
-    }
-    .phase2-pair > .img-stack img {
-      width: 100% !important;
-      max-width: 100% !important;
-      height: auto !important;
-    }
-    /* Override the generic 50%-width pairing above for this one pair only:
-       the stack defines the height, and the medication screenshot matches
-       it via height:100% + width:auto instead of a fixed 50% column. */
-    .phase2-pair--match-height > img {
-      width: auto !important;
-      height: 100% !important;
-    }
-    /* 旧画面/リニューアル画面 pair: keep side by side on mobile instead of
-       stacking with the rest of this row (see .img-card .img-row column
-       override further down). Placed after .img-card img so the
-       equal-specificity !important declarations resolve in this rule's
-       favor via source order, same trick as .phase2-pair above. */
-    .renewal-pair {
-      flex-wrap: nowrap;
-      gap: 8px;
-    }
-    .renewal-pair > .img-item {
-      flex: 1 1 0;
-      min-width: 0;
-    }
-    .renewal-pair > .img-item img {
-      width: 100% !important;
-      height: auto !important;
-      max-height: none !important;
-    }
-    /* チーム内記録ボタン/チーム内入力UI pair: keep side by side on mobile
-       instead of stacking with the カスタマイズ機能 item below it. Placed
-       after .img-card img so the equal-specificity !important
-       declarations resolve in this rule's favor via source order, same
-       trick as .renewal-pair above. */
-    .team-record-pair {
-      flex-wrap: nowrap;
-      gap: 8px;
-    }
-    .team-record-pair > .img-item {
-      flex: 1 1 0;
-      min-width: 0;
-    }
-    .team-record-pair > .img-item img {
-      width: 100% !important;
-      height: auto !important;
-      max-height: none !important;
-    }
-    /* 目標設定画面/チャレンジ送信画面 pair: keep side by side on mobile
-       instead of stacking with チーム参加直後の画面 above it. Placed after
-       .img-card img so the equal-specificity !important declarations
-       resolve in this rule's favor via source order, same trick as
-       .renewal-pair/.phase2-pair above. */
-    .severity-pair {
-      flex-wrap: nowrap;
-    }
-    .severity-pair > .img-item {
-      flex: 1 1 0;
-      min-width: 0;
-    }
-    .severity-pair > .img-item img {
-      width: 100% !important;
-      height: auto !important;
-      max-height: none !important;
-    }
-    .work-img-section {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    /* Severity row (チーム参加直後の画面 → 目標設定画面 → チャレンジ送信画面):
-       this row already goes flex-direction:column below 768px (see the
-       .img-card .img-row rule further down), so the "→" between the first
-       two items should read as "↓" here, and the stacked gap should match
-       the same tightened spacing used on desktop for this row. */
-    .img-row--tight {
-      gap: 8px;
-    }
-    .img-arrow {
-      transform: rotate(90deg);
-    }
-    .sp-only {
-      display: inline;
-    }
-    .solution-arrow {
-      align-self: center;
-    }
-  }
+  /* Mobile-only overrides for .img-card and everything inside it (width,
+     per-image sizing, the pair exceptions, arrow rotation, etc.) live in
+     one block at the end of this stylesheet, after every component's own
+     base rules — see the comment there for why. */
   /* Desktop only: tighten the gap in the "重症化予防プログラム専用画面" row
      (severity-start image → arrow → severity-goal image → severity-challenge
      image) from the shared .img-row default (32px) down to 8px, per direct
@@ -514,29 +382,45 @@
     flex-direction: column;
     gap: var(--sp-s);
   }
-  .img-stack img { height: 175px; }
+  .img-stack img {
+    height: 175px;
+    border-radius: var(--radius-s);
+  }
   /* Desktop default: each pair behaves exactly like a plain run of img-row
      children (same alignment/gap as the row itself) — the grouping wrapper
-     only matters for the mobile override below. */
+     only matters for the mobile override at the end of this stylesheet.
+     Base image size (360px, was previously an inline style="height:360px;
+     width:auto" on each <img> tag) lives here now, so every responsive
+     override below is a plain rule instead of needing !important to beat
+     an inline style. */
   .phase2-pair {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
     gap: var(--sp-l);
   }
-  /* 血糖値/グルコース値グラフ(img-stack) + 服薬画面(img4) pair only: stretch
-     both children to the same height (the stack's own natural height) and
-     let the right-hand image fill that height while keeping its own aspect
-     ratio, instead of each side being sized independently by its own image
-     — applies at every width, not just mobile, since the two were already
-     only matching by coincidence (175*2+gap ≈ the img4 inline height). */
+  .phase2-pair > img {
+    height: 360px;
+    width: auto;
+    border-radius: var(--radius-s);
+  }
+  /* 血糖値/グルコース値グラフ(img-stack) + 服薬画面(img4) pair only: match
+     the stack's own total height (175px × 2 + 8px gap = 358px) instead of
+     each side being sized independently. `.phase2-pair--match-height > img`
+     ties `.phase2-pair > img` above on specificity (one class + element
+     each), so — same as the rest of this stylesheet — it's placed after it
+     to win via source order; a genuine `height:100%` stretch was tried
+     first but never actually resolves (this pair's containing block has an
+     indefinite height, so the percentage silently computes to auto), which
+     is why the height is set explicitly instead. */
   .phase2-pair--match-height {
     align-items: stretch;
   }
   .phase2-pair--match-height > img {
-    height: 100% !important;
-    width: auto !important;
+    height: 358px;
+    width: auto;
     max-width: none;
+    border-radius: var(--radius-s);
     object-fit: contain;
   }
   /* Narrow PC band only: at 769–780px the 旧画面/リニューアル画面 pair
@@ -558,32 +442,28 @@
      (pair1 at 360px, pair2's img-stack at 175px×2) need ~771px of content
      width, more than this band has (~578–780px of .img-row content width),
      and wrap into two lines. Shrink both pairs to fit on one line down to
-     769px; 950px+ already fits at full size.
-     Note: .phase2-pair--match-height > img's height:100% (above) turns out
-     to never actually resolve — its containing block's height is
-     indefinite, so per spec the percentage computes to auto and the image
-     silently falls back to its own inline height:360 regardless of the
-     stack's real height (confirmed via computed layout at 769px: img-stack
-     shrinks correctly but the height:100% sibling stays at 360). It only
-     looked height-matched before by the coincidence the code comment
-     already calls out (175*2+gap ≈ 360). Set its height explicitly here
-     instead of depending on that rule. */
+     769px; 950px+ already fits at full size. Same specificity-tie/source-
+     order relationship as the base rules above (.phase2-pair--match-height
+     > img listed after .phase2-pair > img so it wins for img4). */
   @media (min-width: 769px) and (max-width: 949px) {
-    .phase2-pair:not(.phase2-pair--match-height) > img {
-      height: 245px !important;
+    .phase2-pair > img {
+      height: 245px;
     }
     .img-stack img {
       height: 118px;
     }
     .phase2-pair--match-height > img {
-      height: 244px !important;
+      height: 244px;
     }
   }
   .img-pair {
     display: flex;
     gap: 4px;
   }
-  .img-pair img { height: 360px; }
+  .img-pair img {
+    height: 360px;
+    border-radius: var(--radius-s);
+  }
   /* Keep in lockstep with the plain .img-item img shrink above (960px)
      so チーム内記録ボタン/チーム内入力UI and this pair's カスタマイズ機能
      screenshots stay the same height as each other at tablet/PC-transition
@@ -594,6 +474,16 @@
     .img-pair img {
       height: 260px;
     }
+  }
+  /* Base width for the カスタマイズ機能 note (was previously an inline
+     style="max-width:340px" on the <p> tag) — wider than the shared
+     .img-item p:not(.cap) 260px default further up, which would otherwise
+     win: that selector (class + :not() + element) is as specific as this
+     one (class + element + class), so .customize-note being declared
+     later in the file is what lets it win, not the extra class alone. */
+  .img-item p.customize-note {
+    max-width: 340px;
+    margin: 0 auto;
   }
   /* Narrow PC/tablet-transition band: at this width, team-record-pair
      (チーム内記録ボタン/チーム内入力UI, ~305px) + this item's img-pair
@@ -609,8 +499,8 @@
     .img-pair img {
       height: 245px;
     }
-    .img-pair + p {
-      max-width: 225px !important;
+    .img-item p.customize-note {
+      max-width: 225px;
     }
   }
   .img-arrow {
@@ -629,6 +519,147 @@
     font-size: var(--fs-caption);
     line-height: 1.6;
     overflow-wrap: break-word;
+  }
+
+  /* ---------- Mobile (<=768px) overrides for .img-card and its contents ----------
+     Grouped in one block, placed last in this stylesheet, instead of
+     scattered next to each component's own definition. Every rule in here
+     is either the sole default for its property (.img-card, .work-img-section,
+     .img-row--tight, .img-arrow, .sp-only, .solution-arrow) or is tied in
+     specificity with an equal-specificity component rule declared earlier
+     in the file (.img-card img vs. e.g. .img-item img, .phase2-pair > img —
+     all "one class + one element"); being declared last is what lets this
+     block win those ties, with no !important needed anywhere. Where a pair
+     needs to override .img-card img specifically (renewal/team-record/
+     severity), its selector nests one class deeper (".xxx-pair > .img-item
+     img") and so is already more specific regardless of order — listed
+     here anyway, alongside the others, for readability. */
+  @media (max-width: 768px) {
+    /* .img-card normally hugs its own (narrower, single-column) content via
+       width:fit-content, while .solution-box fills the full column via
+       flex:1 — at narrow widths that made the gray figure cards visibly
+       narrower/off-center than the bordered cards below them. Force both
+       to the same full-width box below 768px without touching the desktop
+       "hug content" sizing. Also fixes .solution-arrow: in the column
+       layout (.solution-pair goes column at <=720px) a fixed-width flex
+       item can't stretch and falls back to flex-start (left) instead of
+       centering — align-self pins it to the middle regardless. */
+    .img-card {
+      width: 100%;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+    /* Default mobile treatment for any image inside a card: cap its
+       height, let width follow the aspect ratio, and center it. */
+    .img-card img {
+      height: auto;
+      max-height: 300px;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+    }
+    /* Phase2 row, pinpoint exception to .img-card img above: keep these
+       two pairs (チャット+猫キャラクター / 血糖値グラフ+服薬管理画面) side
+       by side even on mobile instead of falling into the column stack
+       every other multi-image row uses here. Unlike the three exceptions
+       below, this one leaves max-height:300px active (from .img-card img)
+       so a very tall pair image still gets capped/letterboxed instead of
+       just shrinking to half width. */
+    .phase2-pair {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      gap: 8px;
+    }
+    .phase2-pair > img,
+    .phase2-pair > .img-stack {
+      width: calc(50% - 4px);
+      max-width: none;
+    }
+    .phase2-pair > img {
+      height: auto;
+    }
+    .phase2-pair > .img-stack img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+    /* Override the generic 50%-width pairing above for this one pair only:
+       the stack defines the height, and the medication screenshot matches
+       it via height:100% + width:auto instead of a fixed 50% column. */
+    .phase2-pair--match-height > img {
+      width: auto;
+      height: 100%;
+    }
+    /* 旧画面/リニューアル画面 pair: keep side by side on mobile instead of
+       stacking with the rest of this row (see .img-card .img-row column
+       override further down). */
+    .renewal-pair {
+      flex-wrap: nowrap;
+      gap: 8px;
+    }
+    .renewal-pair > .img-item {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .renewal-pair > .img-item img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+    /* チーム内記録ボタン/チーム内入力UI pair: keep side by side on mobile
+       instead of stacking with the カスタマイズ機能 item below it. */
+    .team-record-pair {
+      flex-wrap: nowrap;
+      gap: 8px;
+    }
+    .team-record-pair > .img-item {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .team-record-pair > .img-item img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+    /* 目標設定画面/チャレンジ送信画面 pair: keep side by side on mobile
+       instead of stacking with チーム参加直後の画面 above it. */
+    .severity-pair {
+      flex-wrap: nowrap;
+    }
+    .severity-pair > .img-item {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+    .severity-pair > .img-item img {
+      width: 100%;
+      height: auto;
+      max-height: none;
+    }
+    .work-img-section {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    /* Severity row (チーム参加直後の画面 → 目標設定画面 → チャレンジ送信画面):
+       this row already goes flex-direction:column below 768px (see the
+       .img-card .img-row rule further down), so the "→" between the first
+       two items should read as "↓" here, and the stacked gap should match
+       the same tightened spacing used on desktop for this row. */
+    .img-row--tight {
+      gap: 8px;
+    }
+    .img-arrow {
+      transform: rotate(90deg);
+    }
+    .sp-only {
+      display: inline;
+    }
+    .solution-arrow {
+      align-self: center;
+    }
   }
 </style>
 </head>
@@ -897,7 +928,7 @@
               <img src="images/work-01/team-record-custom1.png" alt="カスタマイズ機能のスクリーンショット1">
               <img src="images/work-01/team-record-custom2.png" alt="カスタマイズ機能のスクリーンショット2">
             </div>
-            <p style="max-width: 340px; margin: 0 auto;">入力ハードルを下げるために、必要の無い項目は非表示にカスタマイズできるようにした</p>
+            <p class="customize-note">入力ハードルを下げるために、必要の無い項目は非表示にカスタマイズできるようにした</p>
           </div>
         </div>
       </div>
@@ -962,15 +993,15 @@
       <div class="img-card">
         <div class="img-row">
           <div class="phase2-pair">
-            <img src="images/work-01/phase2-img1.png" alt="フェーズ2以降の機能スクリーンショット1" style="height:360px; width:auto; border-radius: var(--radius-s);">
-            <img src="images/work-01/phase2-img2.png" alt="フェーズ2以降の機能スクリーンショット2" style="height:360px; width:auto; border-radius: var(--radius-s);">
+            <img src="images/work-01/phase2-img1.png" alt="フェーズ2以降の機能スクリーンショット1">
+            <img src="images/work-01/phase2-img2.png" alt="フェーズ2以降の機能スクリーンショット2">
           </div>
           <div class="phase2-pair phase2-pair--match-height">
             <div class="img-stack">
-              <img src="images/work-01/phase2-img3-top.png" alt="フェーズ2以降の機能スクリーンショット3上" style="border-radius: var(--radius-s);">
-              <img src="images/work-01/phase2-img3-bottom.png" alt="フェーズ2以降の機能スクリーンショット3下" style="border-radius: var(--radius-s);">
+              <img src="images/work-01/phase2-img3-top.png" alt="フェーズ2以降の機能スクリーンショット3上">
+              <img src="images/work-01/phase2-img3-bottom.png" alt="フェーズ2以降の機能スクリーンショット3下">
             </div>
-            <img src="images/work-01/phase2-img4.png" alt="フェーズ2以降の機能スクリーンショット4" style="height:360px; width:auto; border-radius: var(--radius-s);">
+            <img src="images/work-01/phase2-img4.png" alt="フェーズ2以降の機能スクリーンショット4">
           </div>
         </div>
         <p class="figure-caption" style="color: var(--color-text-secondary);">開発工数の制約や優先度からフェーズ2以降に開発することになった機能一部分</p>
