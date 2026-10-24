@@ -58,6 +58,18 @@ document.querySelectorAll('.site-nav a').forEach((link) => {
   btn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+
+  // Keep the button above the footer instead of overlapping it
+  const footer = document.querySelector('.site-footer');
+  if (!footer) return;
+  const baseBottom = parseFloat(getComputedStyle(btn).bottom) || 24;
+  const update = () => {
+    const overlap = Math.max(0, window.innerHeight - footer.getBoundingClientRect().top);
+    btn.style.bottom = (baseBottom + overlap) + 'px';
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
 })();
 
 // Works page: client-side tag filter

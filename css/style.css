@@ -356,6 +356,8 @@ body[data-page="404"] .sp-menu-popup .site-nav a {
   font-family: var(--font-ui);
   font-size: var(--fs-caption);
   margin-top: var(--sp-xl);
+  position: relative;
+  padding: 0 24px;
 }
 body[data-page="index"] .site-footer,
 body[data-page="404"] .site-footer {
@@ -363,10 +365,6 @@ body[data-page="404"] .site-footer {
   margin-top: 0;
 }
 .thanks-bar + .site-footer { margin-top: 0; }
-body[data-page="index"] .site-footer {
-  position: relative;
-  padding: 0 24px;
-}
 .footer-contact {
   position: absolute;
   right: 24px;
@@ -409,7 +407,7 @@ body[data-page="index"] .site-footer {
   margin-left: 4px;
 }
 @media (max-width: 768px) {
-  body[data-page="index"] .site-footer {
+  body[data-page] .site-footer {
     flex-direction: column;
     justify-content: center;
     gap: 8px;
