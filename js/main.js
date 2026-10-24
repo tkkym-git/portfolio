@@ -80,3 +80,21 @@ document.querySelectorAll('.site-nav a').forEach((link) => {
     });
   });
 })();
+
+// Footer "Copy email" button
+(function () {
+  const btn = document.querySelector('.copy-email');
+  if (!btn) return;
+  const label = btn.textContent;
+  let timer = null;
+  btn.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(btn.dataset.email);
+      btn.textContent = 'Copied!';
+    } catch (e) {
+      btn.textContent = btn.dataset.email;
+    }
+    clearTimeout(timer);
+    timer = setTimeout(() => { btn.textContent = label; }, 2000);
+  });
+})();
