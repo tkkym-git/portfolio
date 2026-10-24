@@ -806,6 +806,25 @@ body[data-page="404"] .hero-panel {
 }
 
 /* ---------- About ---------- */
+.about-tagline {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.6;
+  color: var(--color-accent);
+  text-align: center;
+  padding-top: 150px;
+  margin-bottom: 76px;
+}
+.about-tagline + .page-title { padding-top: 0; padding-bottom: 68px; }
+@media (max-width: 768px) {
+  .about-tagline {
+    font-size: clamp(20px, calc((100vw - 32px) / 33), 24px);
+    padding-top: var(--sp-xl);
+    margin-bottom: var(--sp-l);
+  }
+  .about-tagline + .page-title { padding-bottom: var(--sp-l); }
+}
 .about-body {
   max-width: 960px;
   margin: 0 auto;
@@ -817,7 +836,7 @@ body[data-page="404"] .hero-panel {
 .about-lead {
   font-size: var(--fs-body);
   color: var(--color-text-secondary);
-  text-align: center;
+  text-align: left;
   max-width: 580px;
   margin: 0 auto;
 }
